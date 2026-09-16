@@ -70,7 +70,7 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
           </div>
           <div>
             <h3 className="section-title">Mobilidade & Alongamento</h3>
-            <p className="section-subtitle">Aquecimento pré-treino</p>
+            <p className="section-subtitle">Aquecimento articular pré-treino</p>
           </div>
         </div>
         <span className="count-badge">
@@ -83,12 +83,16 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
           const isDone = completedStretches.includes(stretch.id);
           const isTiming = activeStretchId === stretch.id;
 
+          // Encurtar instrução longa para 1 frase direta
+          const shortInstruction = stretch.instruction.split('.')[0] + '.';
+
           return (
             <div
               key={stretch.id}
               className={`stretch-item-row ${isDone ? 'done' : ''} ${isTiming ? 'timing' : ''}`}
             >
               <button
+                type="button"
                 onClick={() => toggleStretchCompleted(stretch.id)}
                 className={`check-square-btn ${isDone ? 'checked' : ''}`}
                 title={isDone ? 'Desmarcar' : 'Concluir'}
@@ -101,16 +105,19 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
                   <span className="stretch-name">{stretch.name}</span>
                   <span className="joint-tag">{stretch.targetJoint}</span>
                 </div>
-                <p className="stretch-instruction">{stretch.instruction}</p>
-                <div className="stretch-tip">
-                  <Sparkles size={11} className="tip-star" />
-                  <span>{stretch.focusTip}</span>
-                </div>
+                <p className="stretch-instruction">{shortInstruction}</p>
+                {stretch.focusTip && (
+                  <div className="stretch-tip">
+                    <Sparkles size={11} className="tip-star" />
+                    <span>{stretch.focusTip}</span>
+                  </div>
+                )}
               </div>
 
               <div className="stretch-actions">
                 {isTiming ? (
                   <button
+                    type="button"
                     onClick={stopStretchTimer}
                     className="timer-action-pill active"
                   >
@@ -119,6 +126,7 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
                   </button>
                 ) : (
                   <button
+                    type="button"
                     onClick={() => startStretchTimer(stretch)}
                     className="timer-action-pill"
                     title="Iniciar timer"

@@ -91,12 +91,19 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-pure);
 }
 
-button {
+button,
+input,
+select,
+textarea {
   font-family: inherit;
+  color: inherit;
   border: none;
   background: none;
-  cursor: pointer;
   user-select: none;
+}
+
+button {
+  cursor: pointer;
 }
 
 /* ===================================================================
@@ -887,106 +894,329 @@ button {
 
 .joint-tag {
   font-size: 11px;
-  font-weight: 600;
-  color: var(--cyan-accent);
-  background: rgba(100, 210, 255, 0.1);
-  padding: 2px 8px;
+  font-weight: 700;
+  color: #64d2ff;
+  background: rgba(100, 210, 255, 0.14);
+  border: 1px solid rgba(100, 210, 255, 0.25);
+  padding: 3px 9px;
   border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
 }
 
 .stretch-instruction {
-  font-size: 12px;
-  color: var(--text-secondary);
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.45;
 }
 
 .stretch-tip {
-  font-size: 11px;
-  color: #fbbf24;
+  font-size: 11.5px;
+  color: #fcd34d;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   margin-top: 4px;
 }
 
-.cardio-stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.tip-star {
+  color: #f59e0b;
 }
 
-.cardio-stat-pill {
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid var(--border-glass-subtle);
-  border-radius: 14px;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.cardio-stat-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.cardio-stat-value {
-  font-size: 13px;
+.timer-action-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
   font-weight: 700;
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-bounce);
+  cursor: pointer;
+}
+
+.timer-action-pill:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.timer-action-pill.active {
+  background: rgba(48, 209, 88, 0.22);
+  border-color: rgba(48, 209, 88, 0.55);
+  color: #30d158;
+  box-shadow: 0 0 16px rgba(48, 209, 88, 0.3);
+}
+
+.spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+/* --- CARDIO V2 LIQUID GLASS WIDGET --- */
+
+.cardio-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.cardio-metric-chip {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.cardio-metric-chip:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.metric-chip-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-chip-icon.cyan {
+  background: rgba(100, 210, 255, 0.15);
+  color: #64d2ff;
+}
+
+.metric-chip-icon.emerald {
+  background: rgba(48, 209, 88, 0.15);
+  color: #30d158;
+}
+
+.metric-chip-icon.purple {
+  background: rgba(191, 90, 242, 0.15);
+  color: #bf5af2;
+}
+
+.metric-chip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-chip-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.metric-chip-value {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.cardio-summary-pill {
+  background: rgba(100, 210, 255, 0.06);
+  border: 1px solid rgba(100, 210, 255, 0.18);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.pill-sparkle {
+  color: #64d2ff;
+  flex-shrink: 0;
   margin-top: 2px;
 }
 
-.cardio-timer-widget {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-glass-subtle);
+.cardio-summary-text {
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+/* Cronômetro Widget */
+.cardio-timer-pod {
+  background: rgba(10, 10, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
-  padding: 18px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  backdrop-filter: blur(20px);
+  transition: var(--transition-smooth);
+}
+
+.cardio-timer-pod.running {
+  border-color: rgba(100, 210, 255, 0.4);
+  box-shadow: 0 0 24px rgba(100, 210, 255, 0.15);
+}
+
+.timer-pod-header {
+  display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: space-between;
 }
 
-.time-large {
-  font-size: 32px;
+.timer-live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.live-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.live-pulse-dot.active {
+  background: #30d158;
+  box-shadow: 0 0 10px #30d158;
+  animation: pulse-glow 1.5s infinite;
+}
+
+.live-status-label {
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: -0.03em;
-  color: #ffffff;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.cardio-ctrl-row {
+.timer-quick-adjusts {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  padding: 2px 6px;
+}
+
+.quick-adjust-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  transition: var(--transition-smooth);
+}
+
+.quick-adjust-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.adjust-unit {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0 2px;
+}
+
+.timer-pod-digits-wrap {
+  text-align: center;
+  padding: 4px 0;
+}
+
+.timer-pod-digits {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  font-family: var(--font-heading);
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.timer-pod-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.timer-pod-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #64d2ff, #30d158);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(48, 209, 88, 0.4);
+}
+
+.timer-pod-actions {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 4px;
 }
 
-.cardio-ctrl-btn {
-  padding: 9px 18px;
+.timer-main-action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
   border-radius: var(--radius-full);
-  font-size: 13px;
-  font-weight: 700;
-  background: #ffffff;
-  color: #000000;
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
   transition: var(--transition-bounce);
 }
 
-.cardio-ctrl-btn.outline {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  border: 1px solid var(--border-glass);
-  box-shadow: none;
+.timer-main-action.play {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  color: #000000;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.25);
 }
 
-.cardio-tip-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-glass-subtle);
-  border-radius: 14px;
-  padding: 12px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.45;
+.timer-main-action.play:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(255, 255, 255, 0.35);
+}
+
+.timer-main-action.pause {
+  background: rgba(255, 69, 58, 0.2);
+  border: 1px solid rgba(255, 69, 58, 0.5);
+  color: #ff453a;
+  box-shadow: 0 0 16px rgba(255, 69, 58, 0.2);
+}
+
+.timer-reset-action {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transition: var(--transition-smooth);
+}
+
+.timer-reset-action:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* ===================================================================

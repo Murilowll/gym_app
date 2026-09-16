@@ -31,7 +31,7 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
 
         <div className="rest-guide-box">
           <h4 className="rest-guide-title">
-            <ShieldCheck size={16} /> Dicas do Coach para Hoje:
+            <ShieldCheck size={16} /> Orientações de Recuperação:
           </h4>
           <ul className="rest-guide-tips">
             {workoutDay.coachTips.map((tip, idx) => (

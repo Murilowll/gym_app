@@ -15,7 +15,6 @@ import { CardioSection } from './components/CardioSection';
 import { ActiveWorkoutModal } from './components/ActiveWorkoutModal';
 import { ExerciseDetailModal } from './components/ExerciseDetailModal';
 import { RestTimer } from './components/RestTimer';
-import { AiCoachChat } from './components/AiCoachChat';
 import { HistoryView } from './components/HistoryView';
 
 export const App: React.FC = () => {
@@ -30,7 +29,6 @@ export const App: React.FC = () => {
   // Estados dos modais
   const [isActiveWorkoutOpen, setIsActiveWorkoutOpen] = useState(false);
   const [selectedExerciseForDetail, setSelectedExerciseForDetail] = useState<Exercise | null>(null);
-  const [isAiChatOpen, setIsAiChatOpen] = useState(false);
 
   // Estado do Rest Timer
   const [restTimerSeconds, setRestTimerSeconds] = useState(60);
@@ -79,7 +77,6 @@ export const App: React.FC = () => {
       {/* Topo fixo com identidade visual e navegação */}
       <Header
         streak={userStats.streakDays}
-        onOpenAi={() => setIsAiChatOpen(true)}
         onOpenHistory={() => setActiveTab(activeTab === 'history' ? 'workouts' : 'history')}
         activeTab={activeTab}
       />
@@ -146,14 +143,6 @@ export const App: React.FC = () => {
         isActive={isRestTimerActive}
         onClose={() => setIsRestTimerActive(false)}
         onComplete={() => setIsRestTimerActive(false)}
-      />
-
-      {/* Chat do Treinador Inteligente (Coach IA) */}
-      <AiCoachChat
-        isOpen={isAiChatOpen}
-        onClose={() => setIsAiChatOpen(false)}
-        currentDay={currentWorkoutDay}
-        currentExercise={selectedExerciseForDetail}
       />
     </div>
   );

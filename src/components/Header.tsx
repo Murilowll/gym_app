@@ -1,16 +1,14 @@
 import React from 'react';
-import { Dumbbell, Flame, Bot, History, Sparkles } from 'lucide-react';
+import { Dumbbell, Flame, History } from 'lucide-react';
 
 interface HeaderProps {
   streak: number;
-  onOpenAi: () => void;
   onOpenHistory: () => void;
   activeTab: 'workouts' | 'history';
 }
 
 export const Header: React.FC<HeaderProps> = ({
   streak,
-  onOpenAi,
   onOpenHistory,
   activeTab
 }) => {
@@ -54,18 +52,9 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <History size={18} />
           </button>
-
-          <button
-            onClick={onOpenAi}
-            className="ai-coach-pill-btn"
-            title="Abrir Assistente Coach IA"
-          >
-            <Bot size={17} className="bot-pulse" />
-            <span className="ai-btn-text">Coach IA</span>
-            <Sparkles size={12} className="sparkle-icon" />
-          </button>
         </div>
       </div>
     </header>
   );
 };
+

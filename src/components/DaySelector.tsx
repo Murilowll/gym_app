@@ -1,7 +1,7 @@
 import React from 'react';
 import type { DayKey, WorkoutDay } from '../types/workout';
 import { WORKOUT_DAYS } from '../data/workoutsData';
-import { CheckCircle2, Moon, Zap } from 'lucide-react';
+import { CheckCircle2, Moon, Zap, Flame } from 'lucide-react';
 
 interface DaySelectorProps {
   selectedDayKey: DayKey;
@@ -52,10 +52,15 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
               className={`day-chip ${isSelected ? 'selected' : ''} ${isToday ? 'is-today' : ''} ${day.isRestDay ? 'is-rest' : ''}`}
             >
               <div className="day-chip-top">
-                {isToday && <span className="today-badge">HOJE</span>}
-                {isCompleted && <CheckCircle2 size={13} className="completed-icon" />}
-                {day.isRestDay && !isCompleted && <Moon size={12} className="moon-icon" />}
-                {!day.isRestDay && !isCompleted && !isToday && <Zap size={11} className="gym-zap" />}
+                {isCompleted ? (
+                  <CheckCircle2 size={13} className="completed-icon" />
+                ) : isToday ? (
+                  <Flame size={13} className="today-icon" />
+                ) : day.isRestDay ? (
+                  <Moon size={12} className="moon-icon" />
+                ) : (
+                  <Zap size={11} className="gym-zap" />
+                )}
               </div>
 
               <span className="day-short-name">{shortNames[day.key]}</span>

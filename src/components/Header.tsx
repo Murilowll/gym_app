@@ -13,42 +13,34 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab
 }) => {
   const todayFormatted = new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'long',
+    weekday: 'short',
     day: 'numeric',
     month: 'short'
   }).format(new Date());
-
-  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   return (
     <header className="app-header">
       <div className="header-top">
         <div className="brand-group">
           <div className="logo-icon-wrapper">
-            <Dumbbell className="brand-icon" size={24} />
+            <Dumbbell className="brand-icon" size={22} />
           </div>
           <div>
-            <div className="brand-title-row">
-              <span className="brand-title">IRONPULSE</span>
-              <span className="brand-badge">ACADEMY</span>
-            </div>
-            <p className="brand-subtitle">
-              Hipertrofia &bull; {capitalize(todayFormatted)}
-            </p>
+            <h1 className="brand-title">IronPulse</h1>
+            <p className="brand-subtitle">{todayFormatted}</p>
           </div>
         </div>
 
         <div className="header-actions">
-          <div className="streak-badge" title="Sequência de treinos ativos">
-            <Flame size={16} className="flame-icon" />
+          <div className="streak-badge" title={`${streak} dias seguidos`}>
+            <Flame size={15} className="flame-icon" />
             <span className="streak-number">{streak}</span>
-            <span className="streak-text">dias</span>
           </div>
 
           <button
             onClick={onOpenHistory}
             className={`header-icon-btn ${activeTab === 'history' ? 'active' : ''}`}
-            title="Histórico de Treinos e Cargas"
+            title="Histórico de Treinos"
           >
             <History size={18} />
           </button>
@@ -57,4 +49,5 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+
 

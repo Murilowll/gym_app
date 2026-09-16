@@ -22,11 +22,11 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
     <div className="history-view-container">
       <div className="history-header">
         <div>
-          <h2 className="history-title">Seu Progresso & Histórico</h2>
-          <p className="history-subtitle">Evolução de consistência e sobrecarga progressiva</p>
+          <h2 className="history-title">Progresso</h2>
+          <p className="history-subtitle">Histórico e evolução de cargas</p>
         </div>
         <button onClick={onClose} className="history-back-btn">
-          Voltar aos Treinos
+          Voltar
         </button>
       </div>
 
@@ -34,33 +34,33 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
       <div className="history-stats-grid">
         <div className="history-stat-card">
           <div className="stat-icon-wrap flame">
-            <Flame size={22} />
+            <Flame size={20} />
           </div>
           <div className="stat-data">
-            <span className="stat-number">{stats.streakDays} dias</span>
-            <span className="stat-label">Sequência Ativa (Streak)</span>
+            <span className="stat-number">{stats.streakDays}</span>
+            <span className="stat-label">Dias Ofensiva</span>
           </div>
         </div>
 
         <div className="history-stat-card">
           <div className="stat-icon-wrap trophy">
-            <Trophy size={22} />
+            <Trophy size={20} />
           </div>
           <div className="stat-data">
             <span className="stat-number">{stats.totalWorkouts}</span>
-            <span className="stat-label">Treinos Concluídos</span>
+            <span className="stat-label">Treinos</span>
           </div>
         </div>
 
         <div className="history-stat-card">
           <div className="stat-icon-wrap dumb">
-            <Dumbbell size={22} />
+            <Dumbbell size={20} />
           </div>
           <div className="stat-data">
             <span className="stat-number">
               {Object.keys(stats.weightHistory).length}
             </span>
-            <span className="stat-label">Aparelhos Registrados</span>
+            <span className="stat-label">Exercícios</span>
           </div>
         </div>
       </div>
@@ -68,15 +68,15 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
       {/* Registros Recentes */}
       <div className="history-records-section">
         <h3 className="section-title-clean">
-          <Calendar size={18} />
-          Últimos Treinos Realizados
+          <Calendar size={16} />
+          Treinos Recentes
         </h3>
 
         {history.length === 0 ? (
           <div className="empty-history-box">
-            <Dumbbell size={32} className="empty-icon" />
-            <h4>Nenhum treino finalizado ainda</h4>
-            <p>Inicie seu treino de hoje e clique em "Finalizar Treino" para registrar seu progresso aqui!</p>
+            <Dumbbell size={28} className="empty-icon" />
+            <h4>Nenhum treino ainda</h4>
+            <p>Conclua seu primeiro treino para acompanhar sua evolução aqui.</p>
           </div>
         ) : (
           <div className="history-list">
@@ -84,11 +84,11 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
               <div key={record.id} className="history-item-row">
                 <div className="history-item-left">
                   <div className="check-success-badge">
-                    <CheckCircle2 size={18} />
+                    <CheckCircle2 size={16} />
                   </div>
                   <div>
                     <h4 className="record-day-name">{record.dayName}</h4>
-                    <span className="record-date">📅 {formatWorkoutDate(record.date)}</span>
+                    <span className="record-date">{formatWorkoutDate(record.date)}</span>
                   </div>
                 </div>
 
@@ -98,7 +98,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
                   </div>
                   {record.totalVolumeKg > 0 && (
                     <div className="record-chip highlight">
-                      <span>{record.totalVolumeKg.toLocaleString('pt-BR')} kg levantados</span>
+                      <span>{record.totalVolumeKg.toLocaleString('pt-BR')} kg</span>
                     </div>
                   )}
                 </div>
@@ -112,8 +112,8 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
       {Object.keys(stats.weightHistory).length > 0 && (
         <div className="prs-section">
           <h3 className="section-title-clean">
-            <TrendingUp size={18} />
-            Maiores Cargas Registradas (Sobrecarga)
+            <TrendingUp size={16} />
+            Recordes de Carga
           </h3>
           <div className="prs-grid">
             {Object.entries(stats.weightHistory).map(([exId, records]) => {

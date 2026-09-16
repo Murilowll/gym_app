@@ -69,14 +69,12 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
             <ShieldCheck size={18} />
           </div>
           <div>
-            <h3 className="section-title">Mobilidade & Alongamento Dinâmico</h3>
-            <p className="section-subtitle">
-              Faça antes do treino para aquecer a articulação e prevenir lesões
-            </p>
+            <h3 className="section-title">Mobilidade & Alongamento</h3>
+            <p className="section-subtitle">Aquecimento pré-treino</p>
           </div>
         </div>
         <span className="count-badge">
-          {completedStretches.length}/{stretches.length} feitos
+          {completedStretches.length}/{stretches.length}
         </span>
       </div>
 
@@ -93,7 +91,7 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
               <button
                 onClick={() => toggleStretchCompleted(stretch.id)}
                 className={`check-square-btn ${isDone ? 'checked' : ''}`}
-                title={isDone ? 'Desmarcar' : 'Marcar como feito'}
+                title={isDone ? 'Desmarcar' : 'Concluir'}
               >
                 {isDone ? <CheckCircle2 size={18} /> : <div className="square-empty" />}
               </button>
@@ -101,11 +99,11 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
               <div className="stretch-content">
                 <div className="stretch-header-line">
                   <span className="stretch-name">{stretch.name}</span>
-                  <span className="joint-tag">🎯 {stretch.targetJoint}</span>
+                  <span className="joint-tag">{stretch.targetJoint}</span>
                 </div>
                 <p className="stretch-instruction">{stretch.instruction}</p>
                 <div className="stretch-tip">
-                  <Sparkles size={12} className="tip-star" />
+                  <Sparkles size={11} className="tip-star" />
                   <span>{stretch.focusTip}</span>
                 </div>
               </div>
@@ -116,16 +114,16 @@ export const StretchingSection: React.FC<StretchingSectionProps> = ({
                     onClick={stopStretchTimer}
                     className="timer-action-pill active"
                   >
-                    <Clock size={13} className="spin-slow" />
+                    <Clock size={12} className="spin-slow" />
                     <span>{secondsRemaining}s</span>
                   </button>
                 ) : (
                   <button
                     onClick={() => startStretchTimer(stretch)}
                     className="timer-action-pill"
-                    title="Iniciar cronômetro para este alongamento"
+                    title="Iniciar timer"
                   >
-                    <Play size={12} />
+                    <Play size={11} fill="currentColor" />
                     <span>{stretch.durationSeconds}s</span>
                   </button>
                 )}

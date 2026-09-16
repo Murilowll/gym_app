@@ -136,7 +136,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
           <div>
             <div className="live-pill">
               <span className="live-dot" />
-              TREINO EM ANDAMENTO
+              Em Andamento
             </div>
             <h2 className="active-workout-title">{workoutDay.name}</h2>
           </div>
@@ -149,7 +149,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         <div className="active-progress-container">
           <div className="active-progress-info">
             <span className="active-progress-text">
-              <strong>{completedSetsCount}</strong> de <strong>{totalSets}</strong> séries concluídas
+              {completedSetsCount} de {totalSets} séries concluídas
             </span>
             <span className="active-progress-pct">{Math.round(progressPercent)}%</span>
           </div>
@@ -183,8 +183,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                   <span className="active-machine-tag">{exercise.machineName}</span>
                   <h3 className="active-ex-name">{activeName}</h3>
                   <div className="active-ex-meta">
-                    <span>{exercise.sets} séries</span> &bull; <span>{exercise.reps} reps</span> &bull;{' '}
-                    <span className="rest-hint">⏱️ {exercise.suggestedRestSeconds}s descanso</span>
+                    <span>{exercise.sets}x {exercise.reps}</span> &bull;{' '}
+                    <span className="rest-hint">⏱️ {exercise.suggestedRestSeconds}s</span>
                   </div>
                 </div>
 
@@ -192,7 +192,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                   <button
                     onClick={() => onOpenDetail(exercise)}
                     className="detail-peek-btn"
-                    title="Ver máquina, regulagem e postura"
+                    title="Ver detalhes da máquina"
                   >
                     <Sliders size={16} />
                   </button>
@@ -211,7 +211,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                   <div
                     className="active-visual-embed"
                     onClick={() => onOpenDetail(exercise)}
-                    title="Clique para ver instruções detalhadas da máquina"
+                    title="Clique para ver detalhes"
                   >
                     <ExerciseIllustration
                       id={exercise.id}
@@ -221,17 +221,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                       secondaryMuscles={exercise.secondaryMuscles}
                     />
                     <div className="visual-overlay-hint">
-                      <Sliders size={13} /> Ver Regulagem & Detalhes
+                      <Sliders size={13} /> Detalhes
                     </div>
                   </div>
 
                   {/* Tabela de Séries (Set, Peso, Reps, Concluir) */}
                   <div className="sets-table-wrapper">
                     <div className="sets-table-head">
-                      <span>SÉRIE</span>
+                      <span>#</span>
                       <span>CARGA (KG)</span>
                       <span>REPS</span>
-                      <span>STATUS</span>
+                      <span>OK</span>
                     </div>
 
                     <div className="sets-table-rows">
@@ -334,7 +334,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                       className="quick-timer-link"
                     >
                       <Timer size={14} />
-                      Iniciar Descanso ({exercise.suggestedRestSeconds}s)
+                      Descanso {exercise.suggestedRestSeconds}s
                     </button>
 
                     {exercise.alternatives && exercise.alternatives.length > 0 && (
@@ -344,10 +344,10 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                           setExerciseOverrides((prev) => ({ ...prev, [exercise.id]: nextAlt }));
                         }}
                         className="alt-swap-link"
-                        title="Aparelho ocupado? Trocar pelo exercício reserva"
+                        title="Trocar por exercício reserva"
                       >
                         <ArrowRightLeft size={13} />
-                        Aparelho Ocupado?
+                        Trocar
                       </button>
                     )}
                   </div>
@@ -361,15 +361,13 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
       {/* Barra Inferior com Finalizar Treino */}
       <div className="active-workout-bottom-bar">
         <div className="bottom-bar-summary">
-          <Dumbbell size={18} className="summary-icon" />
-          <span>
-            <strong>{completedSetsCount}</strong> séries completadas
-          </span>
+          <Dumbbell size={16} className="summary-icon" />
+          <span>{completedSetsCount} séries concluídas</span>
         </div>
 
         <button onClick={handleFinish} className="finish-workout-btn">
-          <Trophy size={18} />
-          <span>Finalizar Treino & Salvar</span>
+          <Trophy size={16} />
+          <span>Concluir Treino</span>
         </button>
       </div>
     </div>

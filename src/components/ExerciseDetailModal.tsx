@@ -47,21 +47,22 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           </div>
 
           {/* Ficha rápida de hipertrofia */}
+          {/* Ficha rápida de hipertrofia */}
           <div className="stats-pill-grid">
             <div className="stat-pill-box">
-              <span className="stat-pill-label">Séries Alvo</span>
-              <span className="stat-pill-value">{exercise.sets} séries</span>
+              <span className="stat-pill-label">Séries</span>
+              <span className="stat-pill-value">{exercise.sets}</span>
             </div>
             <div className="stat-pill-box">
-              <span className="stat-pill-label">Faixa de Reps</span>
-              <span className="stat-pill-value">{exercise.reps} reps</span>
+              <span className="stat-pill-label">Reps</span>
+              <span className="stat-pill-value">{exercise.reps}</span>
             </div>
             <div className="stat-pill-box">
-              <span className="stat-pill-label">Descanso Sugerido</span>
+              <span className="stat-pill-label">Descanso</span>
               <button
                 onClick={() => onStartTimer(exercise.suggestedRestSeconds)}
                 className="stat-pill-btn"
-                title="Iniciar timer com este tempo"
+                title="Iniciar timer"
               >
                 ⏱️ {exercise.suggestedRestSeconds}s
               </button>
@@ -71,8 +72,8 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           {/* Como regular o aparelho */}
           <div className="guide-card">
             <div className="guide-card-header">
-              <Sliders size={18} className="guide-icon cyan" />
-              <h3>Como Regular a Máquina</h3>
+              <Sliders size={16} className="guide-icon cyan" />
+              <h3>Ajuste do Aparelho</h3>
             </div>
             <ul className="guide-list">
               {exercise.machineAdjustment.map((step, idx) => (
@@ -87,8 +88,8 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           {/* Dicas de Execução Correta */}
           <div className="guide-card">
             <div className="guide-card-header">
-              <CheckCircle2 size={18} className="guide-icon green" />
-              <h3>Execução Perfeita para Hipertrofia</h3>
+              <CheckCircle2 size={16} className="guide-icon green" />
+              <h3>Execução</h3>
             </div>
             <ul className="guide-list">
               {exercise.executionTips.map((tip, idx) => (
@@ -103,8 +104,8 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           {/* Erros comuns a evitar */}
           <div className="guide-card warning-accent">
             <div className="guide-card-header">
-              <AlertTriangle size={18} className="guide-icon amber" />
-              <h3>Erros Comuns (Evite Lesões)</h3>
+              <AlertTriangle size={16} className="guide-icon amber" />
+              <h3>Atenção</h3>
             </div>
             <ul className="guide-list">
               {exercise.commonMistakes.map((mistake, idx) => (
@@ -120,8 +121,8 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           {exercise.alternatives && exercise.alternatives.length > 0 && (
             <div className="guide-card alternatives-box">
               <div className="guide-card-header">
-                <ArrowRightLeft size={18} className="guide-icon purple" />
-                <h3>Aparelho Ocupado? Use Estas Alternativas:</h3>
+                <ArrowRightLeft size={16} className="guide-icon purple" />
+                <h3>Substituições</h3>
               </div>
               <div className="alt-grid">
                 {exercise.alternatives.map((alt, idx) => (
@@ -139,8 +140,8 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
                         }}
                         className="alt-use-btn"
                       >
-                        <Sparkles size={13} />
-                        Usar este hoje
+                        <Sparkles size={12} />
+                        Usar este
                       </button>
                     )}
                   </div>
@@ -155,10 +156,10 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
             onClick={() => onStartTimer(exercise.suggestedRestSeconds)}
             className="action-btn secondary"
           >
-            ⏱️ Timer {exercise.suggestedRestSeconds}s
+            ⏱️ {exercise.suggestedRestSeconds}s
           </button>
           <button onClick={onClose} className="action-btn primary">
-            Entendido
+            Fechar
           </button>
         </div>
       </div>

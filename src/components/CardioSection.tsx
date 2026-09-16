@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { Cardio } from '../types/workout';
-import { Activity, Play, Pause, RotateCcw, CheckCircle2, Zap, Flame } from 'lucide-react';
+import { Activity, Play, Pause, RotateCcw, CheckCircle2, Flame } from 'lucide-react';
 import { playSuccessChime, playTimerBeep } from '../utils/sound';
 
 interface CardioSectionProps {
@@ -78,7 +78,7 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
           <div>
             <h3 className="section-title">{cardio.title}</h3>
             <p className="section-subtitle">
-              Intensidade {cardio.intensity} &bull; {cardio.durationMinutes} minutos pós-treino
+              {cardio.durationMinutes} min &bull; Intensidade {cardio.intensity}
             </p>
           </div>
         </div>
@@ -89,13 +89,13 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
         >
           {isCompleted ? (
             <>
-              <CheckCircle2 size={15} />
+              <CheckCircle2 size={14} />
               <span>Concluído</span>
             </>
           ) : (
             <>
-              <Flame size={14} />
-              <span>Pendente</span>
+              <Flame size={13} />
+              <span>Iniciar</span>
             </>
           )}
         </button>
@@ -103,39 +103,27 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
 
       <div className="cardio-stats-bar">
         <div className="cardio-stat">
-          <span className="label">Ritmo Alvo</span>
+          <span className="label">Ritmo</span>
           <span className="val">{cardio.targetPace}</span>
         </div>
         <div className="cardio-stat">
-          <span className="label">Duração Ideal</span>
+          <span className="label">Tempo</span>
           <span className="val">{cardio.durationMinutes} min</span>
         </div>
         <div className="cardio-stat">
-          <span className="label">Impacto Articular</span>
-          <span className="val highlight">Zero / Muito Baixo</span>
+          <span className="label">Impacto</span>
+          <span className="val highlight">Baixo</span>
         </div>
       </div>
 
       <p className="cardio-instruction-text">
-        <strong>Como fazer:</strong> {cardio.instruction}
+        {cardio.instruction}
       </p>
-
-      {/* Destaque científico de preservação de massa muscular */}
-      <div className="hypertrophy-alert">
-        <div className="alert-icon-col">
-          <Zap size={16} className="zap-gold" />
-        </div>
-        <div>
-          <span className="alert-heading">Por que este cardio preserva seus músculos?</span>
-          <p className="alert-body">{cardio.hypertrophyReason}</p>
-        </div>
-      </div>
 
       {/* Cronômetro integrado de cardio */}
       <div className="cardio-timer-box">
         <div className="cardio-timer-display">
           <span className="cardio-time-digits">{formattedTime}</span>
-          <span className="cardio-time-sub">restantes</span>
         </div>
 
         <div className="cardio-progress-bar-bg">
@@ -150,11 +138,11 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
             onClick={() => setIsRunning(!isRunning)}
             className={`timer-ctrl-btn ${isRunning ? 'active' : 'primary'}`}
           >
-            {isRunning ? <Pause size={16} /> : <Play size={16} />}
-            <span>{isRunning ? 'Pausar' : 'Iniciar Cardio'}</span>
+            {isRunning ? <Pause size={15} /> : <Play size={15} fill="currentColor" />}
+            <span>{isRunning ? 'Pausar' : 'Iniciar'}</span>
           </button>
           <button onClick={handleReset} className="timer-ctrl-btn secondary" title="Reiniciar">
-            <RotateCcw size={15} />
+            <RotateCcw size={14} />
           </button>
         </div>
       </div>

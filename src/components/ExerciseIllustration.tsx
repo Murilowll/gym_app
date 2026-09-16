@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Activity, CheckCircle2 } from 'lucide-react';
+import { Play, Activity } from 'lucide-react';
 
 interface ExerciseIllustrationProps {
   id?: string;
@@ -102,7 +102,7 @@ export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({
           className={`visual-tab-btn ${viewMode === 'animated' ? 'active' : ''}`}
         >
           <Play size={12} fill={viewMode === 'animated' ? 'currentColor' : 'none'} />
-          <span>Movimento Animado</span>
+          <span>Execução</span>
         </button>
         <button
           type="button"
@@ -113,7 +113,7 @@ export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({
           className={`visual-tab-btn ${viewMode === 'anatomy' ? 'active' : ''}`}
         >
           <Activity size={13} />
-          <span>Foco Anatômico 3D</span>
+          <span>Anatomia 3D</span>
         </button>
       </div>
 
@@ -131,11 +131,7 @@ export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({
           {/* Badge superior com status da demonstração */}
           <div className="real-photo-badge">
             <span className="live-real-dot" />
-            <span>
-              {viewMode === 'animated'
-                ? 'EXECUÇÃO BIOMECÂNICA EM LOOP'
-                : 'ANATOMIA & ATIVAÇÃO MUSCULAR'}
-            </span>
+            <span>{viewMode === 'animated' ? 'Em Loop' : 'Músculos'}</span>
           </div>
         </div>
       </div>
@@ -145,19 +141,16 @@ export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({
         <div className="muscle-tags">
           <div className="muscle-tags-left">
             {targetMuscles.map((muscle, idx) => (
-              <span key={idx} className="muscle-pill active" title="Músculo Principal">
+              <span key={idx} className="muscle-pill active" title="Principal">
                 🎯 {muscle}
               </span>
             ))}
             {secondaryMuscles.map((muscle, idx) => (
-              <span key={`sec-${idx}`} className="muscle-pill secondary" title="Músculo Secundário / Sinergista">
+              <span key={`sec-${idx}`} className="muscle-pill secondary" title="Secundário">
                 ⚡ {muscle}
               </span>
             ))}
           </div>
-          <span className="muscle-pill-hint" title="Base anatômica GymVisual & ExerciseDB">
-            <CheckCircle2 size={12} color="#10b981" /> Biomecânica Oficial
-          </span>
         </div>
       </div>
     </div>

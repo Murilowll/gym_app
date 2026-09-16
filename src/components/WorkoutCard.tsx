@@ -1,6 +1,6 @@
 import React from 'react';
 import type { WorkoutDay, Exercise } from '../types/workout';
-import { Play, Clock, Dumbbell, CheckCircle2, ChevronRight, Moon, ShieldCheck, Info, Flame } from 'lucide-react';
+import { Play, Clock, Dumbbell, CheckCircle2, ChevronRight, Moon, ShieldCheck, Flame } from 'lucide-react';
 
 interface WorkoutCardProps {
   workoutDay: WorkoutDay;
@@ -24,14 +24,14 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
           <div className="rest-icon-ring">
             <Moon size={32} className="moon-pulse" />
           </div>
-          <span className="rest-day-pill">DOMINGO &bull; REPOUSO ANABÓLICO</span>
+          <span className="rest-day-pill">Descanso</span>
           <h2 className="rest-day-title">{workoutDay.name}</h2>
           <p className="rest-day-subtitle">{workoutDay.tagline}</p>
         </div>
 
         <div className="rest-guide-box">
           <h4 className="rest-guide-title">
-            <ShieldCheck size={16} /> Orientações de Recuperação:
+            <ShieldCheck size={16} /> Recomendações:
           </h4>
           <ul className="rest-guide-tips">
             {workoutDay.coachTips.map((tip, idx) => (
@@ -51,50 +51,31 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="focus-pill">🎯 {workoutDay.focus}</span>
             {isToday && (
-              <span className="today-pill" style={{
-                fontSize: '11px',
-                fontWeight: 800,
-                color: '#f59e0b',
-                background: 'rgba(245, 158, 11, 0.15)',
-                border: '1px solid rgba(245, 158, 11, 0.3)',
-                padding: '3px 8px',
-                borderRadius: '9999px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
-                <Flame size={12} /> HOJE
+              <span className="today-pill">
+                <Flame size={12} /> Hoje
               </span>
             )}
           </div>
           <div className="banner-time">
-            <Clock size={14} />
-            <span>~{workoutDay.estimatedMinutes} min</span>
+            <Clock size={13} />
+            <span>{workoutDay.estimatedMinutes} min</span>
           </div>
         </div>
 
-        <h1 className="workout-main-title">{workoutDay.name}</h1>
+        <h2 className="workout-main-title">{workoutDay.name}</h2>
         <p className="workout-tagline">{workoutDay.tagline}</p>
-
-        {/* Dicas Rápidas do Treinador */}
-        {workoutDay.coachTips && workoutDay.coachTips.length > 0 && (
-          <div className="coach-highlight-quote">
-            <Info size={15} className="info-icon" />
-            <span>{workoutDay.coachTips[0]}</span>
-          </div>
-        )}
 
         {/* Botão de Chamada Principal */}
         <div className="workout-cta-row">
           <button onClick={onStartWorkout} className="start-workout-hero-btn">
-            <Play size={20} className="play-icon-pulse" />
-            <span>{isCompleted ? 'Refazer Treino' : 'Iniciar Treino Agora'}</span>
+            <Play size={18} fill="currentColor" />
+            <span>{isCompleted ? 'Refazer Treino' : 'Iniciar Treino'}</span>
           </button>
 
           {isCompleted && (
             <div className="completed-tag">
               <CheckCircle2 size={16} />
-              <span>Treino Concluído Hoje</span>
+              <span>Concluído</span>
             </div>
           )}
         </div>
@@ -104,10 +85,9 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
       <div className="exercises-overview-section">
         <div className="section-header-compact">
           <h3 className="section-title-clean">
-            <Dumbbell size={18} />
-            Exercícios de Musculação ({workoutDay.exercises.length})
+            <Dumbbell size={17} />
+            Exercícios ({workoutDay.exercises.length})
           </h3>
-          <span className="section-hint">Toque para ver postura e máquina</span>
         </div>
 
         <div className="exercises-compact-grid">
@@ -123,9 +103,10 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
                   <span className="compact-machine">{exercise.machineName}</span>
                   <h4 className="compact-name">{exercise.name}</h4>
                   <div className="compact-meta-row">
-                    <span className="badge-meta">{exercise.sets} séries</span>
-                    <span className="badge-meta">{exercise.reps} reps</span>
-                    <span className="badge-meta rest">⏱️ {exercise.suggestedRestSeconds}s</span>
+                    <span className="badge-meta">{exercise.sets}x {exercise.reps}</span>
+                    <span className="badge-meta rest">
+                      <Clock size={11} /> {exercise.suggestedRestSeconds}s
+                    </span>
                   </div>
                 </div>
               </div>

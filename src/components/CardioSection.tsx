@@ -1,0 +1,163 @@
+import React, { useState, useEffect } from 'react';
+import type { Cardio } from '../types/workout';
+import { Activity, Play, Pause, RotateCcw, CheckCircle2, Zap, Flame } from 'lucide-react';
+import { playSuccessChime, playTimerBeep } from '../utils/sound';
+
+interface CardioSectionProps {
+  cardio?: Cardio;
+  onCardioFinished?: () => void;
+}
+
+export const CardioSection: React.FC<CardioSectionProps> = ({
+  cardio,
+  onCardioFinished
+}) => {
+  if (!cardio) return null;
+
+  const totalSeconds = cardio.durationMinutes * 60;
+  const [timeLeft, setTimeLeft] = useState(totalSeconds);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    setTimeLeft(cardio.durationMinutes * 60);
+    setIsRunning(false);
+    setIsCompleted(false);
+  }, [cardio]);
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    if (timeLeft <= 0) {
+      setIsRunning(false);
+      setIsCompleted(true);
+      playSuccessChime();
+      if (onCardioFinished) onCardioFinished();
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev === 1) {
+          playTimerBeep(true);
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning, timeLeft, onCardioFinished]);
+
+  const minutes = Math.floor(Math.max(0, timeLeft) / 60);
+  const seconds = Math.max(0, timeLeft) % 60;
+  const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  const progressPercent = ((totalSeconds - timeLeft) / totalSeconds) * 100;
+
+  const handleReset = () => {
+    setIsRunning(false);
+    setTimeLeft(totalSeconds);
+    setIsCompleted(false);
+  };
+
+  const handleToggleComplete = () => {
+    const next = !isCompleted;
+    setIsCompleted(next);
+    if (next) {
+      playSuccessChime();
+      if (onCardioFinished) onCardioFinished();
+    }
+  };
+
+  return (
+    <div className={`cardio-card ${isCompleted ? 'completed-border' : ''}`}>
+      <div className="section-title-row">
+        <div className="title-with-icon">
+          <div className="icon-badge cyan">
+            <Activity size={18} />
+          </div>
+          <div>
+            <h3 className="section-title">{cardio.title}</h3>
+            <p className="section-subtitle">
+              Intensidade {cardio.intensity} &bull; {cardio.durationMinutes} minutos pós-treino
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleToggleComplete}
+          className={`cardio-status-badge ${isCompleted ? 'done' : ''}`}
+        >
+          {isCompleted ? (
+            <>
+              <CheckCircle2 size={15} />
+              <span>Concluído</span>
+            </>
+          ) : (
+            <>
+              <Flame size={14} />
+              <span>Pendente</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      <div className="cardio-stats-bar">
+        <div className="cardio-stat">
+          <span className="label">Ritmo Alvo</span>
+          <span className="val">{cardio.targetPace}</span>
+        </div>
+        <div className="cardio-stat">
+          <span className="label">Duração Ideal</span>
+          <span className="val">{cardio.durationMinutes} min</span>
+        </div>
+        <div className="cardio-stat">
+          <span className="label">Impacto Articular</span>
+          <span className="val highlight">Zero / Muito Baixo</span>
+        </div>
+      </div>
+
+      <p className="cardio-instruction-text">
+        <strong>Como fazer:</strong> {cardio.instruction}
+      </p>
+
+      {/* Destaque científico de preservação de massa muscular */}
+      <div className="hypertrophy-alert">
+        <div className="alert-icon-col">
+          <Zap size={16} className="zap-gold" />
+        </div>
+        <div>
+          <span className="alert-heading">Por que este cardio preserva seus músculos?</span>
+          <p className="alert-body">{cardio.hypertrophyReason}</p>
+        </div>
+      </div>
+
+      {/* Cronômetro integrado de cardio */}
+      <div className="cardio-timer-box">
+        <div className="cardio-timer-display">
+          <span className="cardio-time-digits">{formattedTime}</span>
+          <span className="cardio-time-sub">restantes</span>
+        </div>
+
+        <div className="cardio-progress-bar-bg">
+          <div
+            className="cardio-progress-fill"
+            style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
+          />
+        </div>
+
+        <div className="cardio-timer-controls">
+          <button
+            onClick={() => setIsRunning(!isRunning)}
+            className={`timer-ctrl-btn ${isRunning ? 'active' : 'primary'}`}
+          >
+            {isRunning ? <Pause size={16} /> : <Play size={16} />}
+            <span>{isRunning ? 'Pausar' : 'Iniciar Cardio'}</span>
+          </button>
+          <button onClick={handleReset} className="timer-ctrl-btn secondary" title="Reiniciar">
+            <RotateCcw size={15} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

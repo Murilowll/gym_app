@@ -17,6 +17,7 @@ import { ExerciseDetailModal } from './components/ExerciseDetailModal';
 import { RestTimer } from './components/RestTimer';
 import { AiCoachChat } from './components/AiCoachChat';
 import { HistoryView } from './components/HistoryView';
+import { BottomNav } from './components/BottomNav';
 
 export const App: React.FC = () => {
   const todayKey = getTodayKey();
@@ -154,6 +155,22 @@ export const App: React.FC = () => {
         onClose={() => setIsAiChatOpen(false)}
         currentDay={currentWorkoutDay}
         currentExercise={selectedExerciseForDetail}
+      />
+
+      {/* Dock Flutuante Liquid Glass de Navegação */}
+      <BottomNav
+        activeTab={activeTab}
+        onSelectWorkouts={() => {
+          setActiveTab('workouts');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onSelectHistory={() => setActiveTab('history')}
+        onOpenCalendar={() => {
+          setActiveTab('workouts');
+          const el = document.querySelector('.day-selector-container');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+        onOpenAi={() => setIsAiChatOpen(true)}
       />
     </div>
   );

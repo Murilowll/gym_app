@@ -24,15 +24,14 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
   cardio,
   onCardioFinished
 }) => {
-  if (!cardio) return null;
-
-  const totalSeconds = cardio.durationMinutes * 60;
+  const totalSeconds = (cardio?.durationMinutes || 0) * 60;
   const [targetSeconds, setTargetSeconds] = useState(totalSeconds);
   const [timeLeft, setTimeLeft] = useState(totalSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
+    if (!cardio) return;
     const s = cardio.durationMinutes * 60;
     setTargetSeconds(s);
     setTimeLeft(s);
@@ -64,6 +63,8 @@ export const CardioSection: React.FC<CardioSectionProps> = ({
 
     return () => clearInterval(interval);
   }, [isRunning, timeLeft, onCardioFinished]);
+
+  if (!cardio) return null;
 
   const minutes = Math.floor(Math.max(0, timeLeft) / 60);
   const seconds = Math.max(0, timeLeft) % 60;

@@ -6,6 +6,26 @@ export interface ExerciseAlternative {
   reason: string;
 }
 
+export type MuscleCategory =
+  | 'Peito'
+  | 'Costas'
+  | 'Ombros'
+  | 'Bíceps'
+  | 'Tríceps'
+  | 'Quadríceps'
+  | 'Posteriores'
+  | 'Glúteos'
+  | 'Panturrilhas'
+  | 'Abdômen'
+  | 'Antebraço';
+
+export type EquipmentCategory =
+  | 'Barra'
+  | 'Halteres'
+  | 'Máquina'
+  | 'Cabo/Polia'
+  | 'Peso Corporal';
+
 export interface Exercise {
   id: string;
   name: string;
@@ -18,7 +38,11 @@ export interface Exercise {
   machineAdjustment: string[];
   executionTips: string[];
   commonMistakes: string[];
-  visualType: 'chest-press' | 'incline-bench' | 'peck-deck' | 'lat-pulldown' | 'seated-cable-row' | 'reverse-fly' | 'lateral-raise' | 'triceps-pushdown' | 'triceps-extension' | 'leg-extension' | 'leg-press' | 'bulgarian-split' | 'calf-raise' | 'seated-overhead-press' | 'bent-over-row' | 'shrug' | 'preacher-curl' | 'incline-curl' | 'lying-leg-curl' | 'seated-leg-curl' | 'romanian-deadlift' | 'hip-thrust' | 'abs-cable' | 'cable-crossover';
+  visualType: string;
+  category?: MuscleCategory;
+  equipmentType?: EquipmentCategory;
+  gifUrl?: string;
+  jpgUrl?: string;
   alternatives: ExerciseAlternative[];
 }
 

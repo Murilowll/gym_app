@@ -41,6 +41,31 @@ const ID_TO_IMAGE_MAP: Record<string, { gif: string; jpg: string }> = {
   'p6-romanian-deadlift': { gif: '/exercises/p6-romanian-deadlift.gif', jpg: '/exercises/p6-romanian-deadlift.jpg' },
   'p6-hip-thrust': { gif: '/exercises/p6-hip-thrust.gif', jpg: '/exercises/p6-hip-thrust.jpg' },
   'p6-seated-calf': { gif: '/exercises/p6-seated-calf.gif', jpg: '/exercises/p6-seated-calf.jpg' },
+
+  // Exercícios Específicos & Biomecânicos Únicos (Sem repetição)
+  'ex-bench-press-barbell': { gif: '/exercises/ex-bench-press-barbell.gif', jpg: '/exercises/ex-bench-press-barbell.jpg' },
+  'ex-dips-chest': { gif: '/exercises/ex-dips-chest.gif', jpg: '/exercises/ex-dips-chest.jpg' },
+  'ex-pushup': { gif: '/exercises/ex-pushup.gif', jpg: '/exercises/ex-pushup.jpg' },
+  'ex-decline-bench': { gif: '/exercises/ex-decline-bench.gif', jpg: '/exercises/ex-decline-bench.jpg' },
+  'ex-dumbbell-pullover': { gif: '/exercises/ex-dumbbell-pullover.gif', jpg: '/exercises/ex-dumbbell-pullover.jpg' },
+  'ex-one-arm-row': { gif: '/exercises/ex-one-arm-row.gif', jpg: '/exercises/ex-one-arm-row.jpg' },
+  'ex-pullup': { gif: '/exercises/ex-pullup.gif', jpg: '/exercises/ex-pullup.jpg' },
+  'ex-deadlift-conventional': { gif: '/exercises/ex-deadlift-conventional.gif', jpg: '/exercises/ex-deadlift-conventional.jpg' },
+  'ex-squat-barbell': { gif: '/exercises/ex-squat-barbell.gif', jpg: '/exercises/ex-squat-barbell.jpg' },
+  'ex-hack-squat': { gif: '/exercises/ex-hack-squat.gif', jpg: '/exercises/ex-hack-squat.jpg' },
+  'ex-face-pull': { gif: '/exercises/ex-face-pull.gif', jpg: '/exercises/ex-face-pull.jpg' },
+  'ex-arnold-press': { gif: '/exercises/ex-arnold-press.gif', jpg: '/exercises/ex-arnold-press.jpg' },
+  'ex-front-raise': { gif: '/exercises/ex-front-raise.gif', jpg: '/exercises/ex-front-raise.jpg' },
+  'ex-barbell-curl-w': { gif: '/exercises/ex-barbell-curl-w.gif', jpg: '/exercises/ex-barbell-curl-w.jpg' },
+  'ex-concentration-curl': { gif: '/exercises/ex-concentration-curl.gif', jpg: '/exercises/ex-concentration-curl.jpg' },
+  'ex-close-grip-bench': { gif: '/exercises/ex-close-grip-bench.gif', jpg: '/exercises/ex-close-grip-bench.jpg' },
+  'ex-triceps-kickback': { gif: '/exercises/ex-triceps-kickback.gif', jpg: '/exercises/ex-triceps-kickback.jpg' },
+  'ex-abductor-machine': { gif: '/exercises/ex-abductor-machine.gif', jpg: '/exercises/ex-abductor-machine.jpg' },
+  'ex-adductor-machine': { gif: '/exercises/ex-adductor-machine.gif', jpg: '/exercises/ex-adductor-machine.jpg' },
+  'ex-leg-press-calf': { gif: '/exercises/ex-leg-press-calf.gif', jpg: '/exercises/ex-leg-press-calf.jpg' },
+  'ex-hanging-leg-raise': { gif: '/exercises/ex-hanging-leg-raise.gif', jpg: '/exercises/ex-hanging-leg-raise.jpg' },
+  'ex-plank': { gif: '/exercises/ex-plank.gif', jpg: '/exercises/ex-plank.jpg' },
+  'ex-cable-crunch': { gif: '/exercises/ex-cable-crunch.gif', jpg: '/exercises/ex-cable-crunch.jpg' }
 };
 
 const TYPE_TO_FALLBACK_ID: Record<string, string> = {
@@ -67,7 +92,21 @@ const TYPE_TO_FALLBACK_ID: Record<string, string> = {
   'lying-leg-curl': 'p6-lying-leg-curl',
   'seated-leg-curl': 'p6-seated-leg-curl',
   'romanian-deadlift': 'p6-romanian-deadlift',
-  'hip-thrust': 'p6-hip-thrust'
+  'hip-thrust': 'p6-hip-thrust',
+  'bench-press': 'ex-bench-press-barbell',
+  'dips': 'ex-dips-chest',
+  'pushup': 'ex-pushup',
+  'pullup': 'ex-pullup',
+  'squat': 'ex-squat-barbell',
+  'deadlift': 'ex-deadlift-conventional',
+  'hack-squat': 'ex-hack-squat',
+  'arnold-press': 'ex-arnold-press',
+  'face-pull': 'ex-face-pull',
+  'abductor': 'ex-abductor-machine',
+  'adductor': 'ex-adductor-machine',
+  'plank': 'ex-plank',
+  'hanging-leg-raise': 'ex-hanging-leg-raise',
+  'cable-crunch': 'ex-cable-crunch'
 };
 
 export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({

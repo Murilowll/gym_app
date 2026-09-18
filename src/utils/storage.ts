@@ -1,4 +1,10 @@
 import type { DayKey, UserStats, CompletedWorkoutRecord, SetLog } from '../types/workout';
+import { auth } from '../services/firebase';
+import {
+  saveCloudUserStats,
+  saveCloudCompletedWorkout,
+  saveCloudActiveSets
+} from '../services/firestoreService';
 
 const STORAGE_KEYS = {
   STATS: 'ironpulse_user_stats_v1',
@@ -45,6 +51,13 @@ export function saveUserStats(stats: UserStats): void {
   } catch {
     // Ignora
   }
+
+  // Sincroniza em nuvem se o usuário estiver autenticado
+  if (auth.currentUser) {
+    saveCloudUserStats(auth.currentUser.uid, stats).catch((err) =>
+      console.warn('Erro ao sincronizar stats com nuvem:', err)
+    );
+  }
 }
 
 export function loadWorkoutHistory(): CompletedWorkoutRecord[] {
@@ -71,6 +84,26 @@ export function saveCompletedWorkout(record: CompletedWorkoutRecord): void {
     stats.lastWorkoutDate = record.date;
     stats.streakDays += 1;
     saveUserStats(stats);
+
+    // Sincroniza em nuvem se logado
+    if (auth.currentUser) {
+      saveCloudCompletedWorkout(auth.currentUser.uid, record).catch((err) =>
+        console.warn('Erro ao salvar treino na nuvem:', err)
+      );
+    }
+  } catch {
+    // Ignora
+  }
+}
+
+export function syncLocalWithCloud(cloudStats?: UserStats | null, cloudHistory?: CompletedWorkoutRecord[]): void {
+  try {
+    if (cloudStats) {
+      localStorage.setItem(STORAGE_KEYS.STATS, JSON.stringify(cloudStats));
+    }
+    if (cloudHistory && cloudHistory.length > 0) {
+      localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(cloudHistory));
+    }
   } catch {
     // Ignora
   }
@@ -93,6 +126,12 @@ export function saveActiveSets(activeSets: { [exerciseId: string]: SetLog[] }): 
     localStorage.setItem(STORAGE_KEYS.ACTIVE_SETS, JSON.stringify(activeSets));
   } catch {
     // Ignora
+  }
+
+  if (auth.currentUser) {
+    saveCloudActiveSets(auth.currentUser.uid, activeSets).catch((err) =>
+      console.warn('Erro ao salvar séries ativas na nuvem:', err)
+    );
   }
 }
 

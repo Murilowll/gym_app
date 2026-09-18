@@ -5,7 +5,7 @@ import { Trophy, Calendar, Dumbbell, Flame, CheckCircle2, TrendingUp, Sparkles }
 interface HistoryViewProps {
   history: CompletedWorkoutRecord[];
   stats: UserStats;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClose }) => {
@@ -18,16 +18,43 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ history, stats, onClos
     }
   };
 
+  // Cálculo de Horas e Minutos Dedicados
+  const totalMinutes = history.reduce((acc, h) => acc + (h.durationMinutes || 45), 0);
+  const totalHours = Math.floor(totalMinutes / 60);
+  const remainingMins = totalMinutes % 60;
+
   return (
     <div className="history-view-container">
       <div className="history-header">
         <div>
-          <h2 className="history-title">Progresso</h2>
-          <p className="history-subtitle">Histórico e evolução de cargas</p>
+          <h2 className="history-title">A Hora</h2>
+          <p className="history-subtitle">Tempo dedicado, histórico e evolução de cargas</p>
         </div>
-        <button onClick={onClose} className="history-back-btn">
-          Voltar
-        </button>
+        {onClose && (
+          <button onClick={onClose} className="history-back-btn">
+            Voltar
+          </button>
+        )}
+      </div>
+
+      {/* Card Destaque: Tempo Total Treinado (A Hora) */}
+      <div className="history-time-hero-card">
+        <div className="time-hero-left">
+          <div className="time-icon-wrapper">
+            <Calendar size={28} />
+          </div>
+          <div>
+            <span className="time-hero-label">TEMPO TOTAL TREINADO</span>
+            <div className="time-hero-value">
+              <strong>{totalHours}</strong>h <strong>{remainingMins}</strong>min
+            </div>
+            <span className="time-hero-sub">
+              {history.length > 0
+                ? `${history.length} sessões concluídas sob tensão`
+                : 'Inicie seu primeiro treino para registrar suas horas'}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Cards de Métricas Principais */}

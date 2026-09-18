@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Dumbbell, Flame, History, LogIn, LogOut, User as UserIcon, ShieldCheck, BookOpen, Sparkles } from 'lucide-react';
+import { Flame, History, LogIn, LogOut, User as UserIcon, ShieldCheck, BookOpen, Sparkles } from 'lucide-react';
+import { AppLogo } from './AppLogo';
 import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
@@ -42,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
           title="Ir para o Início (Home)"
         >
           <div className="logo-icon-wrapper">
-            <Dumbbell className="brand-icon" size={22} />
+            <AppLogo size={22} color="#ffffff" />
           </div>
           <div>
             <h1 className="brand-title">IronPulse</h1>

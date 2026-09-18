@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User as UserIcon, Dumbbell, ShieldCheck, AlertCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { AppLogo } from './AppLogo';
 import { useAuth } from '../contexts/AuthContext';
 import type { UserRole } from '../types/user';
 
@@ -140,18 +141,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div
             style={{
-              width: '52px',
-              height: '52px',
+              width: '54px',
+              height: '54px',
               borderRadius: '16px',
-              background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.25), rgba(100, 210, 255, 0.15))',
-              border: '1px solid rgba(48, 209, 88, 0.35)',
+              background: '#000000',
+              border: '1.5px solid rgba(255, 255, 255, 0.18)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: '12px'
+              marginBottom: '12px',
+              boxShadow: '0 10px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
             }}
           >
-            <Dumbbell size={26} color="#30d158" />
+            <AppLogo size={32} color="#ffffff" />
           </div>
           <h2 style={{ fontSize: '1.45rem', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             {mode === 'login' && 'Entrar no IronPulse'}

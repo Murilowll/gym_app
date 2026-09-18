@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Zap
 } from 'lucide-react';
+import { AppLogo } from './AppLogo';
 import { useAuth } from '../contexts/AuthContext';
 import type { UserRole } from '../types/user';
 
@@ -180,19 +181,19 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
         <div style={{ textAlign: 'center', marginBottom: '26px' }}>
           <div
             style={{
-              width: '60px',
-              height: '60px',
+              width: '64px',
+              height: '64px',
               borderRadius: '20px',
-              background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.28), rgba(100, 210, 255, 0.18))',
-              border: '1.5px solid rgba(48, 209, 88, 0.45)',
+              background: '#000000',
+              border: '1.5px solid rgba(255, 255, 255, 0.18)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '14px',
-              boxShadow: '0 8px 24px rgba(48, 209, 88, 0.25)'
+              boxShadow: '0 12px 28px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
             }}
           >
-            <Dumbbell size={30} color="#30d158" />
+            <AppLogo size={36} color="#ffffff" />
           </div>
           <h1
             style={{

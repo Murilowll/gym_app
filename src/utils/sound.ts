@@ -39,6 +39,28 @@ export function playTimerBeep(isFinal = false): void {
   }
 }
 
+export function playTickSound(): void {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(4);
+    }
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(620, ctx.currentTime);
+    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.015);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.015);
+  } catch {
+    // Ignora erro de áudio
+  }
+}
+
 export function playSuccessChime(): void {
   try {
     const ctx = getAudioContext();

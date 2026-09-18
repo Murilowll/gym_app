@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   ArrowLeft,
   Check,
@@ -8,7 +8,9 @@ import {
   Mail,
   User,
   Flame,
-  TrendingUp
+  TrendingUp,
+  Plus,
+  Minus
 } from 'lucide-react';
 import type {
   OnboardingAnswers,
@@ -18,6 +20,7 @@ import type {
 } from '../types/onboarding';
 import { generatePersonalizedWorkout } from '../utils/workoutGenerator';
 import { useAuth } from '../contexts/AuthContext';
+import { playTickSound } from '../utils/sound';
 
 interface OnboardingFunnelProps {
   isOpen: boolean;
@@ -32,6 +35,428 @@ interface SlideItem {
   desc: string;
 }
 
+/* ===================================================================
+   SUB-COMPONENTE: VERTICAL ROLLER PICKER (IDADE & ALTURA) COM ARRASTE
+   =================================================================== */
+interface VerticalRollerProps {
+  value: number;
+  onChange: (val: number) => void;
+  min: number;
+  max: number;
+  unit?: string;
+}
+
+const VerticalRollerPicker: React.FC<VerticalRollerProps> = ({
+  value,
+  onChange,
+  min,
+  max,
+  unit
+}) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const startYRef = useRef(0);
+  const startValRef = useRef(value);
+  const lastTickValRef = useRef(value);
+
+  // Manipulador de arraste (Touch e Mouse unificados via PointerEvents)
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    startYRef.current = e.clientY;
+    startValRef.current = value;
+    lastTickValRef.current = value;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const deltaY = e.clientY - startYRef.current;
+    // A cada 24px de arraste move 1 número
+    const stepDiff = Math.round(deltaY / 24);
+    const candidate = Math.max(min, Math.min(max, startValRef.current - stepDiff));
+
+    if (candidate !== lastTickValRef.current) {
+      lastTickValRef.current = candidate;
+      playTickSound();
+      onChange(candidate);
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (isDragging) {
+      setIsDragging(false);
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {}
+    }
+  };
+
+  // Scroll com rodinha do mouse ou trackpad
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      e.preventDefault();
+      const step = e.deltaY > 0 ? 1 : -1;
+      const candidate = Math.max(min, Math.min(max, value + step));
+      if (candidate !== value) {
+        playTickSound();
+        onChange(candidate);
+      }
+    },
+    [value, min, max, onChange]
+  );
+
+  const visibleNumbers = [
+    value - 3,
+    value - 2,
+    value - 1,
+    value,
+    value + 1,
+    value + 2,
+    value + 3
+  ];
+
+  return (
+    <div
+      className="vertical-roller-box"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onWheel={handleWheel}
+      style={{ touchAction: 'none' }}
+    >
+      <div className="roller-divider-line top" />
+      <div className="roller-divider-line bottom" />
+
+      {/* Botões rápidos laterais para toque de 1 clique */}
+      <button
+        type="button"
+        onClick={() => {
+          if (value > min) {
+            playTickSound();
+            onChange(value - 1);
+          }
+        }}
+        style={{
+          position: 'absolute',
+          left: '12px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.07)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          color: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 5
+        }}
+        aria-label="Diminuir"
+      >
+        <Minus size={16} />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          if (value < max) {
+            playTickSound();
+            onChange(value + 1);
+          }
+        }}
+        style={{
+          position: 'absolute',
+          right: '12px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.07)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          color: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 5
+        }}
+        aria-label="Aumentar"
+      >
+        <Plus size={16} />
+      </button>
+
+      <div className="roller-numbers-column">
+        {visibleNumbers.map((num) => {
+          if (num < min || num > max) {
+            return (
+              <div
+                key={num}
+                style={{ height: '36px', opacity: 0, pointerEvents: 'none' }}
+              />
+            );
+          }
+
+          const dist = Math.abs(num - value);
+          const isSelected = dist === 0;
+
+          // Efeito de perspectiva 3D e foco
+          const scale = isSelected ? 1.18 : Math.max(0.72, 1 - dist * 0.14);
+          const opacity = isSelected ? 1 : Math.max(0.18, 0.65 - dist * 0.22);
+          const rotateX = isSelected ? 0 : (num - value) * 14;
+
+          return (
+            <div
+              key={num}
+              className={`roller-number-item ${isSelected ? 'selected' : ''}`}
+              style={{
+                transform: `perspective(400px) rotateX(${rotateX}deg) scale(${scale})`,
+                opacity,
+                transition: isDragging ? 'none' : 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+              onClick={() => {
+                playTickSound();
+                onChange(num);
+              }}
+            >
+              {num} {isSelected && unit ? <span style={{ fontSize: '18px', fontWeight: 600, color: '#a1a1aa' }}>{unit}</span> : null}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* ===================================================================
+   SUB-COMPONENTE: HORIZONTAL RULER PICKER (PESO) COM ARRASTE E TICK
+   =================================================================== */
+interface HorizontalRulerProps {
+  value: number;
+  onChange: (val: number) => void;
+  min: number;
+  max: number;
+  unit: string;
+}
+
+const HorizontalRulerPicker: React.FC<HorizontalRulerProps> = ({
+  value,
+  onChange,
+  min,
+  max,
+  unit
+}) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const startXRef = useRef(0);
+  const startValRef = useRef(value);
+  const lastTickValRef = useRef(value);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    startXRef.current = e.clientX;
+    startValRef.current = value;
+    lastTickValRef.current = value;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - startXRef.current;
+    // A cada 16px de arraste move 1kg
+    const stepDiff = Math.round(deltaX / 16);
+    const candidate = Math.max(min, Math.min(max, startValRef.current - stepDiff));
+
+    if (candidate !== lastTickValRef.current) {
+      lastTickValRef.current = candidate;
+      playTickSound();
+      onChange(candidate);
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (isDragging) {
+      setIsDragging(false);
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {}
+    }
+  };
+
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      e.preventDefault();
+      const rawDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const step = rawDelta > 0 ? 1 : -1;
+      const candidate = Math.max(min, Math.min(max, value + step));
+      if (candidate !== value) {
+        playTickSound();
+        onChange(candidate);
+      }
+    },
+    [value, min, max, onChange]
+  );
+
+  const visibleTicks = [
+    value - 4,
+    value - 3,
+    value - 2,
+    value - 1,
+    value,
+    value + 1,
+    value + 2,
+    value + 3,
+    value + 4
+  ];
+
+  return (
+    <div
+      className="horizontal-ruler-box"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      onWheel={handleWheel}
+      style={{ touchAction: 'none' }}
+    >
+      {/* Mostrador Grande do Peso Selecionado */}
+      <div className="ruler-selected-display">
+        <span className="ruler-large-value">{value}</span>
+        <span className="ruler-unit">{unit}</span>
+      </div>
+
+      {/* Seta Roxa Apontando para o Ponto Central */}
+      <div className="ruler-pointer-arrow" />
+
+      {/* Botões rápidos laterais para toque de 1 clique */}
+      <button
+        type="button"
+        onClick={() => {
+          if (value > min) {
+            playTickSound();
+            onChange(value - 1);
+          }
+        }}
+        style={{
+          position: 'absolute',
+          left: '12px',
+          bottom: '18px',
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.07)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          color: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 5
+        }}
+        aria-label="Diminuir"
+      >
+        <Minus size={16} />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          if (value < max) {
+            playTickSound();
+            onChange(value + 1);
+          }
+        }}
+        style={{
+          position: 'absolute',
+          right: '12px',
+          bottom: '18px',
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: 'rgba(255, 255, 255, 0.07)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          color: '#ffffff',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          zIndex: 5
+        }}
+        aria-label="Aumentar"
+      >
+        <Plus size={16} />
+      </button>
+
+      {/* Trilho de Marcadores de Régua */}
+      <div className="ruler-scroll-track" style={{ width: '100%', maxWidth: '340px' }}>
+        {visibleTicks.map((val) => {
+          if (val < min || val > max) {
+            return (
+              <div
+                key={val}
+                style={{ width: '28px', opacity: 0, pointerEvents: 'none' }}
+              />
+            );
+          }
+
+          const isSelected = val === value;
+          const isMultipleOf5 = val % 5 === 0;
+
+          return (
+            <div
+              key={val}
+              className={`ruler-tick-group ${isSelected ? 'selected' : ''}`}
+              style={{
+                cursor: 'pointer',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+              onClick={() => {
+                playTickSound();
+                onChange(val);
+              }}
+            >
+              <div
+                className="ruler-tick-mark"
+                style={{
+                  height: isSelected ? '40px' : isMultipleOf5 ? '26px' : '16px',
+                  background: isSelected
+                    ? '#7052ff'
+                    : isMultipleOf5
+                    ? 'rgba(255, 255, 255, 0.45)'
+                    : 'rgba(255, 255, 255, 0.2)',
+                  width: isSelected ? '3.5px' : '2px',
+                  borderRadius: '2px',
+                  boxShadow: isSelected ? '0 0 12px rgba(112, 82, 255, 0.8)' : 'none',
+                  transition: isDragging ? 'none' : 'all 0.2s ease'
+                }}
+              />
+              <span
+                className="ruler-tick-num"
+                style={{
+                  color: isSelected ? '#7052ff' : 'rgba(255, 255, 255, 0.35)',
+                  fontSize: isSelected ? '18px' : '13px',
+                  fontWeight: isSelected ? 800 : 500,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                {val}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/* ===================================================================
+   COMPONENTE PRINCIPAL: ONBOARDING FUNNEL
+   =================================================================== */
 export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
   isOpen,
   onClose,
@@ -69,7 +494,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
   const [analysisPhase, setAnalysisPhase] = useState(0);
   const [generatedPlan, setGeneratedPlan] = useState<GeneratedPlanResult | null>(null);
 
-  // Slides de Apresentação (Imagens geradas de alta fidelidade)
+  // Slides de Apresentação (Imagens reais de alta fidelidade)
   const introSlides: SlideItem[] = [
     {
       image: '/onboarding/slide-1.jpg',
@@ -130,7 +555,6 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
     'Finalizando sua rotina exclusiva de treinos inteligentes!'
   ];
 
-  // Navegação no Carousel
   const handleNextSlide = () => {
     if (carouselIndex < introSlides.length - 1) {
       setCarouselIndex((prev) => prev + 1);
@@ -139,7 +563,6 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
     }
   };
 
-  // Alternar Gols
   const handleToggleGoal = (label: string, goalKey: FitnessGoal) => {
     setAnswers((prev) => {
       const current = prev.selectedGoals || [];
@@ -159,7 +582,6 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
     });
   };
 
-  // Iniciar análise de IA
   const handleStartAnalysis = () => {
     setCurrentStep(8);
     setAnalysisProgress(0);
@@ -190,11 +612,9 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
     }
   }, [currentStep, answers]);
 
-  // Concluir e aplicar plano
   const handleFinish = async () => {
     if (!generatedPlan) return;
 
-    // Se preencheu dados de perfil e está logado, salva na conta
     if (user && updateUserProfileData) {
       try {
         await updateUserProfileData({
@@ -316,7 +736,10 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 <button
                   type="button"
                   className={`gender-circle-btn ${answers.gender === 'male' ? 'active' : ''}`}
-                  onClick={() => setAnswers((prev) => ({ ...prev, gender: 'male' }))}
+                  onClick={() => {
+                    playTickSound();
+                    setAnswers((prev) => ({ ...prev, gender: 'male' }));
+                  }}
                 >
                   <span className="gender-circle-icon">♂</span>
                   <span className="gender-circle-label">Masculino</span>
@@ -325,7 +748,10 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 <button
                   type="button"
                   className={`gender-circle-btn ${answers.gender === 'female' ? 'active' : ''}`}
-                  onClick={() => setAnswers((prev) => ({ ...prev, gender: 'female' }))}
+                  onClick={() => {
+                    playTickSound();
+                    setAnswers((prev) => ({ ...prev, gender: 'female' }));
+                  }}
                 >
                   <span className="gender-circle-icon">♀</span>
                   <span className="gender-circle-label">Feminino</span>
@@ -346,7 +772,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
         )}
 
         {/* =========================================================
-            TELA 2: IDADE ("How Old Are You?")
+            TELA 2: IDADE ("How Old Are You?") COM ARRASTE INTERATIVO
             ========================================================= */}
         {currentStep === 2 && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100vh' }}>
@@ -372,28 +798,16 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
               <div className="onboarding-step-header">
                 <h2 className="onboarding-step-title">Qual a sua idade?</h2>
                 <p className="onboarding-step-subtitle">
-                  Idade em anos. Isso ajudará a calibrar o volume e intensidade ideais para você.
+                  Arraste os números para cima ou para baixo para ajustar sua idade.
                 </p>
               </div>
 
-              <div className="vertical-roller-box">
-                <div className="roller-divider-line top" />
-                <div className="roller-divider-line bottom" />
-
-                <div className="roller-numbers-column">
-                  {[answers.age - 2, answers.age - 1, answers.age, answers.age + 1, answers.age + 2].map(
-                    (val) => (
-                      <div
-                        key={val}
-                        className={`roller-number-item ${val === answers.age ? 'selected' : ''}`}
-                        onClick={() => setAnswers((prev) => ({ ...prev, age: Math.max(14, Math.min(85, val)) }))}
-                      >
-                        {val}
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
+              <VerticalRollerPicker
+                value={answers.age}
+                onChange={(newAge) => setAnswers((prev) => ({ ...prev, age: newAge }))}
+                min={14}
+                max={85}
+              />
             </div>
 
             <div className="onboarding-bottom-actions">
@@ -416,7 +830,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
         )}
 
         {/* =========================================================
-            TELA 3: PESO ("What Is Your Weight?")
+            TELA 3: PESO ("What Is Your Weight?") COM RÉGUA HORIZONTAL
             ========================================================= */}
         {currentStep === 3 && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100vh' }}>
@@ -442,39 +856,17 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
               <div className="onboarding-step-header">
                 <h2 className="onboarding-step-title">Qual o seu peso?</h2>
                 <p className="onboarding-step-subtitle">
-                  Peso em kg. Não se preocupe, você sempre poderá alterá-lo no seu perfil.
+                  Arraste a régua para os lados para selecionar seu peso exato.
                 </p>
               </div>
 
-              <div className="horizontal-ruler-box">
-                <div className="ruler-selected-display">
-                  <span className="ruler-large-value">{answers.weightKg}</span>
-                  <span className="ruler-unit">kg</span>
-                </div>
-
-                <div className="ruler-pointer-arrow" />
-
-                <div className="ruler-scroll-track">
-                  {[
-                    answers.weightKg - 3,
-                    answers.weightKg - 2,
-                    answers.weightKg - 1,
-                    answers.weightKg,
-                    answers.weightKg + 1,
-                    answers.weightKg + 2,
-                    answers.weightKg + 3
-                  ].map((val) => (
-                    <div
-                      key={val}
-                      className={`ruler-tick-group ${val === answers.weightKg ? 'selected' : ''}`}
-                      onClick={() => setAnswers((prev) => ({ ...prev, weightKg: Math.max(35, Math.min(180, val)) }))}
-                    >
-                      <div className="ruler-tick-mark" />
-                      <span className="ruler-tick-num">{val}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <HorizontalRulerPicker
+                value={answers.weightKg}
+                onChange={(newWeight) => setAnswers((prev) => ({ ...prev, weightKg: newWeight }))}
+                min={35}
+                max={180}
+                unit="kg"
+              />
             </div>
 
             <div className="onboarding-bottom-actions">
@@ -497,7 +889,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
         )}
 
         {/* =========================================================
-            TELA 4: ALTURA ("What Is Your Height?")
+            TELA 4: ALTURA ("What Is Your Height?") COM ARRASTE INTERATIVO
             ========================================================= */}
         {currentStep === 4 && (
           <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: '100vh' }}>
@@ -523,32 +915,17 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
               <div className="onboarding-step-header">
                 <h2 className="onboarding-step-title">Qual a sua altura?</h2>
                 <p className="onboarding-step-subtitle">
-                  Altura em cm. Usada para estimar com precisão seu gasto calórico e IMC.
+                  Arraste verticalmente para ajustar sua altura em centímetros.
                 </p>
               </div>
 
-              <div className="vertical-roller-box">
-                <div className="roller-divider-line top" />
-                <div className="roller-divider-line bottom" />
-
-                <div className="roller-numbers-column">
-                  {[
-                    answers.heightCm - 2,
-                    answers.heightCm - 1,
-                    answers.heightCm,
-                    answers.heightCm + 1,
-                    answers.heightCm + 2
-                  ].map((val) => (
-                    <div
-                      key={val}
-                      className={`roller-number-item ${val === answers.heightCm ? 'selected' : ''}`}
-                      onClick={() => setAnswers((prev) => ({ ...prev, heightCm: Math.max(130, Math.min(230, val)) }))}
-                    >
-                      {val}
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <VerticalRollerPicker
+                value={answers.heightCm}
+                onChange={(newHeight) => setAnswers((prev) => ({ ...prev, heightCm: newHeight }))}
+                min={130}
+                max={225}
+                unit="cm"
+              />
             </div>
 
             <div className="onboarding-bottom-actions">
@@ -609,7 +986,10 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                     <div
                       key={opt.id}
                       className={`goal-pill-card ${isSelected ? 'selected' : ''}`}
-                      onClick={() => handleToggleGoal(opt.label, opt.goalKey)}
+                      onClick={() => {
+                        playTickSound();
+                        handleToggleGoal(opt.label, opt.goalKey);
+                      }}
                     >
                       <span className="goal-pill-label">{opt.label}</span>
                       <div className="goal-checkbox-circle">
@@ -679,7 +1059,10 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                     <div
                       key={lvl.level}
                       className={`activity-level-card ${isSelected ? 'selected' : ''}`}
-                      onClick={() => setAnswers((prev) => ({ ...prev, experience: lvl.level }))}
+                      onClick={() => {
+                        playTickSound();
+                        setAnswers((prev) => ({ ...prev, experience: lvl.level }));
+                      }}
                     >
                       <span className="activity-level-title">{lvl.title}</span>
                       <span className="activity-level-desc">{lvl.desc}</span>

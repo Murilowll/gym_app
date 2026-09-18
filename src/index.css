@@ -4397,3 +4397,282 @@ button {
   flex: auto;
   width: 100%;
 }
+
+/* ===================================================================
+   TELA DE EXECUÇÃO DE TREINO AO VIVO (IMMERSIVE FULLSCREEN WORKOUT)
+   =================================================================== */
+
+.workout-session-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 2500;
+  background: #101216;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workout-session-top-nav {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.circular-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(22, 25, 33, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.circular-nav-btn:hover {
+  background: rgba(30, 35, 46, 0.9);
+  transform: scale(1.05);
+}
+
+.circular-nav-btn.pause {
+  color: #ff453a;
+}
+
+/* GIF de Fundo com Visibilidade e Gradiente */
+.workout-session-gif-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 54vh;
+  min-height: 320px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.workout-session-gif-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.workout-session-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 18, 22, 0.45) 0%,
+    rgba(16, 18, 22, 0.1) 25%,
+    rgba(16, 18, 22, 0.8) 60%,
+    #101216 90%
+  );
+}
+
+/* Área Principal de Séries & Interação */
+.workout-session-body {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 20px calc(16px + env(safe-area-inset-bottom, 0px));
+  margin-top: 32vh;
+}
+
+.workout-sets-table {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.workout-set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.set-index-col {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #8e8e93;
+}
+
+.set-active-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff9500;
+  box-shadow: 0 0 10px #ff9500;
+  display: inline-block;
+}
+
+.set-pill-btn {
+  flex: 1;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(30, 34, 44, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.set-pill-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(38, 43, 56, 0.95);
+}
+
+.set-check-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(30, 34, 44, 0.88);
+  color: #636366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.set-check-btn.completed {
+  background: #30d158;
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(48, 209, 88, 0.45);
+  transform: scale(1.04);
+}
+
+/* Barra Inferior com Indicadores */
+.workout-bottom-indicator-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.exercise-progress-ring-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #ff9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  background: rgba(255, 149, 0, 0.1);
+  box-shadow: 0 0 12px rgba(255, 149, 0, 0.2);
+}
+
+.exercise-name-badge {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.exercise-name-badge strong {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+.exercise-name-badge span {
+  font-size: 12px;
+  color: #a1a1aa;
+}
+
+.exercise-pagination-track {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exercise-page-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #636366;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.exercise-page-num:hover {
+  color: #ffffff;
+}
+
+.exercise-page-num.active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+.btn-next-exercise-cta {
+  width: 100%;
+  height: 52px;
+  border-radius: 9999px;
+  background: #30d158;
+  color: #09090b;
+  border: none;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(48, 209, 88, 0.35);
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-next-exercise-cta:hover {
+  background: #28b84d;
+  transform: translateY(-1px);
+}
+

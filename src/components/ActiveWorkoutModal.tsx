@@ -20,6 +20,7 @@ import confetti from 'canvas-confetti';
 import { playSuccessChime, playTickSound } from '../utils/sound';
 import { recordExerciseWeight } from '../utils/storage';
 import { getExerciseMedia } from '../utils/exerciseMedia';
+import { getStretchGif } from '../utils/stretchMedia';
 
 interface ActiveWorkoutModalProps {
   workoutDay: WorkoutDay;
@@ -273,32 +274,78 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {workoutDay.stretches?.map((st) => (
-                <div
-                  key={st.id}
-                  style={{
-                    background: '#1a1d24',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    borderRadius: '16px',
-                    padding: '16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <div>
-                    <h4 style={{ margin: '0 0 4px', fontSize: '15px', fontWeight: 700, color: '#ffffff' }}>
-                      {st.name}
-                    </h4>
-                    <p style={{ margin: 0, fontSize: '12px', color: '#a1a1aa' }}>
-                      {st.durationSeconds}s • {st.targetJoint}
-                    </p>
+              {workoutDay.stretches?.map((st) => {
+                const gifUrl = getStretchGif(st);
+                return (
+                  <div
+                    key={st.id}
+                    className="active-stretch-item"
+                    style={{
+                      background: 'var(--bg-card)',
+                      border: '1px solid var(--border-glass-bright)',
+                      borderRadius: '18px',
+                      padding: '12px 14px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '14px',
+                      boxShadow: 'var(--shadow-card)'
+                    }}
+                  >
+                    {/* GIF Animado do Alongamento */}
+                    <div
+                      style={{
+                        width: '68px',
+                        height: '68px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        flexShrink: 0,
+                        background: '#000000',
+                        border: '1px solid var(--border-glass)'
+                      }}
+                    >
+                      <img
+                        src={gifUrl}
+                        alt={st.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h4 style={{ margin: '0 0 3px', fontSize: '14px', fontWeight: 800, color: 'var(--text-pure)' }}>
+                        {st.name}
+                      </h4>
+                      <p style={{ margin: '0 0 6px', fontSize: '11.5px', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {st.targetJoint}
+                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span
+                          style={{
+                            fontSize: '10.5px',
+                            fontWeight: 700,
+                            padding: '2px 7px',
+                            borderRadius: '6px',
+                            background: 'var(--emerald-subtle)',
+                            color: 'var(--text-pure)',
+                            border: '1px solid var(--border-glass)'
+                          }}
+                        >
+                          {st.durationSeconds}s
+                        </span>
+                        {st.focusTip && (
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {st.focusTip}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <span style={{ fontSize: '12px', color: '#64d2ff', fontWeight: 600 }}>
-                    {st.durationSeconds}s
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

@@ -54,6 +54,7 @@ export interface Stretch {
   instruction: string;
   focusTip: string;
   iconType: 'shoulders' | 'chest' | 'back' | 'hips' | 'ankles' | 'hamstrings' | 'neck';
+  gifUrl?: string;
 }
 
 export interface Cardio {

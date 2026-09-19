@@ -14,9 +14,12 @@ import {
   Check,
   X,
   Save,
-  Flame
+  Flame,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import type { UserStats } from '../types/workout';
 
 interface ProfileViewProps {
@@ -33,6 +36,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onOpenTrainer
 }) => {
   const { user, profile, signOutUser, switchRole, updateUserProfileData } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
 
   const isTrainer = profile?.role === 'trainer';
   const displayName = profile?.displayName || user?.displayName || (user?.email?.includes('murilo') ? 'Murilo Lopes' : 'Atleta IronPulse');
@@ -283,6 +287,40 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 <span>Mudar para {isTrainer ? 'Aluno' : 'Personal Trainer'}</span>
               </div>
             </div>
+          </button>
+
+          {/* Alternar Modo Escuro / Claro */}
+          <button
+            onClick={toggleTheme}
+            className="profile-action-btn"
+          >
+            <div className="action-btn-left">
+              <div
+                className="action-icon-pill"
+                style={{
+                  background: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
+                  color: 'var(--text-pure)'
+                }}
+              >
+                {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              </div>
+              <div className="action-text">
+                <strong>{isDark ? 'Modo Claro' : 'Modo Escuro'}</strong>
+                <span>{isDark ? 'Alternar para tema claro de alto contraste' : 'Alternar para tema escuro minimalista'}</span>
+              </div>
+            </div>
+            <span
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                padding: '4px 10px',
+                borderRadius: '8px',
+                background: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+                color: 'var(--text-pure)'
+              }}
+            >
+              {isDark ? 'Ativar Claro' : 'Ativar Escuro'}
+            </span>
           </button>
         </div>
       </div>

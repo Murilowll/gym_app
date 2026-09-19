@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Flame, History, LogIn, LogOut, User as UserIcon, ShieldCheck, BookOpen, Sparkles } from 'lucide-react';
+import { Flame, History, LogIn, LogOut, User as UserIcon, ShieldCheck, BookOpen, Sparkles, Sun, Moon } from 'lucide-react';
 import { AppLogo } from './AppLogo';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface HeaderProps {
   streak: number;
@@ -23,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenOnboarding
 }) => {
   const { user, profile, signOutUser, switchRole } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const todayFormatted = new Intl.DateTimeFormat('pt-BR', {
@@ -43,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
           title="Ir para o Início (Home)"
         >
           <div className="logo-icon-wrapper">
-            <AppLogo size={22} color="#ffffff" />
+            <AppLogo size={22} color={isDark ? '#ffffff' : '#000000'} />
           </div>
           <div>
             <h1 className="brand-title">IronPulse</h1>
@@ -92,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'rgba(255, 255, 255, 0.08)',
+                  background: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
                   borderRadius: '12px'
                 }}
                 title="Minha Conta"
@@ -102,8 +104,8 @@ export const Header: React.FC<HeaderProps> = ({
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    background: '#ffffff',
-                    color: '#000000',
+                    background: isDark ? '#ffffff' : '#000000',
+                    color: isDark ? '#000000' : '#ffffff',
                     fontWeight: 700,
                     fontSize: '0.75rem',
                     display: 'flex',
@@ -121,7 +123,7 @@ export const Header: React.FC<HeaderProps> = ({
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                    color: '#ffffff'
+                    color: 'var(--text-primary)'
                   }}
                 >
                   {profile?.displayName?.split(' ')[0] || 'Atleta'}
@@ -135,20 +137,21 @@ export const Header: React.FC<HeaderProps> = ({
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    background: 'rgba(20, 20, 22, 0.98)',
-                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    background: isDark ? 'rgba(20, 20, 22, 0.98)' : 'rgba(255, 255, 255, 0.98)',
+                    border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)'}`,
                     borderRadius: '14px',
                     padding: '8px',
-                    minWidth: '200px',
+                    minWidth: '220px',
                     zIndex: 100,
-                    boxShadow: '0 12px 30px rgba(0,0,0,0.8)',
-                    color: '#ffffff'
+                    boxShadow: isDark ? '0 12px 30px rgba(0,0,0,0.8)' : '0 12px 30px rgba(0,0,0,0.12)',
+                    color: 'var(--text-primary)',
+                    backdropFilter: 'blur(20px)'
                   }}
                   onClick={() => setShowUserMenu(false)}
                 >
-                  <div style={{ padding: '8px 10px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                    <div style={{ fontWeight: 600, fontSize: '0.85rem' }}>{profile?.displayName}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#8e8e93' }}>{profile?.email}</div>
+                  <div style={{ padding: '8px 10px', borderBottom: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)'}` }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.85rem', color: 'var(--text-pure)' }}>{profile?.displayName}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{profile?.email}</div>
                     <div style={{ marginTop: '6px' }}>
                       <span
                         style={{
@@ -156,8 +159,8 @@ export const Header: React.FC<HeaderProps> = ({
                           fontWeight: 700,
                           padding: '2px 6px',
                           borderRadius: '6px',
-                          background: 'rgba(255, 255, 255, 0.12)',
-                          color: '#ffffff'
+                          background: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+                          color: 'var(--text-pure)'
                         }}
                       >
                         {isTrainer ? 'Personal / Treinador' : 'Aluno'}
@@ -170,10 +173,10 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{
                       width: '100%',
                       textAlign: 'left',
-                      background: activeTab === 'profile' ? 'rgba(255, 255, 255, 0.12)' : 'none',
+                      background: activeTab === 'profile' ? (isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)') : 'none',
                       border: 'none',
                       padding: '10px',
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       borderRadius: '8px',
                       fontSize: '0.82rem',
                       display: 'flex',
@@ -186,16 +189,56 @@ export const Header: React.FC<HeaderProps> = ({
                     <span>Meu Perfil</span>
                   </button>
 
+                  {/* BOTÃO PARA ALTERNAR MODO ESCURO / MODO CLARO */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleTheme();
+                    }}
+                    style={{
+                      width: '100%',
+                      textAlign: 'left',
+                      background: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
+                      border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'}`,
+                      padding: '9px 10px',
+                      color: 'var(--text-pure)',
+                      borderRadius: '8px',
+                      fontSize: '0.82rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      cursor: 'pointer',
+                      margin: '4px 0'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {isDark ? <Sun size={15} /> : <Moon size={15} />}
+                      <span style={{ fontWeight: 600 }}>{isDark ? 'Modo Claro' : 'Modo Escuro'}</span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 700,
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        background: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
+                        color: 'var(--text-primary)'
+                      }}
+                    >
+                      {isDark ? 'Ativar' : 'Ativar'}
+                    </span>
+                  </button>
+
                   {isTrainer && (
                     <button
                       onClick={() => onSelectTab('trainer')}
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        background: activeTab === 'trainer' ? 'rgba(255, 255, 255, 0.12)' : 'none',
+                        background: activeTab === 'trainer' ? (isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)') : 'none',
                         border: 'none',
                         padding: '10px',
-                        color: '#ffffff',
+                        color: 'var(--text-primary)',
                         borderRadius: '8px',
                         fontSize: '0.82rem',
                         display: 'flex',
@@ -218,7 +261,7 @@ export const Header: React.FC<HeaderProps> = ({
                         background: 'none',
                         border: 'none',
                         padding: '10px',
-                        color: '#ffffff',
+                        color: 'var(--text-primary)',
                         borderRadius: '8px',
                         fontSize: '0.82rem',
                         display: 'flex',
@@ -241,7 +284,7 @@ export const Header: React.FC<HeaderProps> = ({
                       background: 'none',
                       border: 'none',
                       padding: '10px',
-                      color: '#a1a1aa',
+                      color: 'var(--text-secondary)',
                       borderRadius: '8px',
                       fontSize: '0.8rem',
                       display: 'flex',
@@ -278,25 +321,34 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </div>
           ) : (
-            <button
-              onClick={onOpenAuth}
-              style={{
-                background: '#ffffff',
-                border: 'none',
-                color: '#000000',
-                padding: '7px 15px',
-                borderRadius: '12px',
-                fontSize: '0.82rem',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                cursor: 'pointer'
-              }}
-            >
-              <LogIn size={15} color="#000000" />
-              Entrar
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <button
+                onClick={toggleTheme}
+                className="header-icon-btn"
+                title={isDark ? 'Ativar Modo Claro' : 'Ativar Modo Escuro'}
+              >
+                {isDark ? <Sun size={17} /> : <Moon size={17} />}
+              </button>
+              <button
+                onClick={onOpenAuth}
+                style={{
+                  background: isDark ? '#ffffff' : '#000000',
+                  border: 'none',
+                  color: isDark ? '#000000' : '#ffffff',
+                  padding: '7px 15px',
+                  borderRadius: '12px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  cursor: 'pointer'
+                }}
+              >
+                <LogIn size={15} color={isDark ? '#000000' : '#ffffff'} />
+                Entrar
+              </button>
+            </div>
           )}
         </div>
       </div>

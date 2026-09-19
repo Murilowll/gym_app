@@ -1,19 +1,10 @@
 {
   "rewrites": [
-    { "source": "/((?!assets|exercises|.*\\..*).*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
-      "source": "/(.*\\.(ico|png|svg|jpg|jpeg|webp))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/(manifest\\.json|manifest\\.webmanifest|sw\\.js)",
+      "source": "/(apple-touch-icon.*\\.png|icon-.*\\.png|favicon\\.ico|favicon\\.svg|manifest\\.json|manifest\\.webmanifest|sw\\.js)",
       "headers": [
         {
           "key": "Cache-Control",

@@ -66,13 +66,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const handleOpenEdit = () => {
-    setEditName(displayName);
-    setEditWeight(weightKg.toString());
-    setEditTargetWeight(targetWeightKg.toString());
-    setEditHeight(heightCm.toString());
-    setEditAge(age.toString());
-    setEditPhone(phone);
-    setEditGoal(goal);
+    setEditName(profile?.displayName || displayName);
+    setEditWeight((profile?.weightKg ?? weightKg).toString());
+    setEditTargetWeight((profile?.targetWeightKg ?? targetWeightKg).toString());
+    setEditHeight((profile?.heightCm ?? heightCm).toString());
+    setEditAge((profile?.age ?? age).toString());
+    setEditPhone(profile?.phone ?? phone);
+    setEditGoal(profile?.goal ?? goal);
     setIsEditing(true);
     setSaveSuccess(false);
   };
@@ -303,7 +303,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
       {/* MODAL DE EDIÇÃO DE CONTA */}
       {isEditing && (
-        <div className="modal-backdrop" onClick={() => setIsEditing(false)}>
+        <div className="modal-backdrop profile-modal-backdrop" onClick={() => setIsEditing(false)}>
           <div
             className="edit-profile-modal"
             onClick={(e) => e.stopPropagation()}

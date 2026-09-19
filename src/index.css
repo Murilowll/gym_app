@@ -1823,9 +1823,10 @@ button {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: 2500;
   background: rgba(0, 0, 0, 0.78);
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -3249,9 +3250,16 @@ button {
 /* ===================================================================
    MODAL DE EDIÇÃO DE PERFIL / CONTA
    =================================================================== */
+.profile-modal-backdrop {
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 16px !important;
+  z-index: 3000 !important;
+}
+
 .edit-profile-modal {
   background: linear-gradient(160deg, #18181d, #0d0d10);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 26px;
   width: 95%;
   max-width: 480px;
@@ -3259,8 +3267,11 @@ button {
   color: #ffffff;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95);
   animation: zoomInModal 0.24s cubic-bezier(0.16, 1, 0.3, 1);
-  max-height: 90vh;
+  max-height: min(85vh, 700px);
   overflow-y: auto;
+  position: relative;
+  z-index: 3001;
+  margin: auto;
 }
 
 .edit-profile-header {
@@ -3352,8 +3363,17 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: sticky;
+  bottom: -24px;
+  background: linear-gradient(180deg, rgba(13, 13, 16, 0.9), #0d0d10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-bottom: 6px;
+  z-index: 10;
 }
 
 .edit-cancel-btn {

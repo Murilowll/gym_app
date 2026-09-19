@@ -10,7 +10,7 @@ import {
   onAuthStateChanged
 } from 'firebase/auth';
 import { auth, googleProvider } from '../services/firebase';
-import { getUserProfile, saveUserProfile } from '../services/firestoreService';
+import { getUserProfile, saveUserProfile, getLocalUserProfile, saveLocalUserProfile } from '../services/firestoreService';
 import type { UserProfile, UserRole } from '../types/user';
 
 interface AuthContextType {
@@ -66,18 +66,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Define perfil imediato para não bloquear a interface
+        // Tenta recuperar perfil salvo localmente primeiro para que peso, altura, meta, etc. nunca sejam perdidos ao recarregar
+        const cachedProfile = getLocalUserProfile(currentUser.uid);
+
         const immediateProfile: UserProfile = {
           uid: currentUser.uid,
           email: currentUser.email || '',
           displayName:
+            cachedProfile?.displayName ||
             currentUser.displayName ||
             (currentUser.email?.toLowerCase().includes('murilolemoslopes')
               ? 'Murilo Lopes'
               : 'Atleta IronPulse'),
-          photoURL: currentUser.photoURL || null,
-          role: 'student',
-          createdAt: new Date().toISOString()
+          photoURL: cachedProfile?.photoURL || currentUser.photoURL || null,
+          role: cachedProfile?.role || 'student',
+          weightKg: cachedProfile?.weightKg ?? 78,
+          targetWeightKg: cachedProfile?.targetWeightKg ?? 83,
+          heightCm: cachedProfile?.heightCm ?? 178,
+          age: cachedProfile?.age ?? 25,
+          phone: cachedProfile?.phone || '',
+          goal: cachedProfile?.goal || 'Ganhar Massa Muscular',
+          createdAt: cachedProfile?.createdAt || new Date().toISOString()
         };
         setProfile(immediateProfile);
         setLoading(false);
@@ -182,16 +191,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateUserProfileData = async (updates: Partial<UserProfile>) => {
-    if (user) {
-      const current = profile || {
-        uid: user.uid,
-        email: user.email || '',
-        displayName: user.displayName || 'Atleta',
-        role: 'student' as UserRole,
-        createdAt: new Date().toISOString()
-      };
-      const updated: UserProfile = { ...current, ...updates };
+    const current = profile || (user ? getLocalUserProfile(user.uid) : null) || {
+      uid: user?.uid || 'guest',
+      email: user?.email || '',
+      displayName: user?.displayName || 'Atleta',
+      role: 'student' as UserRole,
+      createdAt: new Date().toISOString()
+    };
+    const updated: UserProfile = { ...current, ...updates };
 
+    // Salva imediatamente no estado e no localStorage
+    setProfile(updated);
+    saveLocalUserProfile(updated);
+
+    if (user) {
       if (updates.displayName || updates.photoURL) {
         try {
           await updateFirebaseProfile(user, {
@@ -204,10 +217,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       await saveUserProfile(updated);
-      setProfile(updated);
-    } else if (profile) {
-      // Visitante local
-      setProfile({ ...profile, ...updates });
     }
   };
 

@@ -21,8 +21,38 @@ async function withTimeout<T>(promise: Promise<T>, ms = 2500): Promise<T> {
   return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
 }
 
+const PROFILE_STORAGE_KEY_PREFIX = 'ironpulse_profile_';
+
+export function getLocalUserProfile(uid?: string): UserProfile | null {
+  try {
+    if (uid) {
+      const item = localStorage.getItem(`${PROFILE_STORAGE_KEY_PREFIX}${uid}`);
+      if (item) return JSON.parse(item) as UserProfile;
+    }
+    const fallback = localStorage.getItem('ironpulse_current_profile');
+    if (fallback) return JSON.parse(fallback) as UserProfile;
+  } catch (e) {
+    console.warn('Erro ao ler perfil do localStorage:', e);
+  }
+  return null;
+}
+
+export function saveLocalUserProfile(profile: UserProfile): void {
+  try {
+    if (profile.uid) {
+      localStorage.setItem(`${PROFILE_STORAGE_KEY_PREFIX}${profile.uid}`, JSON.stringify(profile));
+    }
+    localStorage.setItem('ironpulse_current_profile', JSON.stringify(profile));
+  } catch (e) {
+    console.warn('Erro ao gravar perfil no localStorage:', e);
+  }
+}
+
 // 1. Perfil do Usuário
 export async function saveUserProfile(profile: UserProfile): Promise<void> {
+  // Salva localmente primeiro para garantir persistência imediata e offline
+  saveLocalUserProfile(profile);
+
   try {
     const userRef = doc(db, 'users', profile.uid);
     await withTimeout(setDoc(userRef, profile, { merge: true }));
@@ -32,16 +62,22 @@ export async function saveUserProfile(profile: UserProfile): Promise<void> {
 }
 
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {
+  const local = getLocalUserProfile(uid);
+
   try {
     const userRef = doc(db, 'users', uid);
     const snap = await withTimeout(getDoc(userRef));
     if (snap.exists()) {
-      return snap.data() as UserProfile;
+      const cloudData = snap.data() as UserProfile;
+      const merged: UserProfile = { ...(local || {}), ...cloudData };
+      saveLocalUserProfile(merged);
+      return merged;
     }
   } catch (error) {
-    console.warn('Aviso ao carregar perfil do Firestore (offline/modo local ativo):', error);
+    console.warn('Aviso ao carregar perfil do Firestore (usando cache local):', error);
   }
-  return null;
+
+  return local;
 }
 
 // 2. Estatísticas do Usuário (Streak, Total de Treinos, Histórico de Cargas)

@@ -123,12 +123,12 @@ export const ExerciseIllustration: React.FC<ExerciseIllustrationProps> = ({
           <div className="muscle-tags-left">
             {targetMuscles.map((muscle, idx) => (
               <span key={idx} className="muscle-pill active" title="Principal">
-                🎯 {muscle}
+                {muscle}
               </span>
             ))}
             {secondaryMuscles.map((muscle, idx) => (
               <span key={`sec-${idx}`} className="muscle-pill secondary" title="Secundário">
-                ⚡ {muscle}
+                {muscle}
               </span>
             ))}
           </div>

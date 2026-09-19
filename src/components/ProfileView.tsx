@@ -13,7 +13,8 @@ import {
   Edit3,
   Check,
   X,
-  Save
+  Save,
+  Flame
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import type { UserStats } from '../types/workout';
@@ -134,8 +135,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               <ShieldCheck size={13} />
               {isTrainer ? 'Personal Trainer' : 'Aluno'}
             </span>
-            <span className="profile-streak-chip">
-              🔥 {stats.streakDays} dias de ofensiva
+            <span className="profile-streak-chip" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <Flame size={13} color="#ff375f" /> {stats.streakDays} dias de ofensiva
             </span>
           </div>
         </div>

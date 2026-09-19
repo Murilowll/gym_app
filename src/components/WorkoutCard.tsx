@@ -1,6 +1,6 @@
 import React from 'react';
 import type { WorkoutDay, Exercise } from '../types/workout';
-import { Play, Clock, Dumbbell, CheckCircle2, ChevronRight, Moon, ShieldCheck, Flame } from 'lucide-react';
+import { Play, Clock, Dumbbell, CheckCircle2, ChevronRight, Moon, ShieldCheck, Flame, Target } from 'lucide-react';
 
 interface WorkoutCardProps {
   workoutDay: WorkoutDay;
@@ -49,7 +49,9 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
       <div className="workout-banner">
         <div className="banner-top-badges">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="focus-pill">🎯 {workoutDay.focus}</span>
+            <span className="focus-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <Target size={12} /> {workoutDay.focus}
+            </span>
             {isToday && (
               <span className="today-pill">
                 <Flame size={12} /> Hoje

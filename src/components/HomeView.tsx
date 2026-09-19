@@ -100,7 +100,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       <div className="home-header-greeting">
         <div>
           <span className="greeting-pill">SEJA BEM-VINDO DE VOLTA</span>
-          <h2 className="greeting-name">Olá, {firstName}! 👋</h2>
+          <h2 className="greeting-name">Olá, {firstName}!</h2>
           <p className="greeting-subtitle">{phrase}</p>
         </div>
 
@@ -163,7 +163,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
           <div className="metric-data">
             <span className="metric-val">{stats.streakDays} dias</span>
-            <span className="metric-label">Ofensiva Atual 🔥</span>
+            <span className="metric-label">Ofensiva Atual</span>
           </div>
         </div>
 
@@ -173,7 +173,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
           <div className="metric-data">
             <span className="metric-val">{totalHours}h {remainingMins}m</span>
-            <span className="metric-label">Horas Treinadas ⏱️</span>
+            <span className="metric-label">Horas Treinadas</span>
           </div>
         </div>
 

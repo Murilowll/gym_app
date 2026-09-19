@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Exercise } from '../types/workout';
 import { ExerciseIllustration } from './ExerciseIllustration';
-import { X, Sliders, CheckCircle2, AlertTriangle, ArrowRightLeft, Target, Sparkles } from 'lucide-react';
+import { X, Sliders, CheckCircle2, AlertTriangle, ArrowRightLeft, Target, Sparkles, Clock } from 'lucide-react';
 
 interface ExerciseDetailModalProps {
   exercise: Exercise | null;
@@ -63,8 +63,9 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
                 onClick={() => onStartTimer(exercise.suggestedRestSeconds)}
                 className="stat-pill-btn"
                 title="Iniciar timer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
               >
-                ⏱️ {exercise.suggestedRestSeconds}s
+                <Clock size={13} /> {exercise.suggestedRestSeconds}s
               </button>
             </div>
           </div>
@@ -110,7 +111,7 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
             <ul className="guide-list">
               {exercise.commonMistakes.map((mistake, idx) => (
                 <li key={idx} className="guide-item alert">
-                  <span className="bullet-alert">⚠️</span>
+                  <span className="bullet-alert">!</span>
                   <span>{mistake}</span>
                 </li>
               ))}
@@ -155,8 +156,9 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
           <button
             onClick={() => onStartTimer(exercise.suggestedRestSeconds)}
             className="action-btn secondary"
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
           >
-            ⏱️ {exercise.suggestedRestSeconds}s
+            <Clock size={14} /> {exercise.suggestedRestSeconds}s
           </button>
           <button onClick={onClose} className="action-btn primary">
             Fechar

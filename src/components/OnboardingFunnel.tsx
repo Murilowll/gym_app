@@ -498,7 +498,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
   const introSlides: SlideItem[] = [
     {
       image: '/onboarding/slide-1.jpg',
-      title: 'Bem-vindo ao 👋\nIronPulse',
+      title: 'Bem-vindo ao\nIronPulse',
       desc: 'O melhor aplicativo de musculação para transformar seus treinos e acompanhar sua evolução.'
     },
     {
@@ -1171,7 +1171,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
 
                   <div className="phone-field-wrapper">
                     <div className="phone-country-pill">
-                      <span>🇧🇷</span>
+                      <span>BR</span>
                       <span>+55</span>
                     </div>
                     <input

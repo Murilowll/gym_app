@@ -183,8 +183,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               type="button"
               onClick={() => handleSwitchMode('login')}
               style={{
-                background: mode === 'login' ? '#30d158' : 'transparent',
-                color: mode === 'login' ? '#09090b' : '#a1a1aa',
+                background: mode === 'login' ? '#ffffff' : 'transparent',
+                color: mode === 'login' ? '#000000' : '#a1a1aa',
                 fontWeight: mode === 'login' ? 700 : 500,
                 border: 'none',
                 padding: '9px 0',
@@ -200,8 +200,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               type="button"
               onClick={() => handleSwitchMode('register')}
               style={{
-                background: mode === 'register' ? '#30d158' : 'transparent',
-                color: mode === 'register' ? '#09090b' : '#a1a1aa',
+                background: mode === 'register' ? '#ffffff' : 'transparent',
+                color: mode === 'register' ? '#000000' : '#a1a1aa',
                 fontWeight: mode === 'register' ? 700 : 500,
                 border: 'none',
                 padding: '9px 0',
@@ -309,9 +309,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              background: 'rgba(48, 209, 88, 0.15)',
-              border: '1px solid rgba(48, 209, 88, 0.35)',
-              color: '#30d158',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              color: '#ffffff',
               padding: '10px 14px',
               borderRadius: '12px',
               fontSize: '0.85rem',
@@ -371,9 +371,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     style={{
                       padding: '10px',
                       borderRadius: '12px',
-                      border: role === 'student' ? '1.5px solid #30d158' : '1px solid rgba(255, 255, 255, 0.1)',
-                      background: role === 'student' ? 'rgba(48, 209, 88, 0.12)' : 'rgba(0, 0, 0, 0.3)',
-                      color: role === 'student' ? '#30d158' : '#a1a1aa',
+                      border: role === 'student' ? '1.5px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: role === 'student' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.3)',
+                      color: role === 'student' ? '#ffffff' : '#a1a1aa',
                       fontSize: '0.82rem',
                       fontWeight: 600,
                       display: 'flex',
@@ -392,9 +392,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     style={{
                       padding: '10px',
                       borderRadius: '12px',
-                      border: role === 'trainer' ? '1.5px solid #64d2ff' : '1px solid rgba(255, 255, 255, 0.1)',
-                      background: role === 'trainer' ? 'rgba(100, 210, 255, 0.12)' : 'rgba(0, 0, 0, 0.3)',
-                      color: role === 'trainer' ? '#64d2ff' : '#a1a1aa',
+                      border: role === 'trainer' ? '1.5px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: role === 'trainer' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.3)',
+                      color: role === 'trainer' ? '#ffffff' : '#a1a1aa',
                       fontSize: '0.82rem',
                       fontWeight: 600,
                       display: 'flex',
@@ -501,8 +501,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             style={{
               marginTop: '8px',
               width: '100%',
-              background: '#30d158',
-              color: '#09090b',
+              background: '#ffffff',
+              color: '#000000',
               border: 'none',
               padding: '13px',
               borderRadius: '14px',
@@ -513,7 +513,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: '0 8px 24px rgba(48, 209, 88, 0.35)',
+              boxShadow: '0 8px 24px rgba(255, 255, 255, 0.25)',
               transition: 'transform 0.15s ease, opacity 0.15s ease',
               opacity: loading ? 0.7 : 1
             }}

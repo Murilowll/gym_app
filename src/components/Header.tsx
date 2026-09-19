@@ -102,8 +102,8 @@ export const Header: React.FC<HeaderProps> = ({
                     width: '24px',
                     height: '24px',
                     borderRadius: '50%',
-                    background: isTrainer ? '#64d2ff' : '#30d158',
-                    color: '#09090b',
+                    background: '#ffffff',
+                    color: '#000000',
                     fontWeight: 700,
                     fontSize: '0.75rem',
                     display: 'flex',
@@ -135,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    background: 'rgba(24, 24, 28, 0.98)',
+                    background: 'rgba(20, 20, 22, 0.98)',
                     border: '1px solid rgba(255, 255, 255, 0.12)',
                     borderRadius: '14px',
                     padding: '8px',
@@ -156,8 +156,8 @@ export const Header: React.FC<HeaderProps> = ({
                           fontWeight: 700,
                           padding: '2px 6px',
                           borderRadius: '6px',
-                          background: isTrainer ? 'rgba(100, 210, 255, 0.2)' : 'rgba(48, 209, 88, 0.2)',
-                          color: isTrainer ? '#64d2ff' : '#30d158'
+                          background: 'rgba(255, 255, 255, 0.12)',
+                          color: '#ffffff'
                         }}
                       >
                         {isTrainer ? 'Personal / Treinador' : 'Aluno'}
@@ -170,10 +170,10 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{
                       width: '100%',
                       textAlign: 'left',
-                      background: activeTab === 'profile' ? 'rgba(48, 209, 88, 0.15)' : 'none',
+                      background: activeTab === 'profile' ? 'rgba(255, 255, 255, 0.12)' : 'none',
                       border: 'none',
                       padding: '10px',
-                      color: activeTab === 'profile' ? '#30d158' : '#f4f4f5',
+                      color: '#ffffff',
                       borderRadius: '8px',
                       fontSize: '0.82rem',
                       display: 'flex',
@@ -192,10 +192,10 @@ export const Header: React.FC<HeaderProps> = ({
                       style={{
                         width: '100%',
                         textAlign: 'left',
-                        background: activeTab === 'trainer' ? 'rgba(100, 210, 255, 0.15)' : 'none',
+                        background: activeTab === 'trainer' ? 'rgba(255, 255, 255, 0.12)' : 'none',
                         border: 'none',
                         padding: '10px',
-                        color: activeTab === 'trainer' ? '#64d2ff' : '#f4f4f5',
+                        color: '#ffffff',
                         borderRadius: '8px',
                         fontSize: '0.82rem',
                         display: 'flex',
@@ -218,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({
                         background: 'none',
                         border: 'none',
                         padding: '10px',
-                        color: '#30d158',
+                        color: '#ffffff',
                         borderRadius: '8px',
                         fontSize: '0.82rem',
                         display: 'flex',
@@ -262,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
                       background: 'none',
                       border: 'none',
                       padding: '10px',
-                      color: '#ff6b8b',
+                      color: '#ff453a',
                       borderRadius: '8px',
                       fontSize: '0.82rem',
                       display: 'flex',
@@ -281,20 +281,20 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={onOpenAuth}
               style={{
-                background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.25), rgba(48, 209, 88, 0.1))',
-                border: '1px solid rgba(48, 209, 88, 0.35)',
-                color: '#30d158',
-                padding: '7px 14px',
+                background: '#ffffff',
+                border: 'none',
+                color: '#000000',
+                padding: '7px 15px',
                 borderRadius: '12px',
                 fontSize: '0.82rem',
-                fontWeight: 600,
+                fontWeight: 700,
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
                 cursor: 'pointer'
               }}
             >
-              <LogIn size={15} />
+              <LogIn size={15} color="#000000" />
               Entrar
             </button>
           )}

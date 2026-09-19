@@ -153,7 +153,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             style={{
               background: 'none',
               border: 'none',
-              color: '#30d158',
+              color: '#ffffff',
               fontSize: '0.8rem',
               fontWeight: 600,
               cursor: 'pointer',
@@ -220,7 +220,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="profile-actions-list">
           <button onClick={handleOpenEdit} className="profile-action-btn">
             <div className="action-btn-left">
-              <div className="action-icon-pill role" style={{ background: 'rgba(100, 210, 255, 0.2)', color: '#64d2ff' }}>
+              <div className="action-icon-pill role" style={{ background: 'rgba(255, 255, 255, 0.1)', color: '#ffffff' }}>
                 <Edit3 size={20} />
               </div>
               <div className="action-text">
@@ -311,7 +311,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <div className="edit-profile-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div className="edit-icon-wrap">
-                  <Edit3 size={18} color="#30d158" />
+                  <Edit3 size={18} color="#ffffff" />
                 </div>
                 <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 700 }}>Editar Conta</h3>
               </div>

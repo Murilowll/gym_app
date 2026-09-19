@@ -246,8 +246,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
                   width: '40px',
                   height: '40px',
                   borderRadius: '12px',
-                  background: '#30d158',
-                  color: '#09090b',
+                  background: '#ffffff',
+                  color: '#000000',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -260,12 +260,12 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{ fontWeight: 700, fontSize: '0.94rem' }}>Entrar como Murilo Lopes</span>
-                  <Sparkles size={14} color="#ffd60a" />
+                  <Sparkles size={14} color="#ffffff" />
                 </div>
                 <div style={{ fontSize: '0.78rem', color: '#a1a1aa' }}>murilolemoslopes@gmail.com</div>
               </div>
             </div>
-            <ChevronRight size={18} color="#30d158" />
+            <ChevronRight size={18} color="#ffffff" />
           </div>
         )}
 
@@ -274,8 +274,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
           <div
             onClick={onOpenOnboardingTest}
             style={{
-              background: 'linear-gradient(135deg, rgba(100, 210, 255, 0.12), rgba(191, 90, 242, 0.08))',
-              border: '1px solid rgba(100, 210, 255, 0.3)',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
               borderRadius: '16px',
               padding: '12px 16px',
               display: 'flex',
@@ -286,11 +286,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               transition: 'all 0.2s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(100, 210, 255, 0.6)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
               e.currentTarget.style.transform = 'translateY(-1px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(100, 210, 255, 0.3)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
@@ -300,8 +300,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
                   width: '38px',
                   height: '38px',
                   borderRadius: '12px',
-                  background: 'rgba(100, 210, 255, 0.18)',
-                  color: '#64d2ff',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
@@ -311,7 +311,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               </div>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: '#64d2ff' }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.92rem', color: '#ffffff' }}>
                     Testar Onboarding (Estilo MadMuscles)
                   </span>
                 </div>
@@ -320,7 +320,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
                 </div>
               </div>
             </div>
-            <ChevronRight size={18} color="#64d2ff" />
+            <ChevronRight size={18} color="#ffffff" />
           </div>
         )}
 
@@ -340,8 +340,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               type="button"
               onClick={() => handleSwitchMode('login')}
               style={{
-                background: mode === 'login' ? '#30d158' : 'transparent',
-                color: mode === 'login' ? '#09090b' : '#a1a1aa',
+                background: mode === 'login' ? '#ffffff' : 'transparent',
+                color: mode === 'login' ? '#000000' : '#a1a1aa',
                 fontWeight: mode === 'login' ? 700 : 500,
                 border: 'none',
                 padding: '10px 0',
@@ -357,8 +357,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               type="button"
               onClick={() => handleSwitchMode('register')}
               style={{
-                background: mode === 'register' ? '#30d158' : 'transparent',
-                color: mode === 'register' ? '#09090b' : '#a1a1aa',
+                background: mode === 'register' ? '#ffffff' : 'transparent',
+                color: mode === 'register' ? '#000000' : '#a1a1aa',
                 fontWeight: mode === 'register' ? 700 : 500,
                 border: 'none',
                 padding: '10px 0',
@@ -466,9 +466,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              background: 'rgba(48, 209, 88, 0.15)',
-              border: '1px solid rgba(48, 209, 88, 0.35)',
-              color: '#30d158',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              color: '#ffffff',
               padding: '12px 14px',
               borderRadius: '12px',
               fontSize: '0.86rem',
@@ -528,9 +528,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
                     style={{
                       padding: '11px',
                       borderRadius: '12px',
-                      border: role === 'student' ? '1.5px solid #30d158' : '1px solid rgba(255, 255, 255, 0.1)',
-                      background: role === 'student' ? 'rgba(48, 209, 88, 0.14)' : 'rgba(0, 0, 0, 0.3)',
-                      color: role === 'student' ? '#30d158' : '#a1a1aa',
+                      border: role === 'student' ? '1.5px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: role === 'student' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.3)',
+                      color: role === 'student' ? '#ffffff' : '#a1a1aa',
                       fontSize: '0.85rem',
                       fontWeight: 600,
                       display: 'flex',
@@ -549,9 +549,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
                     style={{
                       padding: '11px',
                       borderRadius: '12px',
-                      border: role === 'trainer' ? '1.5px solid #64d2ff' : '1px solid rgba(255, 255, 255, 0.1)',
-                      background: role === 'trainer' ? 'rgba(100, 210, 255, 0.14)' : 'rgba(0, 0, 0, 0.3)',
-                      color: role === 'trainer' ? '#64d2ff' : '#a1a1aa',
+                      border: role === 'trainer' ? '1.5px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                      background: role === 'trainer' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.3)',
+                      color: role === 'trainer' ? '#ffffff' : '#a1a1aa',
                       fontSize: '0.85rem',
                       fontWeight: 600,
                       display: 'flex',
@@ -658,8 +658,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
             style={{
               marginTop: '8px',
               width: '100%',
-              background: '#30d158',
-              color: '#09090b',
+              background: '#ffffff',
+              color: '#000000',
               border: 'none',
               padding: '14px',
               borderRadius: '14px',
@@ -670,7 +670,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onContinueAsGuest, onOpe
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: '0 8px 24px rgba(48, 209, 88, 0.35)',
+              boxShadow: '0 8px 24px rgba(255, 255, 255, 0.25)',
               opacity: loading ? 0.7 : 1
             }}
           >

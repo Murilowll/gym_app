@@ -106,15 +106,15 @@ const AppContent: React.FC = () => {
             width: '60px',
             height: '60px',
             borderRadius: '20px',
-            background: 'rgba(48, 209, 88, 0.18)',
-            border: '1.5px solid rgba(48, 209, 88, 0.4)',
+            background: 'rgba(255, 255, 255, 0.08)',
+            border: '1.5px solid rgba(255, 255, 255, 0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: '16px'
           }}
         >
-          <Dumbbell size={30} color="#30d158" />
+          <Dumbbell size={30} color="#ffffff" />
         </div>
         <p style={{ color: '#8e8e93', fontSize: '0.92rem', margin: 0 }}>
           Carregando IronPulse...
@@ -125,7 +125,7 @@ const AppContent: React.FC = () => {
             marginTop: '20px',
             background: 'none',
             border: 'none',
-            color: '#64d2ff',
+            color: '#a1a1aa',
             fontSize: '0.8rem',
             cursor: 'pointer',
             textDecoration: 'underline'

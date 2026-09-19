@@ -84,7 +84,7 @@ export const StreakView: React.FC<StreakViewProps> = ({
         <div className="streak-week-header">
           <span className="streak-week-title">Semana Atual</span>
           <span className="streak-record-badge">
-            <Trophy size={14} color="#ffd60a" />
+            <Trophy size={14} color="#ff375f" />
             Recorde: {maxStreak} dias
           </span>
         </div>

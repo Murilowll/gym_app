@@ -96,13 +96,13 @@ export const TrainerView: React.FC<TrainerViewProps> = ({ onBackToWorkouts }) =>
         <button
           onClick={onBackToWorkouts}
           style={{
-            background: 'linear-gradient(135deg, rgba(48, 209, 88, 0.2), rgba(48, 209, 88, 0.1))',
-            border: '1px solid rgba(48, 209, 88, 0.4)',
-            color: '#30d158',
+            background: '#ffffff',
+            border: 'none',
+            color: '#000000',
             padding: '10px 18px',
             borderRadius: '12px',
             fontSize: '0.88rem',
-            fontWeight: 600,
+            fontWeight: 700,
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -170,11 +170,11 @@ export const TrainerView: React.FC<TrainerViewProps> = ({ onBackToWorkouts }) =>
               width: '44px',
               height: '44px',
               borderRadius: '12px',
-              background: 'rgba(48, 209, 88, 0.15)',
+              background: 'rgba(255, 255, 255, 0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#30d158'
+              color: '#ffffff'
             }}
           >
             <Trophy size={22} />
@@ -321,8 +321,8 @@ export const TrainerView: React.FC<TrainerViewProps> = ({ onBackToWorkouts }) =>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'flex-end' }}>
-                    <Flame size={15} color="#ffd60a" />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>
+                    <Flame size={15} color="#ff375f" />
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#ff375f' }}>
                       {item.stats?.streakDays || 0} dias
                     </span>
                   </div>
@@ -377,13 +377,13 @@ export const TrainerView: React.FC<TrainerViewProps> = ({ onBackToWorkouts }) =>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '20px' }}>
               <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '12px', borderRadius: '12px' }}>
                 <div style={{ fontSize: '0.78rem', color: '#8e8e93' }}>Sequência Atual</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffd60a' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ff375f' }}>
                   {selectedStudent.stats?.streakDays || 0} dias
                 </div>
               </div>
               <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '12px', borderRadius: '12px' }}>
                 <div style={{ fontSize: '0.78rem', color: '#8e8e93' }}>Total de Treinos</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#30d158' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff' }}>
                   {selectedStudent.stats?.totalWorkouts || 0}
                 </div>
               </div>

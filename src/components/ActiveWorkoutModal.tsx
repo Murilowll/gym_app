@@ -508,7 +508,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
               <div style={{ fontSize: '56px', fontWeight: 800, letterSpacing: '-0.03em', color: '#ffffff' }}>
                 {formatTimer(cardioSeconds)}
               </div>
-              <p style={{ margin: '8px 0 0', fontSize: '13px', color: '#30d158', fontWeight: 600 }}>
+              <p style={{ margin: '8px 0 0', fontSize: '13px', color: '#ffffff', fontWeight: 600 }}>
                 {workoutDay.cardio.targetPace ? `Ritmo recomendado: ${workoutDay.cardio.targetPace}` : 'Queimando gordura em ritmo constante'}
               </p>
             </div>
@@ -522,8 +522,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                   height: '46px',
                   padding: '0 24px',
                   borderRadius: '9999px',
-                  background: isCardioRunning ? '#ff453a' : '#30d158',
-                  color: '#ffffff',
+                  background: isCardioRunning ? '#ff453a' : '#ffffff',
+                  color: isCardioRunning ? '#ffffff' : '#000000',
                   border: 'none',
                   fontWeight: 700,
                   fontSize: '14px',
@@ -599,8 +599,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                 width: '80px',
                 height: '80px',
                 borderRadius: '50%',
-                background: 'rgba(48, 209, 88, 0.18)',
-                color: '#30d158',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: '#ffffff',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -626,7 +626,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
               }}
             >
               <div style={{ background: '#1a1d24', borderRadius: '18px', padding: '16px' }}>
-                <Clock size={20} color="#ff9500" style={{ marginBottom: '6px' }} />
+                <Clock size={20} color="#ffffff" style={{ marginBottom: '6px' }} />
                 <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>
                   {totalMinutes} min
                 </div>
@@ -634,7 +634,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
               </div>
 
               <div style={{ background: '#1a1d24', borderRadius: '18px', padding: '16px' }}>
-                <Dumbbell size={20} color="#30d158" style={{ marginBottom: '6px' }} />
+                <Dumbbell size={20} color="#ffffff" style={{ marginBottom: '6px' }} />
                 <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>
                   {totalCompletedCount} séries
                 </div>
@@ -642,7 +642,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
               </div>
 
               <div style={{ background: '#1a1d24', borderRadius: '18px', padding: '16px' }}>
-                <TrendingUp size={20} color="#64d2ff" style={{ marginBottom: '6px' }} />
+                <TrendingUp size={20} color="#ffffff" style={{ marginBottom: '6px' }} />
                 <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>
                   {totalVolumeKg} kg
                 </div>
@@ -650,7 +650,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
               </div>
 
               <div style={{ background: '#1a1d24', borderRadius: '18px', padding: '16px' }}>
-                <Flame size={20} color="#ff3b30" style={{ marginBottom: '6px' }} />
+                <Flame size={20} color="#ff375f" style={{ marginBottom: '6px' }} />
                 <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff' }}>
                   ~{totalMinutes * 7} kcal
                 </div>

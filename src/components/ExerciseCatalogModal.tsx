@@ -74,17 +74,17 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div
                 style={{
-                  width: '34px',
-                  height: '34px',
+                  width: '36px',
+                  height: '36px',
                   borderRadius: '10px',
-                  background: 'rgba(48, 209, 88, 0.15)',
-                  border: '1px solid rgba(48, 209, 88, 0.35)',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}
               >
-                <Dumbbell size={18} color="#30d158" />
+                <Dumbbell size={18} color="#ffffff" />
               </div>
               <h2 style={{ margin: 0, fontSize: '1.28rem', fontWeight: 700 }}>
                 Catálogo de Exercícios
@@ -96,7 +96,7 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                   borderRadius: '10px',
                   fontSize: '0.75rem',
                   fontWeight: 600,
-                  color: '#30d158'
+                  color: '#ffffff'
                 }}
               >
                 {ALL_EXERCISES_LIBRARY.length} disponíveis
@@ -168,9 +168,9 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
               style={{
                 padding: '6px 12px',
                 borderRadius: '10px',
-                border: selectedCategory === 'Todos' ? '1px solid #30d158' : '1px solid rgba(255, 255, 255, 0.08)',
-                background: selectedCategory === 'Todos' ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                color: selectedCategory === 'Todos' ? '#30d158' : '#a1a1aa',
+                border: selectedCategory === 'Todos' ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.08)',
+                background: selectedCategory === 'Todos' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.04)',
+                color: selectedCategory === 'Todos' ? '#ffffff' : '#a1a1aa',
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -188,9 +188,9 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                   style={{
                     padding: '6px 12px',
                     borderRadius: '10px',
-                    border: selectedCategory === cat ? '1px solid #30d158' : '1px solid rgba(255, 255, 255, 0.08)',
-                    background: selectedCategory === cat ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 255, 255, 0.04)',
-                    color: selectedCategory === cat ? '#30d158' : '#a1a1aa',
+                    border: selectedCategory === cat ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.08)',
+                    background: selectedCategory === cat ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.04)',
+                    color: selectedCategory === cat ? '#ffffff' : '#a1a1aa',
                     fontSize: '0.78rem',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -221,9 +221,9 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                 style={{
                   padding: '4px 10px',
                   borderRadius: '8px',
-                  border: selectedEquipment === eq ? '1px solid #64d2ff' : '1px solid rgba(255, 255, 255, 0.06)',
-                  background: selectedEquipment === eq ? 'rgba(100, 210, 255, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                  color: selectedEquipment === eq ? '#64d2ff' : '#71717a',
+                  border: selectedEquipment === eq ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.06)',
+                  background: selectedEquipment === eq ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.03)',
+                  color: selectedEquipment === eq ? '#ffffff' : '#71717a',
                   fontSize: '0.72rem',
                   fontWeight: 600,
                   cursor: 'pointer',
@@ -311,7 +311,7 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     fontSize: '0.75rem',
-                    color: '#30d158'
+                    color: '#ffffff'
                   }}
                 >
                   <span>Ver execução & GIF</span>
@@ -346,7 +346,7 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
                 <div>
-                  <span style={{ fontSize: '0.72rem', color: '#64d2ff', fontWeight: 700 }}>
+                  <span style={{ fontSize: '0.72rem', color: '#a1a1aa', fontWeight: 700 }}>
                     {previewExercise.category} • {previewExercise.equipmentType}
                   </span>
                   <h3 style={{ margin: '2px 0 0 0', fontSize: '1.25rem' }}>{previewExercise.name}</h3>
@@ -385,9 +385,9 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                     <span
                       key={i}
                       style={{
-                        background: 'rgba(48, 209, 88, 0.15)',
-                        border: '1px solid rgba(48, 209, 88, 0.3)',
-                        color: '#30d158',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        color: '#ffffff',
                         padding: '3px 8px',
                         borderRadius: '6px',
                         fontSize: '0.75rem'
@@ -416,8 +416,8 @@ export const ExerciseCatalogModal: React.FC<ExerciseCatalogModalProps> = ({
                 onClick={() => setPreviewExercise(null)}
                 style={{
                   width: '100%',
-                  background: '#30d158',
-                  color: '#09090b',
+                  background: '#ffffff',
+                  color: '#000000',
                   border: 'none',
                   padding: '12px',
                   borderRadius: '12px',

@@ -34,7 +34,7 @@ export const TrainerView: React.FC<TrainerViewProps> = ({ onBackToWorkouts }) =>
   });
 
   return (
-    <div className="trainer-view" style={{ padding: '16px', maxWidth: '900px', margin: '0 auto', color: '#ffffff' }}>
+    <div className="trainer-view" style={{ padding: '16px', maxWidth: '900px', margin: '0 auto', color: 'inherit' }}>
       {/* Topo do Painel */}
       <div
         style={{

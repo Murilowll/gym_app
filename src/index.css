@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 /* ===================================================================
    IRONPULSE ACADEMY - LIQUID GLASS & OBSIDIAN DESIGN SYSTEM
-   Visual, Cores, Liquid Glass & Tipografia SF Pro / Inter
-   Mantendo 100% da Estrutura e Funcionalidades Originais
+   Tipografia: Urbanist (Todas as telas e elementos)
    =================================================================== */
 
 :root {
@@ -35,10 +36,10 @@
   --rose-streak-border: rgba(255, 55, 95, 0.4);
   --rose-streak-glow: 0 0 18px rgba(255, 55, 95, 0.4);
 
-  /* Tipografia SF Pro / Inter */
-  --font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Plus Jakarta Sans', sans-serif;
-  --font-heading: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Plus Jakarta Sans', sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Plus Jakarta Sans', sans-serif;
+  /* Tipografia: Urbanist em todos os textos */
+  --font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Textos */
   --text-pure: #ffffff;
@@ -64,21 +65,22 @@
   --transition-bounce: all 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 body {
   background-color: var(--bg-main);
   background-image: 
     radial-gradient(circle at 50% -15%, rgba(255, 255, 255, 0.05) 0%, transparent 65%),
-        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
   background-attachment: fixed;
   color: var(--text-primary);
-  font-family: var(--font-body);
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif !important;
   font-size: 15px;
   line-height: 1.45;
   min-height: 100vh;
@@ -88,17 +90,28 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  letter-spacing: -0.035em;
-  font-weight: 700;
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  letter-spacing: -0.025em;
+  font-weight: 800;
   color: var(--text-pure);
 }
 
 button,
 input,
 select,
+textarea,
+span,
+p,
+div,
+label,
+a {
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+button,
+input,
+select,
 textarea {
-  font-family: inherit;
   color: inherit;
   border: none;
   background: none;
@@ -4736,16 +4749,19 @@ button {
 
 /* ===================================================================
    LIGHT THEME MODE (MODO CLARO - ALTO CONTRASTE MONOCROMÁTICO)
+   Fundo limpo Apple, superfícies brancas com sombras sutis,
+   tipografia Urbanist preta profunda e botões de alta fidelidade
    =================================================================== */
+
 body.light-theme,
 [data-theme='light'] {
-  --bg-main: #f4f4f7;
+  --bg-main: #f7f7fa;
   --bg-surface: #ffffff;
   --bg-card: #ffffff;
   --bg-card-elevated: #ffffff;
-  --bg-card-hover: #f0f0f4;
-  --bg-glass: rgba(255, 255, 255, 0.85);
-  --bg-glass-heavy: rgba(255, 255, 255, 0.95);
+  --bg-card-hover: #f4f4f7;
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --bg-glass-heavy: rgba(255, 255, 255, 0.98);
 
   --border-glass: rgba(0, 0, 0, 0.08);
   --border-glass-subtle: rgba(0, 0, 0, 0.05);
@@ -4753,8 +4769,8 @@ body.light-theme,
   --specular-sheen: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
 
   --accent-white: #000000;
-  --accent-muted: #6e6e73;
-  --accent-dark-muted: #8e8e93;
+  --accent-muted: #52525b;
+  --accent-dark-muted: #71717a;
   --emerald-primary: #000000;
   --emerald-subtle: rgba(0, 0, 0, 0.05);
   --cyan-accent: #000000;
@@ -4762,142 +4778,897 @@ body.light-theme,
   --purple-accent: #000000;
   --rose-accent: #ff375f;
   --rose-streak: #ff375f;
+  --rose-streak-subtle: rgba(255, 55, 95, 0.12);
+  --rose-streak-border: rgba(255, 55, 95, 0.35);
 
-  --text-pure: #000000;
-  --text-primary: #111113;
-  --text-secondary: #6e6e73;
-  --text-muted: #8e8e93;
+  --text-pure: #0a0a0c;
+  --text-primary: #0a0a0c;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
 
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.07);
-  --shadow-elevated: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
-  --shadow-pill: 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 10px 30px rgba(0, 0, 0, 0.07);
+  --shadow-pill: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 body.light-theme {
-  background-color: #f4f4f7;
+  background-color: #f7f7fa;
   background-image:
-    radial-gradient(circle at 50% -15%, rgba(0, 0, 0, 0.03) 0%, transparent 65%),
-    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.02) 0%, transparent 50%);
-  color: #111113;
+    radial-gradient(circle at 50% -10%, rgba(0, 0, 0, 0.02) 0%, transparent 60%),
+    radial-gradient(circle at 50% 100%, rgba(0, 0, 0, 0.015) 0%, transparent 50%);
+  color: #0a0a0c;
 }
 
+/* Tipografia e Títulos Globais no Modo Claro */
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+  color: #0a0a0c !important;
+}
+
+body.light-theme p,
+body.light-theme span,
+body.light-theme label {
+  color: inherit;
+}
+
+/* Header & Barra Superior */
 body.light-theme .app-header {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
 body.light-theme .brand-title {
-  color: #000000;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .brand-subtitle {
+  color: #71717a !important;
 }
 
 body.light-theme .logo-icon-wrapper {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #000000;
+  background: #f0f0f4 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
 }
 
 body.light-theme .header-icon-btn {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #111113;
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
 }
 
 body.light-theme .header-icon-btn:hover {
-  background: rgba(0, 0, 0, 0.1);
-  color: #000000;
+  background: #ebebee !important;
+  color: #000000 !important;
 }
 
 body.light-theme .streak-badge {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #111113;
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
 }
 
+body.light-theme .streak-number {
+  color: #0a0a0c !important;
+}
+
+/* Botões Principais de Ação (CTAs) em Preto de Alto Contraste */
 body.light-theme .today-workout-cta-btn,
 body.light-theme .btn-next-exercise-cta,
+body.light-theme .start-workout-hero-btn,
 body.light-theme .streak-action-btn,
 body.light-theme .auth-btn-primary,
 body.light-theme .save-profile-btn,
-body.light-theme .primary-btn {
+body.light-theme .primary-btn,
+body.light-theme .onboarding-cta-btn {
   background: #000000 !important;
   color: #ffffff !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18) !important;
+  border: none !important;
+}
+
+body.light-theme .today-workout-cta-btn *,
+body.light-theme .btn-next-exercise-cta *,
+body.light-theme .start-workout-hero-btn *,
+body.light-theme .streak-action-btn *,
+body.light-theme .auth-btn-primary *,
+body.light-theme .save-profile-btn *,
+body.light-theme .primary-btn *,
+body.light-theme .onboarding-cta-btn * {
+  color: #ffffff !important;
 }
 
 body.light-theme .today-workout-cta-btn:hover,
 body.light-theme .btn-next-exercise-cta:hover,
+body.light-theme .start-workout-hero-btn:hover,
 body.light-theme .streak-action-btn:hover,
 body.light-theme .auth-btn-primary:hover,
 body.light-theme .save-profile-btn:hover,
-body.light-theme .primary-btn:hover {
-  background: #242428 !important;
+body.light-theme .primary-btn:hover,
+body.light-theme .onboarding-cta-btn:hover {
+  background: #1f1f23 !important;
 }
 
-body.light-theme .today-workout-card,
-body.light-theme .workout-card,
-body.light-theme .profile-hero-card,
-body.light-theme .profile-section,
-body.light-theme .profile-action-btn,
-body.light-theme .profile-footer-card,
-body.light-theme .history-card,
-body.light-theme .onboarding-card,
-body.light-theme .auth-card {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.08);
-  color: #111113;
+/* Home / Dashboard */
+body.light-theme .home-view-container {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .greeting-pill {
+  color: #52525b !important;
+}
+
+body.light-theme .greeting-name {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .greeting-subtitle {
+  color: #71717a !important;
+}
+
+body.light-theme .home-avatar-circle {
+  background: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+}
+
+body.light-theme .home-today-workout-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .today-workout-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .today-workout-muscles {
+  color: #52525b !important;
+}
+
+body.light-theme .today-status-badge.pending {
+  background: #f0f0f4 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .today-status-badge.completed {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .today-status-badge.completed * {
+  color: #ffffff !important;
+}
+
+body.light-theme .live-dot {
+  background: #0a0a0c !important;
+}
+
+body.light-theme .today-duration-tag {
+  color: #71717a !important;
+}
+
+body.light-theme .ex-preview-chip {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #27272a !important;
+}
+
+body.light-theme .ex-preview-chip.more {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .home-metric-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .home-metric-card:hover {
+  background: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+}
+
+body.light-theme .metric-data {
+  display: flex;
+  flex-direction: column;
+}
+
+body.light-theme .metric-val {
+  color: #0a0a0c !important;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+body.light-theme .metric-label {
+  color: #71717a !important;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+body.light-theme .metric-icon-wrap.clock,
+body.light-theme .metric-icon-wrap.trophy,
+body.light-theme .metric-icon-wrap.target {
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .home-water-tracker-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .water-icon-circle {
+  background: #f0f0f4 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .water-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .water-subtitle {
+  color: #52525b !important;
+}
+
+body.light-theme .water-add-btn {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .water-add-btn * {
+  color: #ffffff !important;
+}
+
+body.light-theme .water-reset-btn {
+  background: #f0f0f4 !important;
+  color: #71717a !important;
+}
+
+body.light-theme .water-progress-bar-track {
+  background: #e4e4e7 !important;
+}
+
+body.light-theme .water-progress-bar-fill {
+  background: #000000 !important;
+}
+
+body.light-theme .section-title-clean {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .function-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .function-card:hover {
+  background: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+}
+
+body.light-theme .function-icon-pill.catalog,
+body.light-theme .function-icon-pill.ai,
+body.light-theme .function-icon-pill.history {
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .function-info strong {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .function-info span {
+  color: #52525b !important;
+}
+
+body.light-theme .function-arrow {
+  color: #a1a1aa !important;
+}
+
+/* Day Selector */
+body.light-theme .day-chip {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #52525b !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light-theme .day-chip:hover {
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .day-chip.selected {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-theme .day-chip.selected .day-short-name {
+  color: #ffffff !important;
+}
+
+body.light-theme .day-chip.selected .day-subtag {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.light-theme .day-chip.selected .active-indicator-dot {
+  background: #ffffff !important;
+  box-shadow: 0 0 6px #ffffff !important;
+}
+
+body.light-theme .day-short-name {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .day-subtag {
+  color: #71717a !important;
+}
+
+/* Workout Overview Card & Exercises */
+body.light-theme .workout-overview-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .workout-banner {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+body.light-theme .focus-pill {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .banner-time {
+  color: #52525b !important;
+}
+
+body.light-theme .workout-main-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .workout-tagline {
+  color: #52525b !important;
+}
+
+body.light-theme .coach-highlight-quote {
+  background: #f7f7fa !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #27272a !important;
+}
+
+body.light-theme .exercise-compact-item {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+}
+
+body.light-theme .exercise-compact-item:hover {
+  background: #f9f9fb !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+}
+
+body.light-theme .compact-index {
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  border-top-color: #000000 !important;
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .compact-machine {
+  color: #71717a !important;
+}
+
+body.light-theme .compact-name {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .badge-meta {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #52525b !important;
+}
+
+body.light-theme .badge-meta.rest {
+  background: #f0f0f4 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .chevron-muted {
+  color: #a1a1aa !important;
+}
+
+body.light-theme .exercise-compact-item:hover .chevron-muted {
+  color: #000000 !important;
+}
+
+body.light-theme .rest-day-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .rest-day-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .rest-day-subtitle {
+  color: #52525b !important;
+}
+
+body.light-theme .rest-guide-box {
+  background: #f7f7fa !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #27272a !important;
+}
+
+body.light-theme .rest-guide-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .rest-guide-tips li {
+  color: #52525b !important;
+}
+
+/* Tela de Treino Ativo (Active Workout) */
+body.light-theme .workout-session-fullscreen {
+  background: #f7f7fa !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .workout-session-gradient-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(247, 247, 250, 0.45) 0%,
+    rgba(247, 247, 250, 0.1) 25%,
+    rgba(247, 247, 250, 0.85) 60%,
+    #f7f7fa 90%
+  ) !important;
+}
+
+body.light-theme .circular-nav-btn {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0a0a0c !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .set-pill-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0a0a0c !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .set-index-col {
+  color: #71717a !important;
+}
+
+body.light-theme .set-check-btn {
+  background: #e4e4e7 !important;
+  color: #71717a !important;
+}
+
+body.light-theme .set-check-btn.completed {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .set-check-btn.completed * {
+  color: #ffffff !important;
+}
+
+body.light-theme .workout-bottom-indicator-bar {
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .exercise-name-badge strong {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .exercise-name-badge span {
+  color: #71717a !important;
+}
+
+body.light-theme .exercise-page-num {
+  color: #71717a !important;
+}
+
+body.light-theme .exercise-page-num.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+/* Ofensiva (Streak View) */
+body.light-theme .streak-hero-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(255, 55, 95, 0.25) !important;
+  box-shadow: 0 10px 35px rgba(255, 55, 95, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .streak-number-huge {
+  background: linear-gradient(180deg, #0a0a0c 30%, #ff375f 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+body.light-theme .streak-days-label {
+  color: #ff375f !important;
+}
+
+body.light-theme .streak-quote {
+  color: #52525b !important;
+}
+
+body.light-theme .streak-week-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light-theme .streak-week-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .streak-day-pill {
+  background: #f4f4f7 !important;
+}
+
+body.light-theme .streak-day-pill.today {
+  border-color: #0a0a0c !important;
+  background: #ececef !important;
+}
+
+body.light-theme .streak-day-name {
+  color: #71717a !important;
+}
+
+body.light-theme .day-number-muted {
+  color: #52525b !important;
+  font-weight: 700 !important;
+}
+
+body.light-theme .milestone-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .milestone-card.unlocked {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .milestone-icon-wrap {
+  background: #f4f4f7 !important;
+  color: #71717a !important;
+}
+
+body.light-theme .milestone-card.unlocked .milestone-icon-wrap {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .milestone-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .milestone-desc {
+  color: #71717a !important;
+}
+
+/* Perfil (Profile View) */
+body.light-theme .profile-hero-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-identity h2 {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-identity p {
+  color: #71717a !important;
 }
 
 body.light-theme .profile-avatar-circle {
-  background: #000000;
-  color: #ffffff;
+  background: #000000 !important;
+  color: #ffffff !important;
 }
 
-body.light-theme .profile-stat-pill,
-body.light-theme .profile-metric-box,
-body.light-theme .home-metric-box {
-  background: #f4f4f7;
-  border-color: rgba(0, 0, 0, 0.06);
+body.light-theme .profile-stat-pill {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-metric-box {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .metric-box-val {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .metric-box-label {
+  color: #71717a !important;
+}
+
+body.light-theme .metric-box-icon {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-section {
+  background: transparent !important;
+}
+
+body.light-theme .profile-action-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-action-btn:hover {
+  background: #fafafa !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-theme .action-text strong {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .action-text span {
+  color: #71717a !important;
+}
+
+body.light-theme .action-icon-pill {
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .profile-footer-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .cloud-text {
+  color: #71717a !important;
+}
+
+body.light-theme .profile-logout-btn {
+  background: #fff0f0 !important;
+  border: 1px solid rgba(255, 69, 58, 0.2) !important;
+  color: #ff3b30 !important;
 }
 
 body.light-theme .edit-profile-modal {
-  background: #ffffff;
-  border-color: rgba(0, 0, 0, 0.12);
-  color: #111113;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .edit-profile-header h3 {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .edit-icon-wrap {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .edit-profile-label {
+  color: #52525b !important;
 }
 
 body.light-theme .edit-profile-input {
-  background: #f4f4f7;
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #111113;
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0a0a0c !important;
 }
 
+/* Histórico (History View) */
+body.light-theme .history-view-container {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .history-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .history-subtitle {
+  color: #71717a !important;
+}
+
+body.light-theme .history-time-hero-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .time-icon-wrapper {
+  background: #f4f4f7 !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .time-hero-label {
+  color: #71717a !important;
+}
+
+body.light-theme .time-hero-value {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .time-hero-sub {
+  color: #52525b !important;
+}
+
+body.light-theme .history-stat-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .stat-number {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .stat-label {
+  color: #71717a !important;
+}
+
+body.light-theme .history-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .history-workout-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .history-date {
+  color: #71717a !important;
+}
+
+/* Modais, Catálogo, Autenticação & Onboarding */
+body.light-theme .modal-content,
+body.light-theme .catalog-modal-content,
+body.light-theme .exercise-catalog-modal,
+body.light-theme .auth-card,
+body.light-theme .auth-modal-content,
+body.light-theme .quick-edit-modal-content,
+body.light-theme .exit-confirm-modal,
+body.light-theme .summary-modal-content,
+body.light-theme .onboarding-fullscreen-modal {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .catalog-search-input,
+body.light-theme .auth-input,
+body.light-theme .onboarding-input {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .catalog-filter-chip {
+  background: #f4f4f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #52525b !important;
+}
+
+body.light-theme .catalog-filter-chip.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+body.light-theme .exercise-catalog-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .exercise-catalog-title {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .exercise-catalog-muscle {
+  color: #71717a !important;
+}
+
+body.light-theme .option-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0a0a0c !important;
+}
+
+body.light-theme .option-card.selected {
+  background: #000000 !important;
+  border-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .option-card.selected * {
+  color: #ffffff !important;
+}
+
+body.light-theme .trainer-view {
+  color: #0a0a0c !important;
+}
+
+body.light-theme .trainer-student-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0a0a0c !important;
+}
+
+/* Bottom Navigation Bar */
 body.light-theme .bottom-navbar {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   box-shadow: 
     0 20px 40px -8px rgba(0, 0, 0, 0.12),
     0 0 0 1px rgba(0, 0, 0, 0.04),
     inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.05);
+    inset 0 -1.5px 1px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 body.light-theme .bottom-nav-item {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.45) !important;
 }
 
 body.light-theme .bottom-nav-item:hover {
-  color: #000000;
-  background: rgba(0, 0, 0, 0.05);
+  color: #000000 !important;
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
 body.light-theme .bottom-nav-item.active {
-  background: #000000;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  background: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
 }
 
 body.light-theme .bottom-nav-item.active .bottom-nav-icon {
   color: #ffffff !important;
 }
+
+/* Regra de Proteção Global para Inline Colors #ffffff no Modo Claro */
+body.light-theme [style*="color: #ffffff"]:not(.btn-next-exercise-cta):not(.btn-next-exercise-cta *):not(.today-workout-cta-btn):not(.today-workout-cta-btn *):not(.start-workout-hero-btn):not(.start-workout-hero-btn *):not(.streak-action-btn):not(.streak-action-btn *):not(.auth-btn-primary):not(.auth-btn-primary *):not(.save-profile-btn):not(.save-profile-btn *):not(.bottom-nav-badge):not(.compact-index):not(.day-chip.selected *):not(.bottom-nav-item.active *):not(.set-check-btn.completed *):not(.milestone-card.unlocked .milestone-icon-wrap *):not(.option-card.selected *):not(.today-status-badge.completed *):not(.ex-preview-chip.more),
+body.light-theme [style*="color:#ffffff"]:not(.btn-next-exercise-cta):not(.btn-next-exercise-cta *):not(.today-workout-cta-btn):not(.today-workout-cta-btn *):not(.start-workout-hero-btn):not(.start-workout-hero-btn *):not(.streak-action-btn):not(.streak-action-btn *):not(.auth-btn-primary):not(.auth-btn-primary *):not(.save-profile-btn):not(.save-profile-btn *):not(.bottom-nav-badge):not(.compact-index):not(.day-chip.selected *):not(.bottom-nav-item.active *):not(.set-check-btn.completed *):not(.milestone-card.unlocked .milestone-icon-wrap *):not(.option-card.selected *):not(.today-status-badge.completed *):not(.ex-preview-chip.more) {
+  color: #0a0a0c !important;
+}
+
 
 

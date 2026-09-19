@@ -425,20 +425,20 @@ const HorizontalRulerPicker: React.FC<HorizontalRulerProps> = ({
                 style={{
                   height: isSelected ? '40px' : isMultipleOf5 ? '26px' : '16px',
                   background: isSelected
-                    ? '#7052ff'
+                    ? '#ffffff'
                     : isMultipleOf5
                     ? 'rgba(255, 255, 255, 0.45)'
                     : 'rgba(255, 255, 255, 0.2)',
                   width: isSelected ? '3.5px' : '2px',
                   borderRadius: '2px',
-                  boxShadow: isSelected ? '0 0 12px rgba(112, 82, 255, 0.8)' : 'none',
+                  boxShadow: isSelected ? '0 0 12px rgba(255, 255, 255, 0.8)' : 'none',
                   transition: isDragging ? 'none' : 'all 0.2s ease'
                 }}
               />
               <span
                 className="ruler-tick-num"
                 style={{
-                  color: isSelected ? '#7052ff' : 'rgba(255, 255, 255, 0.35)',
+                  color: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.35)',
                   fontSize: isSelected ? '18px' : '13px',
                   fontWeight: isSelected ? 800 : 500,
                   transition: 'all 0.2s ease'
@@ -1225,16 +1225,16 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 width: '90px',
                 height: '90px',
                 borderRadius: '50%',
-                background: 'rgba(112, 82, 255, 0.15)',
-                border: '2px solid #7052ff',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '2px solid #ffffff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 marginBottom: '28px',
-                boxShadow: '0 0 32px rgba(112, 82, 255, 0.35)'
+                boxShadow: '0 0 32px rgba(255, 255, 255, 0.25)'
               }}
             >
-              <Sparkles size={40} color="#7052ff" />
+              <Sparkles size={40} color="#ffffff" />
             </div>
 
             <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', marginBottom: '10px' }}>
@@ -1250,7 +1250,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 width: '100%',
                 maxWidth: '320px',
                 height: '8px',
-                background: '#262a34',
+                background: 'rgba(255, 255, 255, 0.1)',
                 borderRadius: '9999px',
                 overflow: 'hidden',
                 margin: '28px 0 14px'
@@ -1260,14 +1260,14 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 style={{
                   height: '100%',
                   width: `${analysisProgress}%`,
-                  background: 'linear-gradient(90deg, #7052ff, #a855f7)',
+                  background: '#ffffff',
                   borderRadius: '9999px',
                   transition: 'width 0.1s linear'
                 }}
               />
             </div>
 
-            <span style={{ fontSize: '14px', fontWeight: 700, color: '#7052ff' }}>
+            <span style={{ fontSize: '14px', fontWeight: 700, color: '#ffffff' }}>
               {analysisProgress}%
             </span>
           </div>
@@ -1284,8 +1284,8 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'rgba(112, 82, 255, 0.15)',
-                  color: '#7052ff',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  color: '#ffffff',
                   padding: '6px 14px',
                   borderRadius: '9999px',
                   fontSize: '12px',
@@ -1315,7 +1315,8 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
             >
               <div
                 style={{
-                  background: '#1f222a',
+                  background: '#141417',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '16px',
                   padding: '14px',
                   display: 'flex',
@@ -1323,7 +1324,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                   gap: '12px'
                 }}
               >
-                <TrendingUp size={22} color="#7052ff" />
+                <TrendingUp size={22} color="#ffffff" />
                 <div>
                   <div style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff' }}>
                     {generatedPlan.bmi}
@@ -1336,7 +1337,8 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
 
               <div
                 style={{
-                  background: '#1f222a',
+                  background: '#141417',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   borderRadius: '16px',
                   padding: '14px',
                   display: 'flex',
@@ -1344,7 +1346,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                   gap: '12px'
                 }}
               >
-                <Flame size={22} color="#ff9500" />
+                <Flame size={22} color="#ff375f" />
                 <div>
                   <div style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff' }}>
                     ~{generatedPlan.dailyCalories} kcal
@@ -1364,8 +1366,8 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                 <div
                   key={day.key}
                   style={{
-                    background: '#1f222a',
-                    border: '1px solid rgba(255, 255, 255, 0.06)',
+                    background: '#141417',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     borderRadius: '16px',
                     padding: '12px 16px',
                     display: 'flex',
@@ -1379,8 +1381,8 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                         width: '36px',
                         height: '36px',
                         borderRadius: '10px',
-                        background: 'rgba(112, 82, 255, 0.15)',
-                        color: '#7052ff',
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        color: '#ffffff',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -1399,7 +1401,7 @@ export const OnboardingFunnel: React.FC<OnboardingFunnelProps> = ({
                       </div>
                     </div>
                   </div>
-                  <ChevronRight size={18} color="#7052ff" />
+                  <ChevronRight size={18} color="#ffffff" />
                 </div>
               ))}
             </div>

@@ -3833,7 +3833,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: #121318;
+  background: #000000;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -3850,7 +3850,7 @@ button {
   display: flex;
   flex-direction: column;
   position: relative;
-  background: #181a20;
+  background: #000000;
 }
 
 /* Header & Top Bar */
@@ -3921,7 +3921,7 @@ button {
 .onboarding-slide-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(24, 26, 32, 0) 0%, rgba(24, 26, 32, 0.4) 45%, rgba(24, 26, 32, 0.95) 85%, #181a20 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.95) 85%, #000000 100%);
 }
 
 .onboarding-slide-body {
@@ -3961,7 +3961,7 @@ button {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.2);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -3969,7 +3969,7 @@ button {
   width: 26px;
   height: 7px;
   border-radius: 9999px;
-  background: #7052ff;
+  background: #ffffff;
 }
 
 /* Form Pages Body */
@@ -4016,9 +4016,9 @@ button {
   width: 140px;
   height: 140px;
   border-radius: 50%;
-  border: none;
-  background: #262a34;
-  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  background: #141417;
+  color: #a1a1aa;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4029,8 +4029,10 @@ button {
 }
 
 .gender-circle-btn.active {
-  background: #7052ff;
-  box-shadow: 0 12px 32px rgba(112, 82, 255, 0.45);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.25);
   transform: scale(1.04);
 }
 
@@ -4062,7 +4064,7 @@ button {
   left: 15%;
   right: 15%;
   height: 1.5px;
-  background: #7052ff;
+  background: rgba(255, 255, 255, 0.35);
   pointer-events: none;
 }
 
@@ -4098,7 +4100,7 @@ button {
 .roller-number-item.selected {
   font-size: 42px;
   font-weight: 800;
-  color: #7052ff;
+  color: #ffffff;
   transform: scale(1.1);
 }
 
@@ -4124,7 +4126,7 @@ button {
 .ruler-large-value {
   font-size: 56px;
   font-weight: 800;
-  color: #7052ff;
+  color: #ffffff;
   letter-spacing: -0.03em;
   line-height: 1;
 }
@@ -4140,7 +4142,7 @@ button {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 12px solid #7052ff;
+  border-bottom: 12px solid #ffffff;
   margin-bottom: 14px;
 }
 
@@ -4177,7 +4179,7 @@ button {
 
 .ruler-tick-group.selected .ruler-tick-mark {
   height: 38px;
-  background: #7052ff;
+  background: #ffffff;
   width: 3px;
 }
 
@@ -4188,7 +4190,7 @@ button {
 }
 
 .ruler-tick-group.selected .ruler-tick-num {
-  color: #7052ff;
+  color: #ffffff;
   font-weight: 800;
   font-size: 18px;
 }
@@ -4207,8 +4209,8 @@ button {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  background: #1f222a;
-  border: 1.5px solid transparent;
+  background: #141417;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -4216,12 +4218,13 @@ button {
 }
 
 .goal-pill-card:hover {
-  background: #262a34;
+  background: #1c1c22;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .goal-pill-card.selected {
-  border-color: #7052ff;
-  background: rgba(112, 82, 255, 0.12);
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .goal-pill-label {
@@ -4242,9 +4245,9 @@ button {
 }
 
 .goal-pill-card.selected .goal-checkbox-circle {
-  border-color: #7052ff;
-  background: #7052ff;
-  color: #ffffff;
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 
 /* Step: Activity Level Pills */
@@ -4258,8 +4261,8 @@ button {
 
 .activity-level-card {
   padding: 20px;
-  background: #1f222a;
-  border: 1.5px solid transparent;
+  background: #141417;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -4269,13 +4272,15 @@ button {
 }
 
 .activity-level-card:hover {
-  background: #262a34;
+  background: #1c1c22;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .activity-level-card.selected {
-  background: #7052ff;
-  color: #ffffff;
-  box-shadow: 0 8px 24px rgba(112, 82, 255, 0.35);
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
 }
 
 .activity-level-title {
@@ -4289,7 +4294,7 @@ button {
 }
 
 .activity-level-card.selected .activity-level-desc {
-  color: rgba(255, 255, 255, 0.85);
+  color: #52525b;
 }
 
 /* Step: Profile Fill */
@@ -4311,7 +4316,7 @@ button {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: #262a34;
+  background: #141417;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4333,12 +4338,12 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #7052ff;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #181a20;
+  border: 2px solid #000000;
 }
 
 .profile-inputs-list {
@@ -4351,8 +4356,8 @@ button {
 .profile-input-field {
   width: 100%;
   height: 52px;
-  background: #1f222a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141417;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 0 16px;
   color: #ffffff;
@@ -4362,14 +4367,14 @@ button {
 }
 
 .profile-input-field:focus {
-  border-color: #7052ff;
+  border-color: #ffffff;
 }
 
 .phone-field-wrapper {
   display: flex;
   align-items: center;
-  background: #1f222a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141417;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   overflow: hidden;
 }
@@ -4380,8 +4385,8 @@ button {
   gap: 6px;
   padding: 0 14px;
   font-size: 14px;
-  color: #ffffff;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d4d4d8;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .phone-field-wrapper input {
@@ -4409,9 +4414,9 @@ button {
   flex: 1;
   height: 54px;
   border-radius: 9999px;
-  background: #262a34;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: #ffffff;
-  border: none;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -4419,20 +4424,20 @@ button {
 }
 
 .btn-onboarding-back:hover {
-  background: #2f3440;
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .btn-onboarding-primary {
   flex: 1;
   height: 54px;
   border-radius: 9999px;
-  background: #7052ff;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   border: none;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(112, 82, 255, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -4441,7 +4446,7 @@ button {
 }
 
 .btn-onboarding-primary:hover {
-  background: #6040f5;
+  background: #f4f4f5;
   transform: translateY(-1px);
 }
 

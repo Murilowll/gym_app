@@ -60,6 +60,65 @@ export function saveUserStats(stats: UserStats): void {
   }
 }
 
+const STREAK_CHECKIN_KEY = 'ironpulse_last_streak_checkin_date';
+
+export function checkAndTriggerDailyStreak(currentStats: UserStats): {
+  updatedStats: UserStats;
+  isFirstOpenToday: boolean;
+  oldStreak: number;
+  newStreak: number;
+} {
+  const todayStr = new Date().toISOString().split('T')[0];
+  let lastCheckin: string | null = null;
+  try {
+    lastCheckin = localStorage.getItem(STREAK_CHECKIN_KEY);
+  } catch {}
+
+  if (lastCheckin === todayStr) {
+    return {
+      updatedStats: currentStats,
+      isFirstOpenToday: false,
+      oldStreak: currentStats.streakDays,
+      newStreak: currentStats.streakDays
+    };
+  }
+
+  // Primeira abertura hoje
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+  const oldStreak = currentStats.streakDays ?? 0;
+  let newStreak = oldStreak + 1;
+
+  if (lastCheckin && lastCheckin !== yesterdayStr) {
+    // Se passou mais de 2 dias sem abrir o app, reinicia a sequência
+    const diffTime = Math.abs(new Date(todayStr).getTime() - new Date(lastCheckin).getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays > 2) {
+      newStreak = 1;
+    }
+  }
+
+  const updatedStats: UserStats = {
+    ...currentStats,
+    streakDays: newStreak
+  };
+
+  try {
+    localStorage.setItem(STREAK_CHECKIN_KEY, todayStr);
+  } catch {}
+
+  saveUserStats(updatedStats);
+
+  return {
+    updatedStats,
+    isFirstOpenToday: true,
+    oldStreak,
+    newStreak
+  };
+}
+
 export function loadWorkoutHistory(): CompletedWorkoutRecord[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.HISTORY);

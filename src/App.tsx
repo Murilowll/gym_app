@@ -6,7 +6,8 @@ import {
   loadUserStats,
   loadWorkoutHistory,
   saveCompletedWorkout,
-  syncLocalWithCloud
+  syncLocalWithCloud,
+  checkAndTriggerDailyStreak
 } from './utils/storage';
 import { loadCloudUserStats, loadCloudWorkoutHistory } from './services/firestoreService';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -29,15 +30,18 @@ import type { AppTab } from './components/BottomNavbar';
 import { HomeView } from './components/HomeView';
 import { StreakView } from './components/StreakView';
 import { ProfileView } from './components/ProfileView';
+import { SplashScreen } from './components/SplashScreen';
 import type { GeneratedPlanResult } from './types/onboarding';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
   const [isGuest, setIsGuest] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   const todayKey = getTodayKey();
   const [selectedDayKey, setSelectedDayKey] = useState<DayKey>(todayKey);
   const [activeTab, setActiveTab] = useState<'home' | 'workouts' | 'streak' | 'history' | 'profile' | 'trainer'>('home');
+  const [workoutSubTab, setWorkoutSubTab] = useState<'exercises' | 'stretches' | 'cardio'>('exercises');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
@@ -56,6 +60,32 @@ const AppContent: React.FC = () => {
   // Estado do Rest Timer
   const [restTimerSeconds, setRestTimerSeconds] = useState(60);
   const [isRestTimerActive, setIsRestTimerActive] = useState(false);
+
+  // Informações de animação do número da ofensiva subindo no primeiro acesso do dia
+  const [streakAnimationInfo, setStreakAnimationInfo] = useState<{
+    shouldAnimate: boolean;
+    oldStreak: number;
+    newStreak: number;
+  }>({
+    shouldAnimate: false,
+    oldStreak: userStats.streakDays,
+    newStreak: userStats.streakDays
+  });
+
+  // Dispara a verificação da ofensiva ao entrar no app pela primeira vez no dia
+  useEffect(() => {
+    if (!showSplash) {
+      const result = checkAndTriggerDailyStreak(userStats);
+      if (result.isFirstOpenToday) {
+        setUserStats(result.updatedStats);
+        setStreakAnimationInfo({
+          shouldAnimate: true,
+          oldStreak: result.oldStreak,
+          newStreak: result.newStreak
+        });
+      }
+    }
+  }, [showSplash]);
 
   // Sincroniza dados da nuvem quando o usuário faz login
   useEffect(() => {
@@ -86,54 +116,23 @@ const AppContent: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Se o Firebase ainda está verificando a sessão (com limite de 1.2s)
+  // Exibe a SplashScreen cinematográfica ao entrar no app
+  if (showSplash) {
+    return (
+      <SplashScreen
+        minDurationMs={1800}
+        onFinish={() => setShowSplash(false)}
+      />
+    );
+  }
+
+  // Se o Firebase ainda estiver verificando a sessão após a Splash
   if (loading && !forceReady) {
     return (
-      <div
-        style={{
-          minHeight: '100vh',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#09090b',
-          color: '#ffffff'
-        }}
-      >
-        <div
-          style={{
-            width: '60px',
-            height: '60px',
-            borderRadius: '20px',
-            background: 'rgba(255, 255, 255, 0.08)',
-            border: '1.5px solid rgba(255, 255, 255, 0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '16px'
-          }}
-        >
-          <Dumbbell size={30} color="#ffffff" />
-        </div>
-        <p style={{ color: '#8e8e93', fontSize: '0.92rem', margin: 0 }}>
-          Carregando IronPulse...
-        </p>
-        <button
-          onClick={() => setForceReady(true)}
-          style={{
-            marginTop: '20px',
-            background: 'none',
-            border: 'none',
-            color: '#a1a1aa',
-            fontSize: '0.8rem',
-            cursor: 'pointer',
-            textDecoration: 'underline'
-          }}
-        >
-          Continuar para o aplicativo
-        </button>
-      </div>
+      <SplashScreen
+        minDurationMs={800}
+        onFinish={() => setForceReady(true)}
+      />
     );
   }
 
@@ -216,6 +215,11 @@ const AppContent: React.FC = () => {
           onOpenCatalog={() => setIsCatalogOpen(true)}
           onOpenOnboarding={() => setIsOnboardingOpen(true)}
           onOpenHistoryModal={() => setActiveTab('history')}
+          streakTriggerAnimation={streakAnimationInfo.shouldAnimate}
+          streakOldValue={streakAnimationInfo.oldStreak}
+          onStreakAnimationComplete={() => {
+            setStreakAnimationInfo((prev) => ({ ...prev, shouldAnimate: false }));
+          }}
         />
       ) : activeTab === 'workouts' ? (
         <>
@@ -223,29 +227,61 @@ const AppContent: React.FC = () => {
           <DaySelector
             selectedDayKey={selectedDayKey}
             todayKey={todayKey}
-            onSelectDay={(key) => setSelectedDayKey(key)}
+            onSelectDay={(key) => {
+              setSelectedDayKey(key);
+              setWorkoutSubTab('exercises');
+            }}
             completedDays={completedDayKeys}
           />
 
+          {/* Sub-Abas do Treino: Musculação / Alongamento / Cardio (elimina poluição vertical) */}
+          {(Boolean(currentWorkoutDay.stretches?.length) || Boolean(currentWorkoutDay.cardio)) && !currentWorkoutDay.isRestDay && (
+            <div className="workout-subtabs-row">
+              <button
+                type="button"
+                className={`workout-subtab-btn ${workoutSubTab === 'exercises' ? 'active' : ''}`}
+                onClick={() => setWorkoutSubTab('exercises')}
+              >
+                <Dumbbell size={13} />
+                <span>Exercícios ({currentWorkoutDay.exercises.length})</span>
+              </button>
+
+              {currentWorkoutDay.stretches && currentWorkoutDay.stretches.length > 0 && (
+                <button
+                  type="button"
+                  className={`workout-subtab-btn ${workoutSubTab === 'stretches' ? 'active' : ''}`}
+                  onClick={() => setWorkoutSubTab('stretches')}
+                >
+                  <span>Alongamento ({currentWorkoutDay.stretches.length})</span>
+                </button>
+              )}
+
+              {currentWorkoutDay.cardio && (
+                <button
+                  type="button"
+                  className={`workout-subtab-btn ${workoutSubTab === 'cardio' ? 'active' : ''}`}
+                  onClick={() => setWorkoutSubTab('cardio')}
+                >
+                  <span>Cardio</span>
+                </button>
+              )}
+            </div>
+          )}
+
           <main className="main-content-area">
-            {/* Card Principal de Resumo do Treino */}
-            <WorkoutCard
-              workoutDay={currentWorkoutDay}
-              isToday={selectedDayKey === todayKey}
-              isCompleted={isCurrentDayCompleted}
-              onStartWorkout={() => setIsActiveWorkoutOpen(true)}
-              onSelectExercise={(ex) => setSelectedExerciseForDetail(ex)}
-            />
-
-            {/* Alongamento e Mobilidade Específica do Dia */}
-            {currentWorkoutDay.stretches && currentWorkoutDay.stretches.length > 0 && (
+            {workoutSubTab === 'exercises' || currentWorkoutDay.isRestDay ? (
+              <WorkoutCard
+                workoutDay={currentWorkoutDay}
+                isToday={selectedDayKey === todayKey}
+                isCompleted={isCurrentDayCompleted}
+                onStartWorkout={() => setIsActiveWorkoutOpen(true)}
+                onSelectExercise={(ex) => setSelectedExerciseForDetail(ex)}
+              />
+            ) : workoutSubTab === 'stretches' && currentWorkoutDay.stretches ? (
               <StretchingSection stretches={currentWorkoutDay.stretches} />
-            )}
-
-            {/* Cardio Estratégico Pós-Treino */}
-            {currentWorkoutDay.cardio && (
+            ) : workoutSubTab === 'cardio' && currentWorkoutDay.cardio ? (
               <CardioSection cardio={currentWorkoutDay.cardio} />
-            )}
+            ) : null}
           </main>
         </>
       ) : activeTab === 'streak' ? (

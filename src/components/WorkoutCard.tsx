@@ -1,6 +1,7 @@
 import React from 'react';
 import type { WorkoutDay, Exercise } from '../types/workout';
 import { Play, Clock, Dumbbell, CheckCircle2, ChevronRight, Moon, ShieldCheck, Flame, Target } from 'lucide-react';
+import { getExerciseMedia } from '../utils/exerciseMedia';
 
 interface WorkoutCardProps {
   workoutDay: WorkoutDay;
@@ -19,107 +20,133 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
 }) => {
   if (workoutDay.isRestDay) {
     return (
-      <div className="rest-day-card">
-        <div className="rest-day-header">
-          <div className="rest-icon-ring">
-            <Moon size={32} className="moon-pulse" />
-          </div>
-          <span className="rest-day-pill">Descanso</span>
-          <h2 className="rest-day-title">{workoutDay.name}</h2>
-          <p className="rest-day-subtitle">{workoutDay.tagline}</p>
+      <div className="clean-rest-card">
+        <div className="clean-rest-icon-circle">
+          <Moon size={28} />
         </div>
+        <span className="clean-rest-badge">Descanso Ativo</span>
+        <h2 className="clean-rest-title">{workoutDay.name}</h2>
+        <p className="clean-rest-tagline">{workoutDay.tagline}</p>
 
-        <div className="rest-guide-box">
-          <h4 className="rest-guide-title">
-            <ShieldCheck size={16} /> Recomendações:
-          </h4>
-          <ul className="rest-guide-tips">
-            {workoutDay.coachTips.map((tip, idx) => (
-              <li key={idx}>{tip}</li>
-            ))}
-          </ul>
-        </div>
+        {workoutDay.coachTips && workoutDay.coachTips.length > 0 && (
+          <div className="clean-rest-tips-box">
+            <h4 className="clean-rest-tips-heading">
+              <ShieldCheck size={16} /> Recomendações do Treinador:
+            </h4>
+            <ul className="clean-rest-tips-list">
+              {workoutDay.coachTips.map((tip, idx) => (
+                <li key={idx}>{tip}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className={`workout-overview-card ${isCompleted ? 'completed' : ''}`}>
-      {/* Topo do Card de Treino */}
-      <div className="workout-banner">
-        <div className="banner-top-badges">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="focus-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-              <Target size={12} /> {workoutDay.focus}
+    <div className={`clean-workout-view ${isCompleted ? 'is-completed' : ''}`}>
+      {/* Header do Treino em Foco */}
+      <section className="clean-workout-hero">
+        <div className="clean-hero-tags">
+          <span className="clean-focus-tag">
+            <Target size={12} />
+            {workoutDay.focus || 'Hipertrofia'}
+          </span>
+          {isToday && (
+            <span className="clean-today-badge">
+              <Flame size={12} />
+              Hoje
             </span>
-            {isToday && (
-              <span className="today-pill">
-                <Flame size={12} /> Hoje
-              </span>
-            )}
-          </div>
-          <div className="banner-time">
-            <Clock size={13} />
-            <span>{workoutDay.estimatedMinutes} min</span>
-          </div>
+          )}
+          <span className="clean-duration-tag">
+            <Clock size={12} />
+            {workoutDay.estimatedMinutes} min
+          </span>
         </div>
 
-        <h2 className="workout-main-title">{workoutDay.name}</h2>
-        <p className="workout-tagline">{workoutDay.tagline}</p>
+        <h2 className="clean-workout-heading">{workoutDay.name}</h2>
+        {workoutDay.tagline && (
+          <p className="clean-workout-subtext">{workoutDay.tagline}</p>
+        )}
 
-        {/* Botão de Chamada Principal */}
-        <div className="workout-cta-row">
-          <button onClick={onStartWorkout} className="start-workout-hero-btn">
-            <Play size={18} fill="currentColor" />
+        {/* Botão de Iniciar com Destaque sem Excesso */}
+        <div className="clean-cta-container">
+          <button onClick={onStartWorkout} className="clean-start-btn">
+            <Play size={16} fill="currentColor" />
             <span>{isCompleted ? 'Refazer Treino' : 'Iniciar Treino'}</span>
           </button>
 
           {isCompleted && (
-            <div className="completed-tag">
-              <CheckCircle2 size={16} />
-              <span>Concluído</span>
-            </div>
+            <span className="clean-completed-badge">
+              <CheckCircle2 size={15} />
+              Concluído
+            </span>
           )}
         </div>
-      </div>
+      </section>
 
-      {/* Grade de Exercícios do Treino */}
-      <div className="exercises-overview-section">
-        <div className="section-header-compact">
-          <h3 className="section-title-clean">
-            <Dumbbell size={17} />
+      {/* Lista de Exercícios Limpa e Arejada com Preview Visual */}
+      <section className="clean-exercise-list-section">
+        <div className="clean-exercise-header-row">
+          <h3 className="clean-exercise-count-title">
+            <Dumbbell size={16} />
             Exercícios ({workoutDay.exercises.length})
           </h3>
+          <span className="clean-exercise-hint">Toque para detalhes</span>
         </div>
 
-        <div className="exercises-compact-grid">
-          {workoutDay.exercises.map((exercise, idx) => (
-            <div
-              key={exercise.id}
-              className="exercise-compact-item"
-              onClick={() => onSelectExercise(exercise)}
-            >
-              <div className="compact-left">
-                <span className="compact-index">{idx + 1}</span>
-                <div className="compact-text">
-                  <span className="compact-machine">{exercise.machineName}</span>
-                  <h4 className="compact-name">{exercise.name}</h4>
-                  <div className="compact-meta-row">
-                    <span className="badge-meta">{exercise.sets}x {exercise.reps}</span>
-                    <span className="badge-meta rest">
-                      <Clock size={11} /> {exercise.suggestedRestSeconds}s
+        <div className="clean-exercise-items">
+          {workoutDay.exercises.map((exercise, idx) => {
+            const media = getExerciseMedia(exercise.id, exercise.visualType);
+            const previewSrc = exercise.gifUrl || exercise.jpgUrl || media.gif || media.jpg;
+
+            return (
+              <div
+                key={exercise.id}
+                className="clean-exercise-item"
+                onClick={() => onSelectExercise(exercise)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="clean-item-thumb-wrapper">
+                  <img
+                    src={previewSrc}
+                    alt={exercise.name}
+                    className="clean-item-thumb-img"
+                    loading="lazy"
+                    onError={(e) => {
+                      if (media.jpg && e.currentTarget.src !== media.jpg) {
+                        e.currentTarget.src = media.jpg;
+                      }
+                    }}
+                  />
+                  <span className="clean-item-thumb-num">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                </div>
+
+                <div className="clean-item-content">
+                  <span className="clean-item-machine">{exercise.machineName}</span>
+                  <h4 className="clean-item-title">{exercise.name}</h4>
+                  <div className="clean-item-badges">
+                    <span className="clean-meta-chip sets">
+                      {exercise.sets} séries × {exercise.reps}
+                    </span>
+                    <span className="clean-meta-chip rest">
+                      <Clock size={10} /> {exercise.suggestedRestSeconds}s
                     </span>
                   </div>
                 </div>
-              </div>
 
-              <div className="compact-right">
-                <ChevronRight size={18} className="chevron-muted" />
+                <div className="clean-item-arrow">
+                  <ChevronRight size={18} />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

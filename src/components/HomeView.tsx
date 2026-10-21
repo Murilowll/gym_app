@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import type { WorkoutDay, UserStats, CompletedWorkoutRecord } from '../types/workout';
+import { TopStreakBanner } from './TopStreakBanner';
 
 interface HomeViewProps {
   workoutDay: WorkoutDay;
@@ -26,6 +27,9 @@ interface HomeViewProps {
   onOpenCatalog: () => void;
   onOpenOnboarding: () => void;
   onOpenHistoryModal: () => void;
+  streakTriggerAnimation?: boolean;
+  streakOldValue?: number;
+  onStreakAnimationComplete?: () => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -37,12 +41,23 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onGoToProfile,
   onOpenCatalog,
   onOpenOnboarding,
-  onOpenHistoryModal
+  onOpenHistoryModal,
+  streakTriggerAnimation = false,
+  streakOldValue,
+  onStreakAnimationComplete
 }) => {
   const { user, profile } = useAuth();
 
   const displayName = profile?.displayName || user?.displayName || (user?.email?.includes('murilo') ? 'Murilo Lopes' : 'Atleta');
   const firstName = displayName.split(' ')[0];
+
+  // Data atual formatada com elegância
+  const todayDateFormatted = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'short'
+  }).format(new Date());
+  const capitalizedDate = todayDateFormatted.charAt(0).toUpperCase() + todayDateFormatted.slice(1);
 
   // Checar se o treino de hoje já foi feito
   const todayString = new Date().toISOString().split('T')[0];
@@ -51,15 +66,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
   // Tempo total acumulado
   const totalMinutes = history.reduce((acc, h) => acc + (h.durationMinutes || 45), 0);
   const totalHours = Math.floor(totalMinutes / 60);
-  const remainingMins = totalMinutes % 60;
 
-  // Monitor diário de água (salvo em localStorage com a data de hoje)
+  // Monitor diário de água (inicia sempre zerado para ser preenchido ao longo do dia)
   const [waterMl, setWaterMl] = useState<number>(() => {
     try {
       const saved = localStorage.getItem(`ironpulse_water_${todayString}`);
-      return saved ? parseInt(saved, 10) : 1250;
+      if (saved !== null && saved !== '1250') {
+        const val = parseInt(saved, 10);
+        return isNaN(val) ? 0 : val;
+      }
+      return 0;
     } catch {
-      return 1250;
+      return 0;
     }
   });
 
@@ -85,192 +103,216 @@ export const HomeView: React.FC<HomeViewProps> = ({
     } catch {}
   };
 
-  // Frases do dia
-  const motivationalPhrases = [
-    'O segredo do resultado extraordinário é a consistência diária.',
-    'Cada repetição hoje constrói a sua melhor versão amanhã.',
-    'Disciplina é escolher entre o que você quer agora e o que você mais quer.',
-    'Foco no processo: a carga aumenta, a mente fortalece!'
-  ];
-  const phrase = motivationalPhrases[new Date().getDay() % motivationalPhrases.length];
-
   return (
     <div className="home-view-container">
-      {/* Saudação do Topo */}
-      <div className="home-header-greeting">
-        <div>
-          <span className="greeting-pill">SEJA BEM-VINDO DE VOLTA</span>
-          <h2 className="greeting-name">Olá, {firstName}!</h2>
-          <p className="greeting-subtitle">{phrase}</p>
+      {/* Header Limpo e Sofisticado com Ofensiva no Topo */}
+      <header className="home-clean-header">
+        <div className="home-clean-greeting">
+          <span className="home-clean-date">{capitalizedDate}</span>
+          <h2 className="home-clean-name">Olá, {firstName}</h2>
         </div>
 
-        <button onClick={onGoToProfile} className="home-avatar-btn" title="Meu Perfil">
-          <div className="home-avatar-circle">
-            {profile?.displayName?.charAt(0).toUpperCase() || 'M'}
-          </div>
-        </button>
-      </div>
+        <div className="home-clean-actions">
+          {/* Badge de Ofensiva Animado Lá em Cima */}
+          <TopStreakBanner
+            currentStreak={stats.streakDays}
+            initialOldStreak={streakOldValue}
+            triggerAnimation={streakTriggerAnimation}
+            onGoToStreak={onGoToStreak}
+            onAnimationComplete={onStreakAnimationComplete}
+          />
 
-      {/* Card Destaque: Treino de Hoje */}
-      <div className="home-today-workout-card">
-        <div className="today-card-badge-row">
-          <span className={`today-status-badge ${isTodayCompleted ? 'completed' : 'pending'}`}>
+          <button
+            onClick={onGoToProfile}
+            className="home-clean-avatar-btn"
+            aria-label="Abrir Perfil"
+            title="Meu Perfil"
+          >
+            <div className="home-clean-avatar-circle">
+              {profile?.displayName?.charAt(0).toUpperCase() || 'M'}
+            </div>
+          </button>
+        </div>
+      </header>
+
+      {/* Card Destaque: Treino do Dia (Foco Principal sem Poluição) */}
+      <section className="home-hero-workout-card">
+        <div className="hero-workout-header">
+          <span className={`hero-status-pill ${isTodayCompleted ? 'completed' : 'active'}`}>
             {isTodayCompleted ? (
               <>
                 <CheckCircle2 size={13} />
-                Treino de Hoje Concluído!
+                Concluído hoje
               </>
             ) : (
               <>
-                <span className="live-dot" />
-                Treino Programado para Hoje
+                <span className="hero-status-dot" />
+                Treino de Hoje
               </>
             )}
           </span>
-          <span className="today-duration-tag">~{workoutDay.estimatedMinutes} min</span>
+          <span className="hero-time-tag">~{workoutDay.estimatedMinutes} min</span>
         </div>
 
-        <h3 className="today-workout-title">{workoutDay.name}</h3>
-        <p className="today-workout-muscles">
-          Foco: {workoutDay.exercises.map((e) => e.targetMuscles[0]).slice(0, 3).join(' • ')}
-        </p>
-
-        <div className="today-exercises-preview-chips">
-          {workoutDay.exercises.slice(0, 4).map((ex) => (
-            <span key={ex.id} className="ex-preview-chip">
-              {ex.name}
-            </span>
-          ))}
-          {workoutDay.exercises.length > 4 && (
-            <span className="ex-preview-chip more">
-              +{workoutDay.exercises.length - 4} exercícios
-            </span>
-          )}
+        <div className="hero-workout-body">
+          <h3 className="hero-workout-title">{workoutDay.name}</h3>
+          <p className="hero-workout-meta">
+            {workoutDay.exercises.length} exercícios • {workoutDay.focus || 'Hipertrofia & Força'}
+          </p>
         </div>
 
-        <button onClick={onGoToWorkout} className="today-workout-cta-btn">
+        <button
+          onClick={onGoToWorkout}
+          className={`hero-workout-cta ${isTodayCompleted ? 'completed' : ''}`}
+        >
           <Dumbbell size={18} />
-          <span>{isTodayCompleted ? 'Rever Treino Concluído' : 'Iniciar Treino de Hoje'}</span>
-          <ArrowRight size={18} />
+          <span>{isTodayCompleted ? 'Visualizar Treino Realizado' : 'Iniciar Treino Agora'}</span>
+          <ArrowRight size={18} className="cta-arrow" />
         </button>
-      </div>
+      </section>
 
-      {/* Métricas Rápidas */}
-      <div className="home-metrics-grid">
-        <div className="home-metric-card flame" onClick={onGoToStreak} role="button" tabIndex={0}>
-          <div className="metric-icon-wrap flame">
-            <Flame size={20} />
+      {/* Grid de Métricas Limpo e Equilibrado */}
+      <section className="home-clean-metrics-grid">
+        <div
+          className="clean-metric-tile"
+          onClick={onGoToStreak}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="clean-metric-icon-wrap streak">
+            <Flame size={18} />
           </div>
-          <div className="metric-data">
-            <span className="metric-val">{stats.streakDays} dias</span>
-            <span className="metric-label">Ofensiva Atual</span>
+          <div className="clean-metric-content">
+            <span className="clean-metric-value">{stats.streakDays} {stats.streakDays === 1 ? 'dia' : 'dias'}</span>
+            <span className="clean-metric-label">Ofensiva</span>
           </div>
         </div>
 
-        <div className="home-metric-card clock" onClick={onOpenHistoryModal} role="button" tabIndex={0}>
-          <div className="metric-icon-wrap clock">
-            <Clock size={20} />
+        <div
+          className="clean-metric-tile"
+          onClick={onOpenHistoryModal}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="clean-metric-icon-wrap time">
+            <Clock size={18} />
           </div>
-          <div className="metric-data">
-            <span className="metric-val">{totalHours}h {remainingMins}m</span>
-            <span className="metric-label">Horas Treinadas</span>
-          </div>
-        </div>
-
-        <div className="home-metric-card trophy" onClick={onOpenHistoryModal} role="button" tabIndex={0}>
-          <div className="metric-icon-wrap trophy">
-            <Award size={20} />
-          </div>
-          <div className="metric-data">
-            <span className="metric-val">{stats.totalWorkouts}</span>
-            <span className="metric-label">Treinos Feitos</span>
+          <div className="clean-metric-content">
+            <span className="clean-metric-value">{totalHours}h</span>
+            <span className="clean-metric-label">Treinadas</span>
           </div>
         </div>
 
-        <div className="home-metric-card target" onClick={onGoToProfile} role="button" tabIndex={0}>
-          <div className="metric-icon-wrap target">
-            <TrendingUp size={20} />
+        <div
+          className="clean-metric-tile"
+          onClick={onOpenHistoryModal}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="clean-metric-icon-wrap trophy">
+            <Award size={18} />
           </div>
-          <div className="metric-data">
-            <span className="metric-val">{profile?.weightKg || 78} kg</span>
-            <span className="metric-label">Meta: {profile?.targetWeightKg || 83} kg</span>
+          <div className="clean-metric-content">
+            <span className="clean-metric-value">{stats.totalWorkouts}</span>
+            <span className="clean-metric-label">Sessões</span>
           </div>
         </div>
-      </div>
 
-      {/* Monitor de Hidratação Diária */}
-      <div className="home-water-tracker-card">
-        <div className="water-tracker-top">
-          <div className="water-title-wrap">
-            <div className="water-icon-circle">
-              <Droplets size={18} />
+        <div
+          className="clean-metric-tile"
+          onClick={onGoToProfile}
+          role="button"
+          tabIndex={0}
+        >
+          <div className="clean-metric-icon-wrap weight">
+            <TrendingUp size={18} />
+          </div>
+          <div className="clean-metric-content">
+            <span className="clean-metric-value">{profile?.weightKg || 78} kg</span>
+            <span className="clean-metric-label">Meta: {profile?.targetWeightKg || 83}kg</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Monitor de Hidratação Minimalista */}
+      <section className="home-water-clean-card">
+        <div className="water-clean-top">
+          <div className="water-clean-info">
+            <div className="water-clean-icon">
+              <Droplets size={16} />
             </div>
             <div>
-              <h4 className="water-title">Hidratação do Atleta</h4>
-              <span className="water-subtitle">{waterMl} ml de {waterTargetMl} ml ({waterProgress}%)</span>
+              <h4 className="water-clean-title">Hidratação</h4>
+              <span className="water-clean-meta">
+                {waterMl} / {waterTargetMl} ml ({waterProgress}%)
+              </span>
             </div>
           </div>
 
-          <div className="water-btns">
-            <button onClick={handleAddWater} className="water-add-btn" title="Adicionar 250ml">
-              <Plus size={15} />
-              <span>+250ml</span>
+          <div className="water-clean-actions">
+            <button
+              onClick={handleAddWater}
+              className="water-clean-add-btn"
+              title="Adicionar 250ml de água"
+            >
+              <Plus size={14} />
+              <span>250ml</span>
             </button>
             {waterMl > 0 && (
-              <button onClick={handleResetWater} className="water-reset-btn" title="Zerar contagem">
-                <RotateCcw size={13} />
+              <button
+                onClick={handleResetWater}
+                className="water-clean-reset-btn"
+                title="Zerar água"
+              >
+                <RotateCcw size={12} />
               </button>
             )}
           </div>
         </div>
 
-        <div className="water-progress-bar-track">
-          <div className="water-progress-bar-fill" style={{ width: `${waterProgress}%` }} />
+        <div className="water-clean-track">
+          <div
+            className="water-clean-fill"
+            style={{ width: `${waterProgress}%` }}
+          />
         </div>
-      </div>
+      </section>
 
-      {/* Funções Rápidas para o Usuário */}
-      <div className="home-functions-section">
-        <h3 className="section-title-clean">
-          <Sparkles size={18} />
-          Funções Rápidas
-        </h3>
-
-        <div className="home-functions-grid">
-          <button onClick={onOpenCatalog} className="function-card">
-            <div className="function-icon-pill catalog">
-              <BookOpen size={22} />
+      {/* Acesso Rápido Minimalista */}
+      <section className="home-quick-actions-section">
+        <h4 className="quick-actions-title">Acesso Rápido</h4>
+        <div className="quick-actions-grid">
+          <button onClick={onOpenCatalog} className="quick-action-tile">
+            <div className="quick-icon-wrap catalog">
+              <BookOpen size={18} />
             </div>
-            <div className="function-info">
-              <strong>Catálogo de Exercícios</strong>
-              <span>54 exercícios com animações em GIF e biomecânica</span>
+            <div className="quick-tile-text">
+              <span className="quick-title">Biblioteca</span>
+              <span className="quick-subtitle">Exercícios & GIFs</span>
             </div>
-            <ArrowRight size={16} className="function-arrow" />
           </button>
 
-          <button onClick={onOpenOnboarding} className="function-card highlight">
-            <div className="function-icon-pill ai">
-              <Sparkles size={22} />
+          <button onClick={onOpenOnboarding} className="quick-action-tile">
+            <div className="quick-icon-wrap ai">
+              <Sparkles size={18} />
             </div>
-            <div className="function-info">
-              <strong>Refazer Onboarding com IA</strong>
-              <span>Gere nova divisão de treinos personalizada</span>
+            <div className="quick-tile-text">
+              <span className="quick-title">Protocolo IA</span>
+              <span className="quick-subtitle">Ajustar Ficha</span>
             </div>
-            <ArrowRight size={16} className="function-arrow" />
           </button>
 
-          <button onClick={onOpenHistoryModal} className="function-card">
-            <div className="function-icon-pill history">
-              <Clock size={22} />
+          <button onClick={onOpenHistoryModal} className="quick-action-tile">
+            <div className="quick-icon-wrap history">
+              <Clock size={18} />
             </div>
-            <div className="function-info">
-              <strong>Histórico & Recordes (PRs)</strong>
-              <span>Veja sua evolução de peso e cargas máximas</span>
+            <div className="quick-tile-text">
+              <span className="quick-title">Histórico</span>
+              <span className="quick-subtitle">Cargas & Recordes</span>
             </div>
-            <ArrowRight size={16} className="function-arrow" />
           </button>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

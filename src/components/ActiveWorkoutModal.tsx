@@ -14,10 +14,11 @@ import {
   Trophy,
   RotateCcw,
   CheckCircle2,
+  Info,
   X
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { playSuccessChime, playTickSound } from '../utils/sound';
+import { playSuccessChime, playTickSound, playTimerBeep } from '../utils/sound';
 import { recordExerciseWeight } from '../utils/storage';
 import { getExerciseMedia } from '../utils/exerciseMedia';
 import { getStretchGif } from '../utils/stretchMedia';
@@ -45,6 +46,12 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const [phase, setPhase] = useState<'stretching' | 'exercises' | 'cardio' | 'summary'>('stretching');
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0);
 
+  // Estados do Alongamento Guiado (Passo a Passo com Imagem Grande & Timer)
+  const [currentStretchIndex, setCurrentStretchIndex] = useState<number>(0);
+  const [stretchTimerRemaining, setStretchTimerRemaining] = useState<number>(30);
+  const [isStretchTimerRunning, setIsStretchTimerRunning] = useState<boolean>(false);
+  const [showStretchInfoModal, setShowStretchInfoModal] = useState<boolean>(false);
+
   // Séries por exercício
   const [exerciseSets, setExerciseSets] = useState<{ [exerciseId: string]: SetLog[] }>({});
 
@@ -71,6 +78,12 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
     setPhase(hasStretches ? 'stretching' : 'exercises');
     setCurrentExerciseIndex(0);
+    setCurrentStretchIndex(0);
+    setShowStretchInfoModal(false);
+    if (workoutDay.stretches && workoutDay.stretches[0]) {
+      setStretchTimerRemaining(workoutDay.stretches[0].durationSeconds || 30);
+    }
+    setIsStretchTimerRunning(false);
     setTotalWorkoutSeconds(0);
     setCardioSeconds(0);
     setIsCardioRunning(false);
@@ -87,6 +100,73 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     });
     setExerciseSets(initial);
   }, [isOpen, workoutDay, hasStretches]);
+
+  // Atualiza tempo restante quando troca o alongamento ativo
+  useEffect(() => {
+    if (workoutDay.stretches && workoutDay.stretches[currentStretchIndex]) {
+      setStretchTimerRemaining(workoutDay.stretches[currentStretchIndex].durationSeconds || 30);
+      setIsStretchTimerRunning(false);
+      setShowStretchInfoModal(false);
+    }
+  }, [currentStretchIndex, workoutDay.stretches]);
+
+  // Cronômetro do alongamento atual
+  useEffect(() => {
+    if (!isStretchTimerRunning || phase !== 'stretching') return;
+
+    const timer = setInterval(() => {
+      setStretchTimerRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setIsStretchTimerRunning(false);
+          playTimerBeep(true);
+          if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+            try { navigator.vibrate([80, 50, 100]); } catch {}
+          }
+          return 0;
+        }
+        if (prev <= 4) {
+          playTickSound();
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isStretchTimerRunning, phase]);
+
+  const handleToggleStretchTimer = () => {
+    if (stretchTimerRemaining === 0 && workoutDay.stretches?.[currentStretchIndex]) {
+      setStretchTimerRemaining(workoutDay.stretches[currentStretchIndex].durationSeconds || 30);
+      setIsStretchTimerRunning(true);
+      return;
+    }
+    setIsStretchTimerRunning((prev) => !prev);
+  };
+
+  const handleResetStretchTimer = () => {
+    setIsStretchTimerRunning(false);
+    if (workoutDay.stretches?.[currentStretchIndex]) {
+      setStretchTimerRemaining(workoutDay.stretches[currentStretchIndex].durationSeconds || 30);
+    }
+  };
+
+  const handleNextStretch = () => {
+    if (!workoutDay.stretches) return;
+    if (currentStretchIndex < workoutDay.stretches.length - 1) {
+      setCurrentStretchIndex((prev) => prev + 1);
+    } else {
+      // Concluiu todos os alongamentos -> vai para o treino de musculação!
+      playSuccessChime();
+      setPhase('exercises');
+    }
+  };
+
+  const handlePrevStretch = () => {
+    if (currentStretchIndex > 0) {
+      setCurrentStretchIndex((prev) => prev - 1);
+    }
+  };
 
   // Timer geral do treino
   useEffect(() => {
@@ -201,8 +281,14 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         <button
           type="button"
           className="circular-nav-btn"
-          onClick={() => setShowExitConfirm(true)}
-          title="Minimizar / Sair do Treino"
+          onClick={() => {
+            if (phase === 'stretching' && currentStretchIndex > 0) {
+              handlePrevStretch();
+            } else {
+              setShowExitConfirm(true);
+            }
+          }}
+          title={phase === 'stretching' && currentStretchIndex > 0 ? "Alongamento anterior" : "Minimizar / Sair do Treino"}
         >
           <ChevronLeft size={24} />
         </button>
@@ -226,155 +312,286 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
           <span>{formatTimer(totalWorkoutSeconds)}</span>
         </div>
 
-        <button
-          type="button"
-          className="circular-nav-btn pause"
-          onClick={() => setShowExitConfirm(true)}
-          title="Pausar Treino"
-        >
-          <Pause size={18} fill="currentColor" />
-        </button>
+        {phase === 'stretching' ? (
+          <button
+            type="button"
+            className="stretch-top-skip-btn"
+            onClick={() => setPhase('exercises')}
+            title="Pular para a musculação"
+          >
+            <span>Pular Treino</span>
+            <ArrowRight size={13} />
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="circular-nav-btn pause"
+            onClick={() => setShowExitConfirm(true)}
+            title="Pausar Treino"
+          >
+            <Pause size={18} fill="currentColor" />
+          </button>
+        )}
       </div>
 
       {/* =========================================================
-          FASE 1: ALONGAMENTO & AQUECIMENTO
+          FASE 1: ALONGAMENTO & AQUECIMENTO GUIADO (MESMO LAYOUT E ESPAÇAMENTO DO TREINO)
           ========================================================= */}
-      {phase === 'stretching' && (
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            padding: '80px 24px 30px',
-            overflowY: 'auto'
-          }}
-        >
-          <div>
-            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-              <span
-                style={{
-                  background: 'rgba(100, 210, 255, 0.15)',
-                  color: '#64d2ff',
-                  padding: '4px 12px',
-                  borderRadius: '9999px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  textTransform: 'uppercase'
-                }}
-              >
-                Aquecimento & Mobilidade
-              </span>
-              <h2 style={{ fontSize: '24px', fontWeight: 800, margin: '8px 0 4px', color: '#ffffff' }}>
-                Alongamentos do Dia
-              </h2>
-              <p style={{ fontSize: '13px', color: '#a1a1aa' }}>
-                Prepare suas articulações e previna lesões antes de pegar pesado.
-              </p>
+      {phase === 'stretching' && workoutDay.stretches && workoutDay.stretches[currentStretchIndex] && (() => {
+        const currentStretch = workoutDay.stretches[currentStretchIndex];
+        const gifUrl = getStretchGif(currentStretch);
+        const stretchesCount = workoutDay.stretches.length;
+        const totalDuration = currentStretch.durationSeconds || 30;
+        const circumference = 427.26; // 2 * PI * 68
+        const progressOffset = circumference * (1 - Math.min(1, Math.max(0, stretchTimerRemaining / totalDuration)));
+
+        return (
+          <>
+            {/* GIF DE FUNDO REAL E NÍTIDO (IDÊNTICO À TELA DE TREINO) */}
+            <div className="workout-session-gif-wrap">
+              <img
+                src={gifUrl}
+                alt={currentStretch.name}
+                className="workout-session-gif-img"
+              />
+              <div className="workout-session-gradient-overlay" />
+
+              {/* Botão Flutuante de Instruções sobre o GIF */}
+              {(currentStretch.instruction || currentStretch.focusTip) && (
+                <button
+                  type="button"
+                  className="stretch-hero-info-btn"
+                  onClick={() => setShowStretchInfoModal(true)}
+                  title="Ver instruções de execução do alongamento"
+                >
+                  <Info size={14} />
+                  <span>Como Executar</span>
+                </button>
+              )}
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {workoutDay.stretches?.map((st) => {
-                const gifUrl = getStretchGif(st);
-                return (
-                  <div
-                    key={st.id}
-                    className="active-stretch-item"
-                    style={{
-                      background: 'var(--bg-card)',
-                      border: '1px solid var(--border-glass-bright)',
-                      borderRadius: '18px',
-                      padding: '12px 14px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      boxShadow: 'var(--shadow-card)'
-                    }}
-                  >
-                    {/* GIF Animado do Alongamento */}
-                    <div
-                      style={{
-                        width: '68px',
-                        height: '68px',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        flexShrink: 0,
-                        background: '#000000',
-                        border: '1px solid var(--border-glass)'
-                      }}
-                    >
-                      <img
-                        src={gifUrl}
-                        alt={st.name}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                        loading="lazy"
-                      />
-                    </div>
+            {/* ÁREA INFERIOR COM TIMER INOVADOR & CONTROLES */}
+            <div className="workout-session-body stretch-session-body">
+              {/* Card do Timer Radial Pulsante Inovador */}
+              <div className="stretch-pulse-timer-card">
+                <div
+                  className={`stretch-pulse-timer-circle ${isStretchTimerRunning ? 'running' : 'paused'} ${stretchTimerRemaining === 0 ? 'completed' : ''}`}
+                  onClick={handleToggleStretchTimer}
+                  role="button"
+                  tabIndex={0}
+                  title="Clique para Iniciar / Pausar o Cronômetro"
+                >
+                  {/* Efeito Holográfico de Brilho Radial */}
+                  <div className="stretch-timer-ambient-glow" />
 
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <h4 style={{ margin: '0 0 3px', fontSize: '14px', fontWeight: 800, color: 'var(--text-pure)' }}>
-                        {st.name}
-                      </h4>
-                      <p style={{ margin: '0 0 6px', fontSize: '11.5px', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {st.targetJoint}
-                      </p>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span
-                          style={{
-                            fontSize: '10.5px',
-                            fontWeight: 700,
-                            padding: '2px 7px',
-                            borderRadius: '6px',
-                            background: 'var(--emerald-subtle)',
-                            color: 'var(--text-pure)',
-                            border: '1px solid var(--border-glass)'
-                          }}
-                        >
-                          {st.durationSeconds}s
-                        </span>
-                        {st.focusTip && (
-                          <span style={{ fontSize: '11px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {st.focusTip}
-                          </span>
-                        )}
-                      </div>
+                  {/* SVG Gauge com Animação de Arco */}
+                  <svg className="stretch-timer-svg" viewBox="0 0 160 160">
+                    <circle
+                      className="stretch-timer-track-circle"
+                      cx="80"
+                      cy="80"
+                      r="68"
+                    />
+                    <circle
+                      className="stretch-timer-progress-circle"
+                      cx="80"
+                      cy="80"
+                      r="68"
+                      style={{
+                        strokeDasharray: circumference,
+                        strokeDashoffset: progressOffset
+                      }}
+                    />
+                  </svg>
+
+                  {/* Conteúdo Central do Cronômetro */}
+                  <div className="stretch-timer-inner-content">
+                    <span className="stretch-timer-number">
+                      {stretchTimerRemaining}
+                      <small>s</small>
+                    </span>
+
+                    <div className="stretch-timer-state-pill">
+                      {isStretchTimerRunning ? (
+                        <>
+                          <span className="pulse-indicator-dot" />
+                          <span>EM EXECUÇÃO</span>
+                        </>
+                      ) : stretchTimerRemaining === 0 ? (
+                        <>
+                          <Check size={11} strokeWidth={3} />
+                          <span>CONCLUÍDO</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play size={10} fill="currentColor" />
+                          <span>TOQUE P/ INICIAR</span>
+                        </>
+                      )}
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '30px' }}>
-            <button
-              type="button"
-              className="btn-next-exercise-cta"
-              onClick={() => setPhase('exercises')}
-            >
-              <span>Iniciar Exercícios de Musculação</span>
-              <ArrowRight size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setPhase('exercises')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#a1a1aa',
-                fontSize: '13px',
-                cursor: 'pointer',
-                padding: '8px'
-              }}
-            >
-              Pular Alongamento
-            </button>
-          </div>
-        </div>
-      )}
+                {/* Controles de Tempo Rápidos */}
+                <div className="stretch-timer-controls-row">
+                  <button
+                    type="button"
+                    className="stretch-quick-adjust-btn"
+                    onClick={() => setStretchTimerRemaining((prev) => Math.max(5, prev - 5))}
+                    title="-5 segundos"
+                  >
+                    -5s
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`stretch-main-play-btn ${isStretchTimerRunning ? 'running' : ''}`}
+                    onClick={handleToggleStretchTimer}
+                  >
+                    {isStretchTimerRunning ? (
+                      <>
+                        <Pause size={16} fill="currentColor" />
+                        <span>Pausar</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play size={16} fill="currentColor" />
+                        <span>{stretchTimerRemaining === 0 ? 'Reiniciar' : 'Iniciar'}</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="stretch-quick-adjust-btn"
+                    onClick={() => setStretchTimerRemaining((prev) => prev + 10)}
+                    title="+10 segundos"
+                  >
+                    +10s
+                  </button>
+
+                  <button
+                    type="button"
+                    className="stretch-reset-btn"
+                    onClick={handleResetStretchTimer}
+                    title="Resetar tempo original"
+                  >
+                    <RotateCcw size={15} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Barra Inferior com Indicadores e Paginação (IDÊNTICA À TELA DE TREINO!) */}
+              <div className="workout-bottom-indicator-bar">
+                {/* Badge Circular de Progresso (ex: 1/3) */}
+                <div className="exercise-progress-ring-badge">
+                  {currentStretchIndex + 1}/{stretchesCount}
+                </div>
+
+                {/* Nome do Alongamento e Articulação Alvo */}
+                <div className="exercise-name-badge">
+                  <strong>{currentStretch.name}</strong>
+                  <span>Articulação: {currentStretch.targetJoint}</span>
+                </div>
+
+                {/* Trilha de Paginação com Números dos Alongamentos */}
+                <div className="exercise-pagination-track">
+                  {workoutDay.stretches.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className={`exercise-page-num ${i === currentStretchIndex ? 'active' : ''}`}
+                      onClick={() => setCurrentStretchIndex(i)}
+                      title={`Ir para alongamento ${i + 1}`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Botão de Próximo Exercício / Iniciar Treino (IDÊNTICO À TELA DE TREINO!) */}
+              {currentStretchIndex < stretchesCount - 1 ? (
+                <button
+                  type="button"
+                  className="btn-next-exercise-cta"
+                  onClick={handleNextStretch}
+                >
+                  <span>Próximo Alongamento ({currentStretchIndex + 2}/{stretchesCount})</span>
+                  <ArrowRight size={20} />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn-next-exercise-cta finish-stretches-btn"
+                  onClick={handleNextStretch}
+                >
+                  <Dumbbell size={20} />
+                  <span>Iniciar Treino de Musculação</span>
+                  <ArrowRight size={20} />
+                </button>
+              )}
+            </div>
+
+            {/* Popup Modal de Instruções do Alongamento */}
+            {showStretchInfoModal && (
+              <div
+                className="stretch-info-backdrop"
+                onClick={() => setShowStretchInfoModal(false)}
+              >
+                <div
+                  className="stretch-info-modal"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="stretch-info-modal-header">
+                    <div className="stretch-info-modal-tag">
+                      <Info size={13} />
+                      <span>GUIA DE EXECUÇÃO</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="stretch-info-modal-close"
+                      onClick={() => setShowStretchInfoModal(false)}
+                      aria-label="Fechar"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  <h3 className="stretch-info-modal-title">{currentStretch.name}</h3>
+                  <div className="stretch-info-modal-joint">
+                    Articulação-alvo: <strong>{currentStretch.targetJoint}</strong>
+                  </div>
+
+                  <div className="stretch-info-modal-content">
+                    {currentStretch.instruction && (
+                      <div className="stretch-info-section">
+                        <span className="stretch-info-section-title">Como Executar</span>
+                        <p className="stretch-info-section-text">{currentStretch.instruction}</p>
+                      </div>
+                    )}
+
+                    {currentStretch.focusTip && (
+                      <div className="stretch-info-tip-box">
+                        <div className="stretch-info-tip-badge">Dica Pro</div>
+                        <p className="stretch-info-tip-text">{currentStretch.focusTip}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="stretch-info-modal-confirm-btn"
+                    onClick={() => setShowStretchInfoModal(false)}
+                  >
+                    Entendi
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        );
+      })()}
 
       {/* =========================================================
           FASE 2: EXERCÍCIOS DE MUSCULAÇÃO (DESIGN IDÊNTICO À FOTO)
@@ -450,7 +667,11 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                       onClick={() => handleToggleSet(set.setIndex)}
                       aria-label={`Concluir série ${set.setIndex}`}
                     >
-                      <Check size={22} strokeWidth={2.8} />
+                      <Check
+                        size={22}
+                        strokeWidth={2.8}
+                        color={set.completed ? '#000000' : 'currentColor'}
+                      />
                     </button>
                   </div>
                 );

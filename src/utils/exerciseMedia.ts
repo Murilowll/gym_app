@@ -57,9 +57,53 @@ export const ID_TO_IMAGE_MAP: Record<string, { gif: string; jpg: string }> = {
   'ex-plank': { gif: '/exercises/ex-plank.gif', jpg: '/exercises/ex-plank.jpg' }
 };
 
-export function getExerciseMedia(id?: string): { gif: string; jpg: string } {
+export const TYPE_TO_FALLBACK_ID: Record<string, string> = {
+  'incline-bench': 'p1-incline-db',
+  'peck-deck': 'p1-peck-deck',
+  'chest-press': 'p1-chest-press',
+  'lateral-raise': 'p1-lateral-raise',
+  'triceps-pushdown': 'p1-triceps-pushdown',
+  'triceps-extension': 'p1-triceps-extension',
+  'lat-pulldown': 'p2-lat-pulldown',
+  'seated-cable-row': 'p2-seated-cable-row',
+  'reverse-fly': 'p2-reverse-fly',
+  'leg-extension': 'p3-leg-extension',
+  'leg-press': 'p3-leg-press',
+  'bulgarian-split': 'p3-bulgarian-split',
+  'calf-raise': 'p3-calf-raise',
+  'abs-cable': 'p3-abs-crunch',
+  'seated-overhead-press': 'p4-shoulder-press',
+  'cable-crossover': 'p4-cable-crossover',
+  'bent-over-row': 'p5-bent-over-row',
+  'shrug': 'p5-shrugs',
+  'preacher-curl': 'p5-preacher-curl',
+  'incline-curl': 'p5-incline-curl',
+  'lying-leg-curl': 'p6-lying-leg-curl',
+  'seated-leg-curl': 'p6-seated-leg-curl',
+  'romanian-deadlift': 'p6-romanian-deadlift',
+  'hip-thrust': 'p6-hip-thrust',
+  'bench-press': 'ex-bench-press-barbell',
+  'dips': 'ex-dips-chest',
+  'pushup': 'ex-pushup',
+  'pullup': 'ex-pullup',
+  'squat': 'ex-squat-barbell',
+  'deadlift': 'ex-deadlift-conventional',
+  'hack-squat': 'ex-hack-squat',
+  'arnold-press': 'ex-arnold-press',
+  'face-pull': 'ex-face-pull',
+  'abductor': 'ex-abductor-machine',
+  'adductor': 'ex-adductor-machine',
+  'plank': 'ex-plank',
+  'hanging-leg-raise': 'ex-hanging-leg-raise',
+  'cable-crunch': 'ex-cable-crunch'
+};
+
+export function getExerciseMedia(id?: string, visualType?: string): { gif: string; jpg: string } {
   if (id && ID_TO_IMAGE_MAP[id]) {
     return ID_TO_IMAGE_MAP[id];
+  }
+  if (visualType && TYPE_TO_FALLBACK_ID[visualType] && ID_TO_IMAGE_MAP[TYPE_TO_FALLBACK_ID[visualType]]) {
+    return ID_TO_IMAGE_MAP[TYPE_TO_FALLBACK_ID[visualType]];
   }
   return { gif: '/exercises/ex-bench-press-barbell.gif', jpg: '/exercises/ex-bench-press-barbell.jpg' };
 }

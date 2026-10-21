@@ -1,7 +1,7 @@
 import React from 'react';
-import type { DayKey, WorkoutDay } from '../types/workout';
+import type { DayKey } from '../types/workout';
 import { WORKOUT_DAYS } from '../data/workoutsData';
-import { CheckCircle2, Moon, Zap, Flame } from 'lucide-react';
+import { Check, Flame } from 'lucide-react';
 
 interface DaySelectorProps {
   selectedDayKey: DayKey;
@@ -26,20 +26,9 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
     domingo: 'DOM'
   };
 
-  const getSubTag = (day: WorkoutDay) => {
-    if (day.isRestDay) return 'Descanso';
-    if (day.name.includes('Push A')) return 'Push A';
-    if (day.name.includes('Pull A')) return 'Pull A';
-    if (day.name.includes('Legs A')) return 'Legs A';
-    if (day.name.includes('Push B')) return 'Push B';
-    if (day.name.includes('Pull B')) return 'Pull B';
-    if (day.name.includes('Legs B')) return 'Legs B';
-    return 'Treino';
-  };
-
   return (
-    <div className="day-selector-wrapper">
-      <div className="day-selector-scroll">
+    <nav className="clean-day-selector" aria-label="Dias da Semana">
+      <div className="clean-day-scroll">
         {WORKOUT_DAYS.map((day) => {
           const isSelected = day.key === selectedDayKey;
           const isToday = day.key === todayKey;
@@ -49,28 +38,25 @@ export const DaySelector: React.FC<DaySelectorProps> = ({
             <button
               key={day.key}
               onClick={() => onSelectDay(day.key)}
-              className={`day-chip ${isSelected ? 'selected' : ''} ${isToday ? 'is-today' : ''} ${day.isRestDay ? 'is-rest' : ''}`}
+              className={`clean-day-pill ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''} ${day.isRestDay ? 'rest' : ''}`}
+              aria-selected={isSelected}
+              title={`${day.name}${isToday ? ' (Hoje)' : ''}`}
             >
-              <div className="day-chip-top">
+              <span className="clean-day-label">{shortNames[day.key]}</span>
+              
+              <div className="clean-day-indicator">
                 {isCompleted ? (
-                  <CheckCircle2 size={13} className="completed-icon" />
+                  <Check size={11} className="clean-check-icon" strokeWidth={3} />
                 ) : isToday ? (
-                  <Flame size={13} className="today-icon" />
-                ) : day.isRestDay ? (
-                  <Moon size={12} className="moon-icon" />
+                  <Flame size={11} className="clean-today-icon" />
                 ) : (
-                  <Zap size={11} className="gym-zap" />
+                  <span className={`clean-dot ${isSelected ? 'active-dot' : ''}`} />
                 )}
               </div>
-
-              <span className="day-short-name">{shortNames[day.key]}</span>
-              <span className="day-subtag">{getSubTag(day)}</span>
-
-              {isSelected && <div className="active-indicator-dot" />}
             </button>
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 };

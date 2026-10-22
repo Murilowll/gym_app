@@ -30,6 +30,11 @@ export const ID_TO_IMAGE_MAP: Record<string, { gif: string; jpg: string }> = {
   'p6-romanian-deadlift': { gif: '/exercises/p6-romanian-deadlift.gif', jpg: '/exercises/p6-romanian-deadlift.jpg' },
   'p6-hip-thrust': { gif: '/exercises/p6-hip-thrust.gif', jpg: '/exercises/p6-hip-thrust.jpg' },
   'p6-seated-calf': { gif: '/exercises/p6-seated-calf.gif', jpg: '/exercises/p6-seated-calf.jpg' },
+  'p1-crossover-high': { gif: '/exercises/p4-cable-crossover.gif', jpg: '/exercises/p4-cable-crossover.jpg' },
+  'p4-flat-db-press': { gif: '/exercises/ex-bench-press-barbell.gif', jpg: '/exercises/ex-bench-press-barbell.jpg' },
+  'p4-triceps-pushdown': { gif: '/exercises/p1-triceps-pushdown.gif', jpg: '/exercises/p1-triceps-pushdown.jpg' },
+  'p5-face-pull': { gif: '/exercises/ex-face-pull.gif', jpg: '/exercises/ex-face-pull.jpg' },
+  'p6-hanging-leg-raise': { gif: '/exercises/ex-hanging-leg-raise.gif', jpg: '/exercises/ex-hanging-leg-raise.jpg' },
 
   // Exercícios Específicos & Biomecânicos Únicos (Sem repetição)
   'ex-bench-press-barbell': { gif: '/exercises/ex-bench-press-barbell.gif', jpg: '/exercises/ex-bench-press-barbell.jpg' },

@@ -7,7 +7,7 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
     name: 'Push A (Peito, Ombros e Tríceps)',
     focus: 'Peitoral Completo, Deltoide Lateral/Anterior & Tríceps',
     tagline: 'Foco em espessura de peito, amplitude e tríceps pesado',
-    estimatedMinutes: 65,
+    estimatedMinutes: 70,
     coachTips: [
       'Retraia e deprima as escápulas antes de qualquer pressão de supino para proteger seus ombros.',
       'Controle a fase excêntrica (descida do peso) em 2 a 3 segundos para maximizar o dano muscular produtivo.',
@@ -126,6 +126,34 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
         alternatives: [
           { name: 'Supino Reto com Barra', equipment: 'Banco de Supino', reason: 'Clássico construtor de força e densidade peitoral.' },
           { name: 'Supino Reto com Halteres', equipment: 'Halteres + Banco', reason: 'Permite rotação natural do punho e amplitude maior.' }
+        ]
+      },
+      {
+        id: 'p1-crossover-high',
+        name: 'Crossover na Polia Alta (Foco Inferior/Esternal)',
+        machineName: 'Crossover / Estação de Cabos Dupla',
+        targetMuscles: ['Peitoral Inferior', 'Miolo do Peito (Esternal)'],
+        secondaryMuscles: ['Deltoide Anterior'],
+        sets: 3,
+        reps: '12 - 15',
+        suggestedRestSeconds: 60,
+        visualType: 'cable-crossover',
+        machineAdjustment: [
+          'Fixe as polias nas posições mais altas da estação com pegadores estribo.',
+          'Dê um passo à frente com uma perna para estabilizar o tronco inclinado a ~20°.'
+        ],
+        executionTips: [
+          'Inicie com os braços abertos sentindo um alongamento profundo nas fibras do peito.',
+          'Puxe as mãos para baixo e para frente em direção à linha do umbigo em formato de arco.',
+          'Cruze suavemente as mãos no final e aperte o peitoral com máxima força isométrica por 2 segundos.'
+        ],
+        commonMistakes: [
+          'Usar impulso com a coluna jogando o tronco para a frente e para trás.',
+          'Dobrar e esticar os cotovelos transformando em movimento de empurrar.'
+        ],
+        alternatives: [
+          { name: 'Crucifixo Declinado com Halteres', equipment: 'Banco Declinado + Halteres', reason: 'Grande estiramento na mesma linha de fibras.' },
+          { name: 'Paralelas com Tronco Inclinado (Dips)', equipment: 'Paralelas / Graviton', reason: 'Excelente trabalho com o peso corporal para fechar a caixa torácica.' }
         ]
       },
       {
@@ -616,7 +644,7 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
     name: 'Push B (Foco Ombros Deltoides, Peitoral Superior e Tríceps)',
     focus: 'Deltoides 3D, Clavicular (Superior) & Tríceps Força',
     tagline: 'Foco na silhueta em V e ombros densos e definidos',
-    estimatedMinutes: 65,
+    estimatedMinutes: 70,
     coachTips: [
       'O deltoide responde magnificamente a volumes mais altos e contrações com pico isométrico.',
       'Mantenha as manoplas firmes e cotovelos alinhados com o plano escapular.',
@@ -728,6 +756,34 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
         ]
       },
       {
+        id: 'p4-flat-db-press',
+        name: 'Supino Reto com Halteres Livres',
+        machineName: 'Banco Reto Tradicional',
+        targetMuscles: ['Peitoral Maior (Esternocostal)', 'Peitoral Médio'],
+        secondaryMuscles: ['Tríceps Braquial', 'Deltoide Anterior'],
+        sets: 3,
+        reps: '8 - 10',
+        suggestedRestSeconds: 90,
+        visualType: 'bench-press',
+        machineAdjustment: [
+          'Ajuste o banco em posição 100% horizontal.',
+          'Posicione os pés firmemente no chão criando base estável e firme.'
+        ],
+        executionTips: [
+          'Desça os halteres com controle permitindo uma descida profunda para abrir e alongar a fáscia do peito.',
+          'Mantenha as escápulas aduzidas e peito estufado o tempo todo.',
+          'Suba convergindo os halteres suavemente sem bater no topo, mantendo a contração contínua no peitoral.'
+        ],
+        commonMistakes: [
+          'Bater os halteres no topo perdendo a tensão muscular.',
+          'Abrir os cotovelos a 90° forçando a cápsula anterior do ombro.'
+        ],
+        alternatives: [
+          { name: 'Supino Reto com Barra Olímpica', equipment: 'Banco Supino Reto', reason: 'Permite sobrecarga progressiva de quilos.' },
+          { name: 'Supino Reto no Smith', equipment: 'Smith Machine', reason: 'Trajetória fixa com foco total na falha muscular concêntrica.' }
+        ]
+      },
+      {
         id: 'p4-cable-crossover',
         name: 'Crossover na Polia Média / Baixa',
         machineName: 'Crossover de Cabos Duplo',
@@ -782,6 +838,34 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
           { name: 'Tríceps Testa com Halteres', equipment: 'Halteres Livres', reason: 'Permite pegada neutra muito mais confortável para o punho.' },
           { name: 'Tríceps Testa na Polia com Corda', equipment: 'Polia Baixa + Banco', reason: 'Tensão constante sem perda de torque no topo.' }
         ]
+      },
+      {
+        id: 'p4-triceps-pushdown',
+        name: 'Tríceps Pulley na Polia Alta com Barra V / Reta',
+        machineName: 'Crossover / Polia Alta',
+        targetMuscles: ['Tríceps Braquial (Cabeça Lateral e Medial)'],
+        secondaryMuscles: ['Braquiorradial / Antebraço'],
+        sets: 3,
+        reps: '10 - 12',
+        suggestedRestSeconds: 60,
+        visualType: 'triceps-pushdown',
+        machineAdjustment: [
+          'Fixe a barra em V ou barra reta no mosquetão superior da polia.',
+          'Ajuste a carga com pino firme.'
+        ],
+        executionTips: [
+          'Cole os cotovelos nas laterais das costelas e não os mexa para a frente ou para trás.',
+          'Estenda os cotovelos para baixo esmagando o tríceps na base por 1 segundo.',
+          'Suba até os antebraços formarem cerca de 90° com os braços, mantendo a tensão viva.'
+        ],
+        commonMistakes: [
+          'Usar o peso do tronco para empurrar a barra para baixo.',
+          'Deixar os cotovelos subirem junto com a carga.'
+        ],
+        alternatives: [
+          { name: 'Tríceps Coice com Halter ou Cabo', equipment: 'Polia Baixa ou Halter', reason: 'Excelente pico de contração em extensão de ombro.' },
+          { name: 'Mergulho no Banco com Peso nas Pernas', equipment: 'Banco Reto', reason: 'Exercício prático de alta densidade muscular.' }
+        ]
       }
     ],
     cardio: {
@@ -800,7 +884,7 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
     name: 'Pull B (Costas Espessura, Trapézio e Bíceps Pico)',
     focus: 'Espessura de Costas, Romboides, Trapézio & Pico de Bíceps',
     tagline: 'Densidade muscular nas costas para criar relevo tridimensional',
-    estimatedMinutes: 65,
+    estimatedMinutes: 70,
     coachTips: [
       'Na remada curvada, contraia o abdômen para proteger a lombar e mantenha as pernas semi-flexionadas.',
       'Sinta a compressão dos romboides e trapézio médio como se estivesse segurando uma caneta entre as escápulas.',
@@ -912,6 +996,35 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
         ]
       },
       {
+        id: 'p5-face-pull',
+        name: 'Face Pull na Polia Alta com Corda',
+        machineName: 'Torre de Polia Alta / Crossover',
+        targetMuscles: ['Deltoide Posterior', 'Manguito Rotador (Infraespinhal e Redondo Menor)'],
+        secondaryMuscles: ['Trapézio Médio/Inferior', 'Romboides'],
+        sets: 4,
+        reps: '12 - 15',
+        suggestedRestSeconds: 60,
+        visualType: 'face-pull',
+        machineAdjustment: [
+          'Posicione a roldana da polia na altura dos olhos ou da testa.',
+          'Conecte a corda dupla no mosquetão.'
+        ],
+        executionTips: [
+          'Segure as pontas da corda com pegada neutra ou pronada com polegares para trás.',
+          'Dê um passo atrás e puxe a corda em direção à ponte do nariz e testa.',
+          'No final do movimento, separe as mãos girando os punhos e cotovelos para trás (rotação externa), esmagando a parte de trás do ombro.',
+          'Segure 1 segundo no pico de contração antes de esticar os braços controladamente.'
+        ],
+        commonMistakes: [
+          'Puxar para o peito ou pescoço como se fosse uma remada alta.',
+          'Colocar excesso de peso e balançar o tronco usando a lombar.'
+        ],
+        alternatives: [
+          { name: 'Crucifixo Invertido com Halteres no Banco Inclinado', equipment: 'Banco + Halteres', reason: 'Isolamento de posterior livre de cabos.' },
+          { name: 'Band Pull-Apart com Elástico', equipment: 'Superband', reason: 'Excelente para ativação escapular em qualquer lugar.' }
+        ]
+      },
+      {
         id: 'p5-preacher-curl',
         name: 'Rosca Scott na Máquina ou Banco Scott',
         machineName: 'Máquina de Rosca Scott / Preacher Curl',
@@ -984,7 +1097,7 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
     name: 'Legs B (Posterior de Coxa, Glúteos e Panturrilhas)',
     focus: 'Cadeia Posterior, Isquiotibiais, Glúteo Máximo & Panturrilhas',
     tagline: 'Equilíbrio anatômico, postura e potência muscular de pernas',
-    estimatedMinutes: 65,
+    estimatedMinutes: 70,
     coachTips: [
       'Isquiotibiais fortes protegem seus joelhos contra lesões de ligamento cruzado e dão o formato redondo à perna.',
       'No Stiff, o movimento é de bisagra de quadril (hip hinge): jogue o quadril para trás, não curve a coluna.',
@@ -1150,6 +1263,34 @@ export const WORKOUT_DAYS: WorkoutDay[] = [
         alternatives: [
           { name: 'Panturrilha Sentado com Halter nas Coxas', equipment: 'Halter + Step', reason: 'Excelente improviso caso a máquina esteja ocupada.' },
           { name: 'Panturrilha Unilateral no Smith', equipment: 'Smith', reason: 'Grande foco em força e amplitude.' }
+        ]
+      },
+      {
+        id: 'p6-hanging-leg-raise',
+        name: 'Elevação de Pernas na Barra Fixa / Cadeira do Capitão',
+        machineName: 'Barra Fixa ou Suporte Paralelo (Cadeira do Capitão)',
+        targetMuscles: ['Reto Abdominal (Ênfase Infra/Inferior)', 'Core Estabilizador'],
+        secondaryMuscles: ['Flexores de Quadril', 'Oblíquos'],
+        sets: 3,
+        reps: '12 - 15',
+        suggestedRestSeconds: 60,
+        visualType: 'hanging-leg-raise',
+        machineAdjustment: [
+          'Se na barra: pendure-se com pegada pronada na largura dos ombros.',
+          'Se na cadeira do capitão: apoie os antebraços nas almofadas com costas firmes no encosto.'
+        ],
+        executionTips: [
+          'O segredo do abdômen não é apenas levantar a coxa, mas sim enrolar a pelve para cima (retroversão pélvica).',
+          'Suba os joelhos em direção ao peitoral, sentindo a parte inferior do abdômen contrair intensamente.',
+          'Desça as pernas de forma lenta e controlada sem deixar o corpo balançar como pêndulo.'
+        ],
+        commonMistakes: [
+          'Balançar o corpo usando a inércia em vez da força dos músculos abdominais.',
+          'Apenas mover os quadris sem flexionar a coluna lombar/pelve.'
+        ],
+        alternatives: [
+          { name: 'Abdominal Infra no Chão no Colchonete', equipment: 'Colchonete', reason: 'Versão mais acessível com apoio total das costas.' },
+          { name: 'Prancha Frontal Isométrica', equipment: 'Solo', reason: 'Fortalecimento profundo de toda a cinta abdominal e transverso.' }
         ]
       }
     ],
